@@ -136,7 +136,7 @@ const Cart = () => {
                   <div className="flex flex-col gap-3 ml-4">
                     <Link href={`products/${slugify(cartItem.item.title)}`} className="text-body-bold line-clamp-2 max-w-[32rem]">{cartItem.item.title}</Link>
 
-                    {cartItem.color && (
+                    {cartItem.color || cartItem.size && (
                       <p className="text-small-medium">
                         {cartItem.color && cartItem.color}
                         {cartItem.color && cartItem.size && '/'}

@@ -21,30 +21,52 @@ function ProductReviewsLoadingSkeleton() {
   return <div className="h-40 bg-gray-200 animate-pulse" />;
 }
 
+//for production function becuase it will search function not Find function.
+//const product = await getProductDetailsForSeo(params.slug); 
+
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const product = await getProductDetailsForSeo(params.slug);
+  const product = await getProductDetails(params.slug);
 
   if (!product) notFound();
 
+  const isAvailable = product.stock > 0;
+  const seoDescription = product.description || "Shop high-quality products at Borcelle.";
+  const productImage = product.media[0] || 'fallback-image.jpg';
+
   return {
-    title: `${product.title} | Borcelle`,
-    description: product.description || "Shop high-quality products at Borcelle.",
+    title: `${product.title} | Borcelle made by Anas Ahmed`,
+    description: seoDescription,
     openGraph: {
-      title: `${product.title} | Borcelle`,
-      description: product.description || "Shop high-quality products at Borcelle.",
+      title: `${product.title} | Borcelle made by Anas Ahmed`,
+      description: seoDescription,
       url: `${process.env.ECOM_STORE_URL}/products/${params.slug}`,
       images: [
         {
-          url: product.media[0] || 'fallback-image.jpg',
+          url: productImage,
           width: 220,
           height: 250,
           alt: product.title,
         },
       ],
-      site_name: 'Borcelle Next.js',
+      site_name: 'Borcelle Next.js made by Anas Ahmed',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${product.title} | Borcelle`,
+      description: seoDescription,
+      images: [productImage],
+    },
+    robots: {
+      index: isAvailable, // Index only if the product is in stock
+      follow: true, // Always allow crawlers to follow links
+      googleBot: {
+        index: isAvailable, // Same for GoogleBot
+        follow: true,
+      },
     },
   };
 }
+
 
 export default async function ProductPage({ params, searchParams }: { params: { slug: string }, searchParams: { page: string } }) {
   const product: ProductType = await getProductDetails(params.slug);
@@ -108,7 +130,7 @@ async function RelatedProducts({ category, collections, productId }: { category:
   return (
     <div className="space-y-5">
       <h2 className="text-2xl font-bold px-5">Related Products</h2>
-      <ProductList Products={relatedProducts}/>
+      <ProductList Products={relatedProducts} />
     </div>
   );
 }
