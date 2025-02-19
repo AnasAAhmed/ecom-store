@@ -1,16 +1,17 @@
 import mongoose from "mongoose";
 
 const customerSchema = new mongoose.Schema({
-  clerkId: { type: String, unique: true, index: true },
   name: { type: String },
+  password: { type: String, default: null },
+  googleId: { type: String, default: null },
+  image: { type: String },//avatar
   email: { type: String, index: true },
   orders: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order" }]
   },
+  reset_token: { type: String },
+  token_expires: { type: String },
   ordersCount: { type: Number, default: 0 },
-  wishlist: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }]
-  },
   createdAt: {
     type: Date,
     default: Date.now,

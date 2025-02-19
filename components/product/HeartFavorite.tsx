@@ -13,25 +13,25 @@ interface HeartFavoriteProps {
 
 const HeartFavorite = ({ productId, updateSignedInUser }: HeartFavoriteProps) => {
   const router = useRouter();
-  const { user, resetUser } = useWhishListUserStore();
+  const { userWishlist, resetUserWishlist } = useWhishListUserStore();
 
   const [loading, setLoading] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
-    if (user) {
-      setIsLiked(user.wishlist.includes(productId));
+    if (userWishlist) {
+      setIsLiked(userWishlist.wishlist.includes(productId));
     }
-  }, [user, productId]);
+  }, [userWishlist, productId]);
 
   const handleLike = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     try {
-      if (!user) {
-        return router.push("/sign-in");
+      if (!userWishlist) {
+        return router.push("/login");
       } else {
         setLoading(true);
-        const res = await fetch("/api/user/wishlist", {
+        const res = await fetch("/api/wishlist/action", {
           method: "POST",
           body: JSON.stringify({ productId }),
         });
@@ -40,7 +40,7 @@ const HeartFavorite = ({ productId, updateSignedInUser }: HeartFavoriteProps) =>
 
         toast.success(`${updatedUser.isLiked ? "Added to" : "Removed from"} your wishlist`);
         updateSignedInUser && updateSignedInUser(updatedUser.user);
-        resetUser();
+        resetUserWishlist();
       }
     } catch (err) {
       toast.error("Error updating your wishlist");

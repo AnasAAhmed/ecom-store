@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown, ShoppingCart } from "lucide-react";
 import HeartFavorite from "./HeartFavorite";
-import StarRatings from "../StarRatings";
+import StarRatings from "./StarRatings";
 import useCart, { useRegion } from "@/lib/hooks/useCart";
 
 interface ProductCardProps {

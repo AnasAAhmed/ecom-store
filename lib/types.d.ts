@@ -37,6 +37,30 @@ type CartProductType = {
   price: number;
   expense: number;
 }
+ interface Session {
+  user: {
+    id: string
+    email: string
+    image: string
+    name: string
+  }
+}
+
+ interface AuthResult {
+  type: string
+  message: string
+}
+ interface Result {
+  type: string
+  resultCode: string
+};
+ interface User {
+  id?: string
+  name?: string | null
+  password?: string | null
+  email?: string | null
+  image?: string | null
+}
 
 type OrderProductCOD = {
 

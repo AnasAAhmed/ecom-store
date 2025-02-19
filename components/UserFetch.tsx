@@ -1,41 +1,39 @@
 'use client';
 import { useWhishListUserStore } from '@/lib/hooks/useCart';
-import { useUser } from '@clerk/nextjs';
+import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 
-const UserFetcher = () => {
-    const { user: userFromClerk, isSignedIn } = useUser();
-    
-    const { user, setUser, resetUser } = useWhishListUserStore();
+const UserFetcher = (
+    // {userId}:{userId:string}
+) => {
+    const { data: session,status } = useSession();
+
+    const { userWishlist, setUserWishlist, resetUserWishlist } = useWhishListUserStore();
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const res = await fetch('/api/user', {
+                const res = await fetch('/api/wishlist', {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        email: userFromClerk!.emailAddresses[0].emailAddress,
-                        name: userFromClerk?.fullName,
-                        clerkId: userFromClerk?.id
+                        id: session?.user?.id
                     }),
                 });
                 const data = await res.json();
-                console.log(data);
-                
-                setUser(data);
+                setUserWishlist(data);
             } catch (err) {
                 console.log('[users_GET]', err);
-                resetUser();
+                resetUserWishlist();
             }
         };
 
-        if (isSignedIn && !user) {
+        if (session?.user?.id && !userWishlist) {
             fetchUserData();
         }
-    }, [isSignedIn, user, setUser, resetUser]);
+    }, [session?.user?.id, userWishlist, setUserWishlist, resetUserWishlist,status,session]);
 
     return null;
 };

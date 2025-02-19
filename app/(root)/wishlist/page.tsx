@@ -1,8 +1,9 @@
 import ProductCard from "@/components/product/ProductCard";
 import { FC } from "react";
-import { auth } from "@clerk/nextjs/server";
 import { getWishList } from "@/lib/actions/actions";
 import type { Metadata } from 'next';
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata= {
   title: "Borcelle | Wishlist",
@@ -10,9 +11,12 @@ export const metadata: Metadata= {
 };
 
 const WishlistPage: FC = async () => {
-  const { userId } = auth()
-  if (!userId) return;
-  const wishlist = await getWishList(userId!);
+  const session = (await auth()) as Session
+
+  if (!session) {
+    redirect('/')
+  }
+  const wishlist = await getWishList(session.user.id);
 
 
   if (!wishlist || wishlist.wishlist.length === 0) {

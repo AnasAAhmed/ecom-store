@@ -1,17 +1,15 @@
 import { FormEvent, useState } from "react";
-import { FaEdit, FaSpinner } from "react-icons/fa";
-import { IoCloseSharp } from "react-icons/io5";
-import type { UserResource } from '@clerk/types';
+import { Edit, Loader2, X } from 'lucide-react';
 import toast from "react-hot-toast";
-import Modal from "../ui/Modal";
 import { useRouter } from "next/navigation";
+import Modal from "../ui/Modal";
 
 type ReviewFormProps = {
     isEditing?: boolean;
     oldRating?: number;
     oldComment?: string;
     productId: string;
-    user: UserResource | null;
+    user: User | null;
 };
 
 const ReviewForm = ({ isEditing, productId, user, oldRating, oldComment }: ReviewFormProps) => {
@@ -30,10 +28,10 @@ const ReviewForm = ({ isEditing, productId, user, oldRating, oldComment }: Revie
         setIsCreatingReview(true);
         const reviewData = {
             rating,
-            photo: user.imageUrl,
+            photo: user.image,
             comment,
-            email: user.emailAddresses[0].emailAddress,
-            name: user.firstName,
+            email: user.email,
+            name: user.name,
             userId: user.id,
         }
         try {
@@ -71,7 +69,7 @@ const ReviewForm = ({ isEditing, productId, user, oldRating, oldComment }: Revie
             <div className='flex flex-col items-center'>
                 {isEditing ? (
                     <button className="text-[0.7rem] sm:text-sm px-1 py-1 rounded-md" onClick={openModal}>
-                        <FaEdit />
+                        <Edit />
                     </button>
                 ) : (
                     <button onClick={openModal} className="bg-blue-500 text-white px-2 py-1 rounded-full mb-1">
@@ -86,7 +84,7 @@ const ReviewForm = ({ isEditing, productId, user, oldRating, oldComment }: Revie
                     <div className="flex flex-row justify-between mb-6 items-center">
                         <h2 className="text-xl font-semibold">Submit Review</h2>
                         <button onClick={closeModal} className="text-2xl rounded-md">
-                            <IoCloseSharp />
+                            <X />
                         </button>
                     </div>
                     <form className="space-y-4" onSubmit={handleCreateReview}>
@@ -116,7 +114,7 @@ const ReviewForm = ({ isEditing, productId, user, oldRating, oldComment }: Revie
                             />
                         </div>
                         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md" disabled={isCreatingReview}>
-                            {isCreatingReview ? <FaSpinner className='animate-spin text-heading3-bold mx-3' /> : "Submit"}
+                            {isCreatingReview ? <Loader2 className='animate-spin text-heading3-bold mx-3' /> : "Submit"}
                         </button>
                     </form>
                 </div>

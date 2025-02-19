@@ -1,19 +1,20 @@
-import Customer from "@/lib/models/Customer";
 import { connectToDB } from "@/lib/mongoDB";
-import { auth } from "@clerk/nextjs/server";
+import { auth, } from '@/auth'
+import { Session } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import Wishlist from "@/lib/models/Wishlist";
 
 export const POST = async (req: NextRequest) => {
   try {
-    const { userId } = auth();
-
+    const session = (await auth()) as Session
+    const userId = session.user?.id;
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
     await connectToDB();
 
-    let wishList = await Customer.findOne({ clerkId: userId });
+    let wishList = await Wishlist.findOne({ userId: userId });
 
     if (!wishList) {
       return new NextResponse("User not found", { status: 404 });

@@ -1,17 +1,16 @@
-import Succes from '@/components/Succes';
-import { Metadata } from 'next';
-import React from 'react'
+import Payment_succes from "@/components/Payment_succes";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Borcelle | Payment_Successfull",
+  description: "Your payment has been successfully processed",
+};
 
 export const dynamic = 'force-static';
-export const metadata: Metadata = {
-  title: "Borcelle | Payment_Successful",
-  description: "Your Online Payment Successfully Processed",
-};
-const page = () => {
+const SuccessfulPaymentPage = () => {
   return (
-    <Succes />
-  )
-}
+    <Payment_succes/>
+  );
+};
 
-export default page
+export default SuccessfulPaymentPage;

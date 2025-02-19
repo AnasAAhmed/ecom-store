@@ -25,7 +25,7 @@ export const POST = async (req: NextRequest) => {
     if (!shippingAddress || !products || !shippingRate || !totalAmount || !currency) {
       return NextResponse.json({ message: `Please enter All Details` }, { status: 400 });
     }
-    if (!customerInfo.clerkId || !customerInfo.email ) {
+    if (!customerInfo.id || !customerInfo.email ) {
       return NextResponse.json({ message: 'User Details Missing/Login first' }, { status: 400 });
     }
 
@@ -43,7 +43,7 @@ export const POST = async (req: NextRequest) => {
       exchangeRate
     });
     await newOrder.save();
-    let customer = await Customer.findOne({ clerkId: customerInfo.clerkId })
+    let customer = await Customer.findById(customerInfo.id)
 
     if (customer) {
       customer.orders.push(newOrder._id);

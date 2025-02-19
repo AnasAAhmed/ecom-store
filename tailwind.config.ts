@@ -26,7 +26,7 @@ const config: Config = {
         "24px",
         {
           lineHeight: "100%",
-          fontWeight: "700",
+          fontWeight: "600",
         },
       ],
       "heading4-bold": [

@@ -195,20 +195,21 @@ export const useRegion = create<RegionStore>()(
   )
 );
 interface UserState {
-  user: {
-    clerkId: string;
+  userWishlist: {
+    userId: string;
     wishlist: [string];
   } | null;
-  setUser: (user: any) => void;
-  resetUser: () => void;
+  setUserWishlist: (userWishlist: any) => void;
+  resetUserWishlist: () => void;
 }
 
 export const useWhishListUserStore = create<UserState>((set) => ({
-  user: null,
-  setUser: (user) => set({ user }),
-  resetUser: () => set({ user: null }),
+  userWishlist: null,
+  setUserWishlist: (userWishlist) => set({ userWishlist }),
+  resetUserWishlist: () => set({ userWishlist: null }),
 }));
 export default useCart;
+
 
 
 

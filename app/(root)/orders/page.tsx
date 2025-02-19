@@ -1,8 +1,8 @@
-import CancelOrder from "@/components/Cancel";
-import PaginationControls from "@/components/ui/PaginationControls";
+import { auth } from "@/auth";
+import CancelOrder from "@/components/CancelOrder";
+import PaginationControls from "@/components/PaginationControls";
 import { getOrders } from "@/lib/actions/actions";
 import { slugify } from "@/lib/utils/features";
-import { currentUser } from "@clerk/nextjs/server";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 };
 
 const Orders = async ({ searchParams }: { searchParams: any }) => {
-  const user = await currentUser();
   const page = Number(searchParams?.page) || 1;
+  const session = (await auth()) as Session
 
-  const data = await getOrders(user?.emailAddresses[0].emailAddress!, page);
+  const data = await getOrders(session?.user?.email!, page);
 
   return (
     <div className="sm:px-10 py-5 px-3 min-h-[90vh]">

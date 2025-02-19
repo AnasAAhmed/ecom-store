@@ -1,7 +1,7 @@
 import GroupComponent7 from "@/components/ui/Services";
-import { MdEmail } from "react-icons/md";
 import type { Metadata } from 'next';
 import Banner from "@/components/ui/Banner";
+import { Mail } from "lucide-react";
 
 export const metadata: Metadata = {
     title: "Borcelle | Contact",
@@ -118,7 +118,7 @@ const ContactContainer = () => {
                 </div>
             </div>
             <div className="flex items-center gap-4">
-                <MdEmail className="w-8 h-8" />
+                <Mail className="w-8 h-8" />
                 <div>
                     <h3 className="text-lg font-medium">Email</h3>
                     <p className="text-gray-600">example@gmail.com</p>

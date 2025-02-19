@@ -1,8 +1,8 @@
+import { ArrowLeftRight, Truck } from "lucide-react";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useMemo, type CSSProperties } from "react";
-import { FaCcStripe, FaShippingFast } from "react-icons/fa";
-import { GiCycle } from "react-icons/gi";
+import { FaCcStripe,  } from "react-icons/fa";
 
 export type GroupComponent7Type = {
   className?: string;
@@ -56,7 +56,7 @@ const GroupComponent7: NextPage<GroupComponent7Type> = ({
           className="h-[3rem] relative text-inherit font-medium font-inherit inline-block z-[1] "
           style={freeDeliveryStyle}
         >
-          <FaShippingFast />
+          <Truck />
         </h1>
         <h1
           className="h-[3rem] relative text-inherit font-medium font-inherit inline-block z-[1] "
@@ -73,7 +73,7 @@ const GroupComponent7: NextPage<GroupComponent7Type> = ({
           className="h-[3rem] relative text-inherit font-medium font-inherit inline-block z-[1] "
           style={daysReturnStyle}
         >
-          <GiCycle />
+          <ArrowLeftRight />
         </h1>
         <h1
           className="h-[3rem] relative text-inherit font-medium font-inherit inline-block z-[1] mq450:text-[1.188rem] mq800:text-[1.625rem]"

@@ -1,5 +1,5 @@
 import ProductCard from '@/components/product/ProductCard';
-import PaginationControls from '@/components/ui/PaginationControls';
+import PaginationControls from '@/components/PaginationControls';
 import { getSearchProducts } from '@/lib/actions/actions';
 import type { Metadata } from 'next';
 import Sort from '@/components/Sort';

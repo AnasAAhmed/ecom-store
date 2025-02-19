@@ -5,6 +5,8 @@ import Product from "../models/Product"
 import { connectToDB } from "../mongoDB"
 import Review from "../models/Review"
 import Customer from "../models/Customer"
+import { extractNameFromEmail, ResultCode } from "../utils/features"
+import Wishlist from "../models/Wishlist"
 
 
 export async function getCollections() {
@@ -135,7 +137,6 @@ export async function getProductDetails(slug: string) {
 
   }
 };
-
 export async function getRelatedProduct(productId: string, category: string, collections: string[]) {
   try {
     await connectToDB();
@@ -154,7 +155,6 @@ export async function getRelatedProduct(productId: string, category: string, col
 
   }
 };
-
 export async function getProductDetailsForSeo(slug: string) {
   try {
     await connectToDB();
@@ -195,7 +195,7 @@ export async function getWishList(userId: string) {
   try {
     await connectToDB();
 
-    const wishlist = await Customer.findOne({ clerkId: userId })
+    const wishlist = await Wishlist.findOne({userId})
       .populate({
         path: "wishlist",
         model: Product,
@@ -275,4 +275,40 @@ export const stockReduce = async (products: OrderProductCOD[]) => {
     revalidatePath(`/products/${order.product}`);
   };
 };
+export async function getUser(email: string) {
+  try {
+    await connectToDB();
+    const user = await Customer.findOne({ email });
+    return user as User;
+  } catch (error) {
+    const err = error as Error
+    throw new Error('Internal Server Error' + err.message)
+  }
+}
+
+export async function createUser(
+  email: string,
+  hashedPassword: string,
+) {
+  const existingUser = await getUser(email)
+
+  if (existingUser) {
+    return {
+      type: 'error',
+      resultCode: ResultCode.UserAlreadyExists
+    }
+  } else {
+    const name = extractNameFromEmail(email)
+    await Customer.create({
+      name: name,
+      email: email,
+      password: hashedPassword,
+      image:`https://ui-avatars.com/api/?name=${name}`
+    })
+    return {
+      type: 'success',
+      resultCode: ResultCode.UserCreated
+    }
+  }
+}
 

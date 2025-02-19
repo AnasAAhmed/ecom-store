@@ -28,9 +28,8 @@ export default async function Home() {
         buttonText="Shop"
       />
 
-      {collections && <Collections collections={collections} />}
-
-      {latestProducts && <ProductList heading="Latest Products" Products={latestProducts} />}
+     <Collections collections={collections} />
+      <ProductList heading="Latest Products" Products={latestProducts} />
       <Banner
         heading="Summer Collection 2024"
         text="Embrace the warmth with our stylish and comfortable summer wear"
@@ -41,7 +40,7 @@ export default async function Home() {
         buttonText="Shop Now"
       />
 
-      {bestSellingProducts && <ProductList heading="Our Top Selling Products" Products={bestSellingProducts} />}
+    <ProductList heading="Our Top Selling Products" Products={bestSellingProducts} />
 
       <BlogSection />
       <Social />

@@ -1,13 +1,12 @@
 'use client'
-import { useState, useEffect } from 'react';
-import { FaChevronDown, FaChevronUp, FaSpinner, FaTrash } from 'react-icons/fa';
-import ReviewForm from './ReviewForm';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { useUser } from '@clerk/nextjs';
-import StarRatings from '../StarRatings';
+import StarRatings from './StarRatings';
 import { calculateTimeDifference } from '@/lib/utils/functions';
-import PaginationControls from '../ui/PaginationControls';
 import { useRouter } from 'next/navigation';
+import ReviewForm from './ReviewForm';
+import { Loader2, Trash2 } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 
 
 interface ProductReviewsProps {
@@ -17,7 +16,7 @@ interface ProductReviewsProps {
 }
 
 const ProductReviews: React.FC<ProductReviewsProps> = ({ productReviews, productId, numOfReviews }) => {
-  const { user } = useUser();
+  const { data:session } = useSession();
   const [isDeletingReview, setIsDeletingReview] = useState<boolean>(false);
   const router = useRouter();
 
@@ -26,12 +25,12 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ productReviews, product
   const handleDeleteReview = async (reviewId: string) => {
     setIsDeletingReview(true);
     try {
-      const response = await fetch(`/api/products/reviews?reviewId=${reviewId}&userId=${user?.id}`, {
+      const response = await fetch(`/api/products/reviews?reviewId=${reviewId}&userId=${session?.user?.id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
           'reviewId': reviewId,
-          'userId': user?.id || '',
+          'userId': session?.user?.id || '',
           'productId': productId,
         }
       });
@@ -57,10 +56,8 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ productReviews, product
   return (
     <div className="container mx-auto p-4">
       <div className="flex flex-col items-center">
-        <h2 className="text-heading3-bold font-semibold mb-4">Reviews ({numOfReviews})</h2>
-      
       </div>
-      <ReviewForm productId={productId} user={user!} />
+      <ReviewForm productId={productId} user={session?.user!} />
       <div className="md:mx-12 mt-12 max-sm:border-1 ">
         {reviews && reviews.length > 0 ? (
           <>
@@ -79,20 +76,20 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ productReviews, product
                         <StarRatings rating={review.rating} />
                       </span>
                     </div>
-                    {review.userId === user?.id && (
+                    {review.userId === session?.user?.id && (
                       <div className="flex flex-row items-center">
                         <button
                           onClick={() => handleDeleteReview(review._id)}
                           className="px-1 text-[0.7rem] sm:text-sm py-1 rounded-md"
                         >
-                          {isDeletingReview ? <FaSpinner className="animate-spin" /> : <FaTrash />}
+                          {isDeletingReview ? <Loader2 className="animate-spin" /> : <Trash2 />}
                         </button>
                         <ReviewForm
                           isEditing={true}
                           oldComment={review.comment}
                           oldRating={review.rating}
                           productId={productId}
-                          user={user}
+                          user={session?.user}
                         />
                       </div>
                     )}

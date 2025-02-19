@@ -1,4 +1,4 @@
-import Customer from "@/lib/models/Customer";
+import Wishlist from "@/lib/models/Wishlist";
 import { connectToDB } from "@/lib/mongoDB";
 
 import { NextRequest, NextResponse } from "next/server";
@@ -6,26 +6,25 @@ import { NextRequest, NextResponse } from "next/server";
 export const POST = async (req: NextRequest) => {
     try {
         const body = await req.json();
-        const { email, name, clerkId } = body;
+        const { id } = body;
 
-        if (!clerkId) {
+        if (!id) {
             return new NextResponse(JSON.stringify({ message: "Unauthorized" }), { status: 401 })
         }
 
         await connectToDB();
 
-        let user = await Customer.findOne({ clerkId });
+        let wishlist = await Wishlist.findOne({ userId: id });
 
-        if (!user) {
-            user = await Customer.create({
-                clerkId,
-                name,
-                email,
-            })
-            await user.save();
+        if (!wishlist) {
+            wishlist = new Wishlist({
+                userId: id,
+                wishlist: []
+            });
+            await wishlist.save();
         };
 
-        return NextResponse.json({ clerkId: user.clerkId, wishlist: user.wishlist }, { status: 200 });
+        return NextResponse.json({ userId: wishlist.userId, wishlist: wishlist.wishlist }, { status: 200 });
     } catch (err) {
         console.log("[users_GET]", err)
         return new NextResponse("Internal Server Error", { status: 500 })

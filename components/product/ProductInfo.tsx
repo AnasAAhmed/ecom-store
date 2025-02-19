@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import { MinusCircle, PlusCircle } from "lucide-react";
 import useCart, { useRegion } from "@/lib/hooks/useCart";
-import StarRatings from "../StarRatings";
-import HeartFavorite from "./HeartFavorite";
+import StarRatings from "./StarRatings";
 
 const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
     const [selectedVariant, setSelectedVariant] = useState<VariantType | null>(null);
@@ -40,8 +39,6 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
         <div className="max-w-1/2 sm:w-[500px] flex flex-col gap-4">
             <div className="flex justify-between items-center">
                 <p className="text-heading4-bold sm:text-heading3-bold">{productInfo.title}</p>
-                <HeartFavorite productId={productInfo._id} />
-
             </div>
 
             {/* Price & Discounts */}

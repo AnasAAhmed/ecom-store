@@ -82,13 +82,16 @@ const CancelOrder = ({ order }: OrderManageProps) => {
                 Customer's Email: {order.customerEmail}
               </p>
               <p className="text-base-bold">
-                Currency: <span className="text-base-medium">{order.currency}</span>
-              </p>
-              <p className="text-base-bold">
                 Shipping address: <span className="text-base-medium leading-8">{order.shippingAddress.street}, {order.shippingAddress.city}, {order.shippingAddress.state}, {order.shippingAddress.postalCode}, {order.shippingAddress.country}, phone:{order.shippingAddress.phone || "null"}</span>
               </p>
               <p className="text-base-bold">
-                Total {!order.status.startsWith('COD') && 'Paid'}: <span className="text-base-medium">${order.totalAmount}</span>
+                Exchange Rate: {order.exchangeRate}
+              </p>
+              <p className="text-base-bold">
+                Currency: <span className="text-base-medium">{order.currency}</span>
+              </p>
+              <p className="text-base-bold">
+                Total {!order.status.startsWith('COD') && 'Paid'}: <span className="text-base-medium">${order.totalAmount} ({order.exchangeRate} x {order.totalAmount} = {order.totalAmount*order.exchangeRate}{order.currency})</span>
               </p>
               <p className="text-base-bold">
                 Shipping rate: <span className="text-base-medium">({order.currency}) {order.shippingRate}</span>
@@ -106,6 +109,9 @@ const CancelOrder = ({ order }: OrderManageProps) => {
                   <th className='border'>size</th>
                   <th className='border'>color</th>
                   <th className='border'>quantity</th>
+                  <th className='border'>price in usd</th>
+                  <th className='border'>exchange rate in ({order.currency})</th>
+                  <th className='border'>price in ({order.currency})</th>
                 </thead>
                 {order.products.map((i) => (
                   <tbody className='border'>
@@ -113,6 +119,9 @@ const CancelOrder = ({ order }: OrderManageProps) => {
                     <th className='border'>{i.size || 'N/A'}</th>
                     <th className='border'>{i.color || 'N/A'}</th>
                     <th className='border'>{i.quantity}</th>
+                    <th className='border'>${i.product.price} </th>
+                    <th className='border'>{order.exchangeRate}</th>
+                    <th className='border'>{i.product.price*order.exchangeRate}</th>
                   </tbody>
                 ))}
               </table>

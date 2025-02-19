@@ -1,21 +1,20 @@
 "use client";
 
 import useCart from "@/lib/hooks/useCart";
-import { UserButton, useUser } from "@clerk/nextjs";
 import { CircleUserRound, Menu, Search, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import Modal from "./Modal";
 import Currency from "../Currency";
+import { signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams.toString());
   const router = useRouter();
-  const { user } = useUser();
+  const { data: session } = useSession();
   const cart = useCart();
 
   const [query, setQuery] = useState("");
@@ -42,6 +41,7 @@ const Navbar = () => {
             <Link
               key={item}
               prefetch={false}
+              aria-label={item}
               href={`/collections/${item}`}
               className="hover:border-white border-b-2 border-black"
             >
@@ -79,6 +79,7 @@ const Navbar = () => {
                   key={idx}
                   href={path}
                   prefetch={false}
+                  aria-label={path}
                   className={`hover:text-blue-500 ${pathname === path && "text-blue-500"}`}
                 >
                   {["Home", "Shop", "Contact", "Wishlist", "Orders"][idx]}
@@ -89,13 +90,17 @@ const Navbar = () => {
 
           <div className="flex items-center gap-2">
             <Currency className="none" />
-            <Link href="/cart" className="hidden md:flex items-center gap-2 border px-2 py-1 rounded-lg hover:bg-black hover:text-white">
+            <Link  aria-label={'Go to cart'} href="/cart" className="hidden md:flex items-center gap-1 border px-1 py-1 rounded-lg hover:bg-black hover:text-white">
               <ShoppingCart />
-              <span>Cart ({cart.cartItems.length})</span>
+              <span>({cart.cartItems.length})</span>
             </Link>
-            {user ? <UserButton /> : <Link href="/sign-in"><CircleUserRound /></Link>}
-            <button onClick={toggleModal} onBlur={() => setTimeout(() => setIsOpen(false), 70)}>
-              <Menu className="lg:hidden cursor-pointer" size={'1.7rem'}/>
+            {session?.user? <><img src={session?.user.image!} alt="avatar" className="w-8 h-8 rounded-full" /> <button 
+            id="Sign-out"
+            onClick={() => signOut()}>
+              Sign Out
+            </button></> : <Link href="/login"><CircleUserRound /></Link>}
+            <button id="Mob-menu" onClick={toggleModal} onBlur={() => setTimeout(() => setIsOpen(false), 70)}>
+              <Menu className="lg:hidden cursor-pointer" size={'1.7rem'} />
             </button>
           </div>
 
@@ -115,22 +120,24 @@ const Navbar = () => {
           </div>
         </div>
         {/* Mobile Modal */}
-        {isOpen && <div className="fixed flex lg:hidden right-10 top-8 items-center justify-center bg-opacity-50 z-50">
+        {isOpen && <div className="fixed flex lg:hidden right-6 top-7 items-center justify-center bg-opacity-50 z-50">
           <ul className="flex flex-col p-4 gap-3 bg-white animate-modal rounded-lg border">
 
             {["/", "/search", "/contact", "/blog", "/wishlist", "/orders"].map((name, idx) => (
               <Link
                 key={idx}
                 href={name}
+                aria-label={name}
                 className="border-b"
+                prefetch={false}
               >
                 {["Home", "Shop", "Contact", "Blog", "Wishlist", "Orders"][idx]}
 
               </Link>
             ))}
-            <Link href="/cart" className="flex items-center gap-3 border rounded-lg px-2 py-1 hover:bg-black hover:text-white" >
+            <Link aria-label={'go to cart'} href="/cart" className="flex items-center gap-2 border rounded-lg px-2 py-1 hover:bg-black hover:text-white" >
               <ShoppingCart />
-              <span>Cart ({cart.cartItems.length})</span>
+              <span>({cart.cartItems.length})</span>
             </Link>
           </ul>
         </div>}
