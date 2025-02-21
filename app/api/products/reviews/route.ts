@@ -46,7 +46,6 @@ export async function POST(request: NextRequest) {
     }
 
     await product.save({ validateBeforeSave: false });
-    revalidatePath(`/products/${product.slug}`)
     return NextResponse.json({ message: "Review submitted successfully" });
   } catch (error) {
     console.error(error);

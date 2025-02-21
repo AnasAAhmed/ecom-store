@@ -5,16 +5,40 @@ import ProductList from '@/components/product/ProductList';
 import BlogSection from "@/components/ui/BlogSection";
 import Social from "@/components/ui/Social";
 import GroupComponent7 from "@/components/ui/Services";
+import { Suspense } from "react";
 
-export const dynamic = 'force-static';
+
+//Rendering with SSR Streeaming
+
+function ProductsLoadingSkeleton() {
+  return (
+    <div className="flex flex-col items-center justify-center gap-10">
+      <h3 className="text-heading3-bold sm:text-heading2-bold">Loading Products...</h3>
+      <div className="flex flex-wrap justify-center gap-5">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="h-[22rem] w-64 bg-gray-200 animate-pulse" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CollectionsSkeleton() {
+  return (
+    <div className="flex flex-col items-center justify-center mb-8 gap-8">
+      <p className="text-heading2-bold sm:text-heading1-bold">Collections</p>
+      <div className="flex flex-wrap items-center justify-center gap-8">
+        <div className="h-[150px] w-[250px] bg-gray-200 rounded-lg animate-pulse" />
+        <div className="h-[150px] w-[250px] bg-gray-200 rounded-lg animate-pulse" />
+        <div className="h-[150px] w-[250px] bg-gray-200 rounded-lg animate-pulse" />
+        <div className="h-[150px] w-[250px] bg-gray-200 rounded-lg animate-pulse" />
+      </div>
+    </div>
+  );
+};
 
 
 export default async function Home() {
-  const [collections, latestProducts, bestSellingProducts] = await Promise.all([
-    getCollections(),
-    getProducts(),
-    getBestSellingProducts(),
-  ]);
 
   return (
     <>
@@ -28,8 +52,14 @@ export default async function Home() {
         buttonText="Shop"
       />
 
-     <Collections collections={collections} />
-      <ProductList heading="Latest Products" Products={latestProducts} />
+      <Suspense fallback={<CollectionsSkeleton />}>
+        <CollectionsList />
+      </Suspense>
+
+      <Suspense fallback={<ProductsLoadingSkeleton />}>
+        <LatestProductsList />
+      </Suspense>
+
       <Banner
         heading="Summer Collection 2024"
         text="Embrace the warmth with our stylish and comfortable summer wear"
@@ -40,10 +70,14 @@ export default async function Home() {
         buttonText="Shop Now"
       />
 
-    <ProductList heading="Our Top Selling Products" Products={bestSellingProducts} />
+      <Suspense fallback={<ProductsLoadingSkeleton />}>
+        <BestSellingProducts />
+      </Suspense>
 
       <BlogSection />
+
       <Social />
+
       <GroupComponent7
         freeDeliveryHeight="unset"
         freeDeliveryDisplay="unset"
@@ -55,4 +89,34 @@ export default async function Home() {
     </>
   );
 }
-export const revalidate = 43200;
+
+async function CollectionsList() {
+  const collections: CollectionType[] = await getCollections();
+
+  if (!collections.length) return null;
+
+  return (
+    <Collections collections={collections} />
+
+  );
+};
+
+async function LatestProductsList() {
+  const latestProducts: ProductType[] = await getProducts();
+
+  if (!latestProducts.length) return null;
+
+  return (
+    <ProductList heading="Latest Products" Products={latestProducts} />
+  );
+};
+
+async function BestSellingProducts() {
+  const bestSellingProducts: ProductType[] = await getBestSellingProducts();
+
+  if (!bestSellingProducts.length) return null;
+
+  return (
+    <ProductList heading="Our Top Selling Products" Products={bestSellingProducts} />
+  );
+};

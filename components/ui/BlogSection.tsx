@@ -1,4 +1,5 @@
 'use client'
+import { Calendar, Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -41,11 +42,11 @@ const GroupComponent3 = ({ blogCardImage }: GroupComponent3Type) => {
         <Link href='/blog' className="text-2xl font-medium" >Read More</Link>
         <div className="flex items-center justify-between w-full mt-4">
           <div className="flex items-center gap-2">
-            <img className="w-4 h-4" alt="icon" src="https://figma-to-code-ecom-design.vercel.app/group.svg" />
+            <Clock />
             <span className="font-light">5 min</span>
           </div>
           <div className="flex items-center gap-2">
-            <img className="w-4 h-4" alt="calendar" src="https://figma-to-code-ecom-design.vercel.app/uilcalender.svg" />
+            <Calendar />
             <span className="font-light">12<sup>th</sup> Oct 2022</span>
           </div>
         </div>
