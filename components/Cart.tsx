@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import useCart, { 4egion } from "@/lib/hooks/useCart";
+import useCart, { useRegion } from "@/lib/hooks/useCart";
 import { Loader2, LoaderIcon, MinusCircle, PlusCircle, Trash, XCircleIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
