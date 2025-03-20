@@ -6,6 +6,7 @@ import { slugify } from "@/lib/utils/features";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
   title: "Borcelle | Orders",
@@ -15,7 +16,9 @@ export const metadata: Metadata = {
 const Orders = async ({ searchParams }: { searchParams: any }) => {
   const page = Number(searchParams?.page) || 1;
   const session = (await auth()) as Session
-
+  if (!session) {
+    return redirect('/login');
+  };
   const data = await getOrders(session?.user?.email!, page);
 
   return (

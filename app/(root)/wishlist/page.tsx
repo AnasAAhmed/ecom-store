@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
-export const metadata: Metadata= {
+export const metadata: Metadata = {
   title: "Borcelle | Wishlist",
   description: "This is wishlist products",
 };
@@ -14,7 +14,7 @@ const WishlistPage: FC = async () => {
   const session = (await auth()) as Session
 
   if (!session) {
-    redirect('/')
+    return redirect('/login');
   }
   const wishlist = await getWishList(session.user.id);
 

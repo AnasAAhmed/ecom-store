@@ -18,7 +18,7 @@ export async function getCollections() {
 
   } catch (err) {
     console.log("[collections_GET]", err)
-    throw new Error('Internal Server Error')
+    throw new Error('Internal Server Error'+ (err as Error).message)
   }
 };
 
@@ -34,7 +34,7 @@ export async function getCollectionDetails(title: string) {
     return JSON.parse(JSON.stringify(collection))
   } catch (err) {
     console.log("[collectionId_GET]", err);
-    throw new Error('Internal Server Error')
+    throw new Error('Internal Server Error'+ (err as Error).message)
   }
 };
 
@@ -133,7 +133,7 @@ export async function getProductDetails(slug: string) {
 
   } catch (err) {
     console.log("[productId_GET]", err);
-    throw new Error('Internal Server Error')
+    throw new Error('Internal Server Error'+ (err as Error).message)
 
   }
 };
@@ -151,7 +151,7 @@ export async function getRelatedProduct(productId: string, category: string, col
 
   } catch (err) {
     console.log("[productId_GET]", err);
-    throw new Error('Internal Server Error')
+    throw new Error('Internal Server Error'+ (err as Error).message)
 
   }
 };
@@ -171,7 +171,7 @@ export async function getProductDetailsForSeo(slug: string) {
     return JSON.parse(JSON.stringify(product))
   } catch (err) {
     console.log("[productId_GET]", err);
-    throw new Error('Internal Server Error')
+    throw new Error('Internal Server Error'+ (err as Error).message)
 
   }
 };
@@ -186,7 +186,7 @@ export async function getProductReviews(productId: string, page: number) {
     return JSON.parse(JSON.stringify(reviews))
   } catch (err) {
     console.log("[productId_GET]", err);
-    throw new Error('Internal Server Error')
+    throw new Error('Internal Server Error'+ (err as Error).message)
 
   }
 };
@@ -233,7 +233,7 @@ export async function getOrders(customerEmail: string, page: number) {
 
   } catch (err) {
     console.log("[customerId_GET", err);
-    throw new Error('Internal Server Error')
+    throw new Error('Internal Server Error'+ (err as Error).message)
 
   };
 };

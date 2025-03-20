@@ -1,17 +1,18 @@
 "use client";
 
 import React, { useState } from 'react';
-import useCart, { useRegion } from "@/lib/hooks/useCart";
+import useCart, { 4egion } from "@/lib/hooks/useCart";
 import { Loader2, LoaderIcon, MinusCircle, PlusCircle, Trash, XCircleIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import toast from 'react-hot-toast';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react'
 import { slugify } from '@/lib/utils/features';
 
-const Cart = ({ user }: { user: { id: string, name: string, email: string, image: string } | null }) => {
+const Cart = () => {
   const router = useRouter();
-  // const { data: session } = useSession();
+  const { data: session } = useSession();
   const { currency, exchangeRate } = useRegion();
   const [loading, setLoading] = useState(false);
   const [expand, setExpand] = useState(false);
@@ -27,14 +28,14 @@ const Cart = ({ user }: { user: { id: string, name: string, email: string, image
 
   const totalRounded = total * exchangeRate;
   const customer = {
-    id: user?.id,
-    email: user?.email,
-    name: user?.name,
+    id: session?.user?.id,
+    email: session?.user?.email,
+    name: session?.user?.name,
   };
   const handleCheckout = async () => {
     if (isCOD === "NULL") return (setMessage(true), setTimeout(() => { setMessage(false) }, 2000));
     if (isCOD === "COD") {
-      if (!user) {
+      if (!session) {
         return toast((t) => (
           <span>
             Please Sign-in first <b> it will help us to track your orders </b>
@@ -53,7 +54,7 @@ const Cart = ({ user }: { user: { id: string, name: string, email: string, image
     }
     if (isCOD !== "COD") {
       try {
-        if (!user) {
+        if (!session) {
           return toast((t) => (
             <span>
               Please Sign-in first <b> it will help us to track your orders </b>
