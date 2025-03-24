@@ -65,9 +65,9 @@ const CancelOrder = ({ order }: OrderManageProps) => {
   const timeDifference = (currentTime - orderCreationTime) / (1000 * 60 * 60);
   return (
     <>
-      <button onClick={() => setIsOpen(true)}>Details &rarr;</button>
+      <button onClick={() => setIsOpen(true)}> <b> Details</b> &rarr;</button>
       <Modal onClose={onClose} isOpen={isOpen} overLay={true}>
-        <div className=" animate-modal flex flex-col justify-center items-center space-y-4 bg-gray-100 pb-4 px-4 rounded shadow-md">
+        <div className=" animate-modal flex flex-col justify-center overflow-y-auto items-center space-y-4 bg-gray-100 pb-4 px-4 rounded shadow-md">
           <button className='print:hidden text-[26px] self-end mt-3' onClick={() => setIsOpen(false)}>&times;</button>
 
           <div className="flex flex-wrap gap-3 items-center pb-3">

@@ -33,23 +33,23 @@ const Orders = async ({ searchParams }: { searchParams: any }) => {
               className="flex flex-col gap-6 p-4 bg-gray-50 rounded-lg shadow-sm hover:bg-gray-100"
             >
               <div className="flex flex-wrap gap-4 sm:gap-6">
-                <p className="text-base-bold">
-                  Total Amount: {(order.totalAmount * order.exchangeRate).toFixed()}
+                <p className="text-base-medium">
+                 <b> Total Amount</b>: {(order.totalAmount * order.exchangeRate).toFixed()}
                 </p>
-                <p className="text-base-bold">
-                  Payment method: {order.method}
+                <p className="text-base-medium">
+                 <b>Payment method</b> : {order.method}
                 </p>
-                <p className="text-base-bold">
+                <p className="text-base-medium">
                   <CancelOrder order={order} />
                 </p>
-                <p className="text-base-bold">Currency: {order.currency.toLowerCase()}</p>
-                <p className="text-base-bold truncate max-w-60"
+                <p className="text-base-medium"><b>Currency</b>: {order.currency.toLowerCase()}</p>
+                <p className="text-base-medium truncate max-w-60"
                   style={{ color: order.status.startsWith('Canceled') ? 'red' : '' }}>
-                  Status: {order.status}
+                 <b> Status</b>: {order.status}
                 </p>
                 {order.method !== 'COD' && order.status.startsWith('Canceled') &&
-                  <p className="text-base-bold flex flex-col max-w-60 gap-1" >
-                    Contact for refund:
+                  <p className="text-base-medium flex flex-col max-w-60 gap-1" >
+                   <b> Contact for refund</b>:
                     <a href="tel:example@gmail.com" className="hover:underline">Call to: example@gmail.com</a>
                     <a href="mailto:example@gmail.com" className="hover:underline">Email:example@gmail.com</a>
                   </p>}

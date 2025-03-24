@@ -17,7 +17,7 @@ export default async function ResetPassPage({ searchParams }: { searchParams: { 
 
     return (
         <div className="flex flex-col mt-16 h-screen items-center">
-            <div className="w-[400px]">
+            <div className="sm:w-[400px]">
                 <div className='pb-0'>
                     <div >Reset Password</div>
                     <div>Reset password with token to continue.</div>

@@ -15,7 +15,7 @@ export default async function LoginPage() {
       >
         {/* &larr;<div className="font-semibold underline">Back</div> */}
       </Link>
-      <div className="w-[400px]">
+      <div className="sm:w-[400px]">
         <div className='pb-0'>
           <h1 className='text-heading3-bold'>Login</h1>
           <p className='text-body-medium mt-2'>Login with your account to continue.</p>
