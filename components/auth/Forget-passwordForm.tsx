@@ -59,7 +59,7 @@ export function ForgetPassForm({ btnText }: { btnText: string }) {
   return (
     <div>
       <div >
-        <button onClick={openModal} type="button" className="px-0 text-zinc-500">{btnText}</button>
+        <button title="Click here for forget Password" onClick={openModal} type="button" className="px-0 text-zinc-500">{btnText}</button>
       </div>
       <Modal isOpen={modalOpen} onClose={closeModal} overLay={true}>
         <div className="bg-white p-5 rounded-md">
@@ -99,6 +99,7 @@ function ReqBtn() {
 
   return (
     <button
+      title="Send email request"
       className="w-full py-2 mt-4 bg-black text-white rounded-md hover:opacity-45"
       disabled={pending || process.env.NODE_ENV === 'production'}
       type="submit"

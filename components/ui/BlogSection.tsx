@@ -16,7 +16,7 @@ const BlogSection = () => {
         <GroupComponent3 blogCardImage="/blog3.png" />
       </div>
       <div className="flex flex-col items-center">
-        <Link href="/blog" className="text-lg font-medium">View All Posts</Link>
+        <Link title="Veiw all blogs" href="/blog" className="text-lg font-medium">View All Posts</Link>
         <div className="border-t-2 border-black w-16 mt-2"></div>
       </div>
     </section>
@@ -39,7 +39,7 @@ const GroupComponent3 = ({ blogCardImage }: GroupComponent3Type) => {
       />
       <div className="self-stretch flex flex-col items-start justify-start p-4 box-border max-w-full">
         <div className="text-xl">Going all-in with millennial design</div>
-        <Link href='/blog' className="text-2xl font-medium" >Read More</Link>
+        <Link title="Read more" href='/blog' className="text-2xl font-medium" >Read More</Link>
         <div className="flex items-center justify-between w-full mt-4">
           <div className="flex items-center gap-2">
             <Clock />

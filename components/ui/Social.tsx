@@ -23,7 +23,7 @@ const Social = () => {
       </div>
     </div>
     <div className="w-[28.375rem] flex flex-row items-start justify-center py-[0rem] pr-[0.062rem] pl-[0rem] box-border max-w-full">
-      <a href="https://instagram.com" target="blank" className="[border:none] py-[1.062rem] px-[1.25rem] rounded-full hover:opacity-45 w-[15.938rem] shadow-[0px_20px_20px_rgba(0,_0,_0,_0.1)] rounded-31xl flex flex-row items-start justify-center box-border whitespace-nowrap z-[1] hover:bg-gainsboro-100">
+      <a title='Follow us on Instagram' href="https://instagram.com" target="blank" className="[border:none] py-[1.062rem] px-[1.25rem] rounded-full hover:opacity-45 w-[15.938rem] shadow-[0px_20px_20px_rgba(0,_0,_0,_0.1)] rounded-31xl flex flex-row items-start justify-center box-border whitespace-nowrap z-[1] hover:bg-gainsboro-100">
         <div className="h-[4rem] w-[15.938rem] relative rounded-31xl bg-snow-100 hidden" />
         <div className="h-[1.875rem] relative text-[1.25rem] font-poppins text-black text-left inline-block z-[1]">
           Follow Us

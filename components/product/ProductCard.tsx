@@ -44,17 +44,17 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
 
   return (
     <div
-      className={`relative bg-white max-w-56 rounded-lg shadow-md overflow-hidden transition-transform transform hover:scale-105 ${isSoldOut ? "opacity-70" : ""
+      className={`relative bg-white max-w-64 rounded-t-lg shadow-md overflow-hidden transition-transform transform hover:scale-105 ${isSoldOut ? "opacity-70" : ""
         }`}
     >
-      <Link href={`/products/${slug}`} className="block" prefetch={false} >
+      <Link title={"See details of "+title} href={`/products/${slug}`} className="block" prefetch={false} >
         <div className="relative group">
           <Image
             src={media[0]}
             alt={title}
-            width={250}
-            height={220}
-            className="w-full max-h-56 object-cover"
+            width={350}
+            height={320}
+            className="w-full h-64 object-cover"
           />
           {isSoldOut ? (
             <span className="absolute top-2 left-2 bg-red-500 text-white text-[12px] font-semibold px-2 py-1 rounded">
@@ -75,6 +75,7 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
           ) : (
             <button
               aria-label="Add to cart"
+              title="Add to Cart"
               disabled={isSoldOut}
               onClick={(e) => { handleAddToCart(e); e.stopPropagation() }}
               className="absolute top-2 right-2 bg-blue-600 text-white p-2 rounded-full hover:bg-blue-500 transition-colors"
@@ -84,27 +85,31 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
           )}
         </div>
         <div className="py-1 px-3">
-          <h3 className="text-lg font-semibold text-gray-900 truncate">{title}</h3>
+          <h3 className="text-lg sm:pb-1 font-medium text-gray-900 line-clamp-2 ">
+            <abbr title={title} className="no-underline">
+            {title}
+            </abbr>
+            </h3>
           <div className="mt-1 flex items-center justify-between">
-            <div >
+            <div className="flex gap-2 items-center">
               <p className="text-lg font-bold text-gray-900">
-                {currency.toLowerCase()} {productPrice}
+               <small>{currency}</small>  {productPrice}
               </p>
               {expense > price && (
-                <p className="text-small-medium line-through text-gray-500">
-                  {currency} {productExpense}
+                <p className="text-small-medium max-sm:hidden line-through text-gray-500">
+                  <small>{currency}</small> {productExpense}
                 </p>
               )}
             </div>
             <HeartFavorite productId={_id} updateSignedInUser={updateSignedInUser} />
           </div>
-          <div className="mt-1 flex items-center space-x-1 text-small-medium text-gray-600">
+          <div className="mt-1 flex flex-wrap items-center space-x-1 text-small-medium text-gray-600">
             <StarRatings rating={ratings} />
             <span>({numOfReviews})</span>
-          </div>
           {sold > 0 && (
-            <p className="mt-1 text-xs text-gray-500">Sold ({sold})</p>
+            <p className="mtd-1 text-xs text-gray-500">Sold ({sold})</p>
           )}
+          </div>
         </div>
       </Link>
     </div>

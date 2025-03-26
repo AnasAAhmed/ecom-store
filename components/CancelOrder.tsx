@@ -65,10 +65,10 @@ const CancelOrder = ({ order }: OrderManageProps) => {
   const timeDifference = (currentTime - orderCreationTime) / (1000 * 60 * 60);
   return (
     <>
-      <button onClick={() => setIsOpen(true)}> <b> Details</b> &rarr;</button>
+      <button title='See Details' onClick={() => setIsOpen(true)}> <b> Details</b> &rarr;</button>
       <Modal onClose={onClose} isOpen={isOpen} overLay={true}>
         <div className=" animate-modal flex flex-col justify-center overflow-y-auto items-center space-y-4 bg-gray-100 pb-4 px-4 rounded shadow-md">
-          <button className='print:hidden text-[26px] self-end mt-3' onClick={() => setIsOpen(false)}>&times;</button>
+          <button title='Close order detail modal' aria-label='Close order detail modal' className='print:hidden text-[26px] self-end mt-3' onClick={() => setIsOpen(false)}>&times;</button>
 
           <div className="flex flex-wrap gap-3 items-center pb-3">
             <div className="flex flex-col pb-10 px-10 gap-3">
@@ -137,13 +137,13 @@ const CancelOrder = ({ order }: OrderManageProps) => {
                 ))}
               </select>
               {newStatus !== order.status && (
-                <button className="bg-blue-500 rounded-md p-3 hover:opacity-55 text-white" onClick={handleSubmit}>
+                <button title='Confirm Order Cancelation' className="bg-blue-500 rounded-md p-3 hover:opacity-55 text-white" onClick={()=>handleSubmit()}>
                   {loadingUp ? <LoaderIcon className='mx-[7px] animate-spin' /> : "Confirm"}
                 </button>
               )}
             </div>
           )}
-          <button className='text-lg bg-black print:hidden text-white rounded-md p-2 self-start' onClick={() => window.print()}>Get Invoice</button>
+          <button title='Get Invoice' className='text-lg bg-black print:hidden text-white rounded-md p-2 self-start' onClick={() => window.print()}>Get Invoice</button>
 
         </div>
       </Modal>

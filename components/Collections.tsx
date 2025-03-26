@@ -13,7 +13,7 @@ const Collections = async ({ collections }: { collections: CollectionType[] }) =
       ) : (
         <div className="flex flex-wrap items-center justify-center gap-8">
           {collections.map((collection: CollectionType) => (
-            <Link prefetch={false} href={`/collections/${slugify(collection.title)}`} key={collection._id} className="group relative">
+            <Link title={"See details of "+collection.title+ " collection"} prefetch={false} href={`/collections/${slugify(collection.title)}`} key={collection._id} className="group relative">
               <Image
                 key={collection._id}
                 src={collection.image}

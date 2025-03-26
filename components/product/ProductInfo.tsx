@@ -43,13 +43,13 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
 
             {/* Price & Discounts */}
             <div className="text-heading4-bold">
-                <span className="text-small-medium mr-1">{currency.toLowerCase()}</span>{price}
+                <span className="text-small-medium mr-1"><small>{currency}</small></span>{price}
                 {productInfo.expense > 0 && (
                     <>
                         <span className="bg-red-600 ml-3 text-white text-[17px] px-2 py-1 rounded-md">
                             {((productInfo.expense - productInfo.price) / productInfo.expense * 100).toFixed(0)}% Off
                         </span>
-                        <p className="text-small-medium line-through mt-3 text-red-1">{currency} {expense}</p>
+                        <p className="text-small-medium line-through mt-3 text-red-1"><small>{currency}</small> {expense}</p>
                     </>
                 )}
             </div>
@@ -69,6 +69,7 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
                         <div className="flex mb-4">
                             {uniqueSizes.map((size, index) => (
                                 <button
+                                    title={` click here to select ${size} size`}
                                     key={index}
                                     className={`border border-black text-gray-800 px-2 py-1 mr-2 rounded-md ${selectedVariant?.size === size ? "bg-black text-white" : "bg-white"}`}
                                     onClick={() => handleSizeChange(size)}
@@ -88,6 +89,7 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
 
                                 return (
                                     <button
+                                        title={` click here to select ${color} color`}
                                         key={index}
                                         className={`border border-black text-gray-800 px-2 py-1 mr-2 rounded-md ${selectedVariant.color === color ? "bg-black text-white" : "bg-white"} ${!isAvailable ? "opacity-50 cursor-not-allowed line-through" : ""}`}
                                         disabled={!isAvailable}
@@ -146,6 +148,7 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
             </div>
 
             <button
+                title="Add to cart"
                 className="outline text-base-bold py-3 disabled:cursor-not-allowed rounded-lg bg-black text-white hover:opacity-85"
                 disabled={
                     (productInfo.variants.length > 0 && (!selectedVariant || selectedVariant.quantity < 1)) ||

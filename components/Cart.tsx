@@ -39,10 +39,10 @@ const Cart = () => {
         return toast((t) => (
           <span>
             Please Sign-in first <b> it will help us to track your orders </b>
-            <button className='bg-black text-white hover:opacity-45 py-1 px-2 mx-3 rounded-md' onClick={() => toast.dismiss(t.id)}>
+            <button title='Dismiss toast' className='bg-black text-white hover:opacity-45 py-1 px-2 mx-3 rounded-md' onClick={() => toast.dismiss(t.id)}>
               Dismiss
             </button>
-            <button className='border-black hover:opacity-45 border py-1 px-2 rounded-md' onClick={() => router.push("/sign-in")}>
+            <button title='Go to Sign-in Page' className='border-black hover:opacity-45 border py-1 px-2 rounded-md' onClick={() => router.push("/sign-in")}>
               Sign-in
             </button>
           </span>
@@ -58,10 +58,10 @@ const Cart = () => {
           return toast((t) => (
             <span>
               Please Sign-in first <b> it will help us to track your orders </b>
-              <button className='bg-black text-white hover:opacity-75 py-1 px-2 mx-3 rounded-md' onClick={() => toast.dismiss(t.id)}>
+              <button title='Dismiss toast' className='bg-black text-white hover:opacity-75 py-1 px-2 mx-3 rounded-md' onClick={() => toast.dismiss(t.id)}>
                 Dismiss
               </button>
-              <button className='border-black hover:opacity-75 border py-1 px-2 rounded-md' onClick={() => router.push("/sign-in")}>
+              <button title='Go to Sign-in Page' className='border-black hover:opacity-75 border py-1 px-2 rounded-md' onClick={() => router.push("/sign-in")}>
                 Sign-in
               </button>
             </span>
@@ -135,7 +135,7 @@ const Cart = () => {
                       alt="product"
                     />
                     <div className="flex flex-col gap-3 ml-4">
-                      <Link href={`products/${slugify(cartItem.item.title)}`} className="text-body-bold line-clamp-2 max-w-[32rem]">{cartItem.item.title}</Link>
+                      <Link title={'See details of product '+cartItem.item.title} href={`products/${slugify(cartItem.item.title)}`} className="text-body-bold line-clamp-2 max-w-[32rem]">{cartItem.item.title}</Link>
 
                         <p className="text-small-medium">
                           {cartItem.color && cartItem.color}
@@ -190,7 +190,7 @@ const Cart = () => {
             <div className="flex flex-col gap-4 ">
               <div className='flex flex-row justify-between items-center'>
                 <p className="text-body-bold">Select Payment Method</p>
-                <button onClick={() => setExpand(false)}><XCircleIcon /></button>
+                <button title='Close extend checkout' aria-label='Close extended checkout' onClick={() => setExpand(false)}><XCircleIcon /></button>
               </div>
               <div className="flex border rounded-lg px-3 hover:bg-gray-300 border-gray-300 items-center gap-2">
                 <input
@@ -223,6 +223,7 @@ const Cart = () => {
               <button
                 className={`border rounded-lg flex justify-center ${cart.cartItems.length === 0 && "cursor-not-allowed"} text-body-bold bg-white py-3 w-full hover:bg-black hover:text-white`}
                 onClick={handleCheckout}
+                title='Confirm Checkout'
                 disabled={cart.cartItems.length === 0}
               >
                 {loading ? <LoaderIcon className='animate-spin h-[17px]' /> : "Checkout"}
@@ -230,6 +231,7 @@ const Cart = () => {
             </div>
           }
           {!expand && <button
+          title='Proceed further process'
             className={`border rounded-lg flex justify-center ${cart.cartItems.length === 0 && "cursor-not-allowed"} text-body-bold bg-white py-3 w-full hover:bg-black hover:text-white`}
             onClick={revalidateStockBeforeCheckout}
             disabled={cart.cartItems.length === 0 || totalRounded < 1}

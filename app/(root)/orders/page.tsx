@@ -71,7 +71,7 @@ const Orders = async ({ searchParams }: { searchParams: any }) => {
                           <p className="text-small-medium">
                             Title:{" "}
                             <span className="text-small-bold">
-                              <Link href={`/products/${slugify(orderItem.product.title)}`}>
+                              <Link title={"See details of "+orderItem.product.title} href={`/products/${slugify(orderItem.product.title)}`}>
                                 {orderItem.product.title}
                               </Link>
                             </span>

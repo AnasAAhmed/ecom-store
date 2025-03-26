@@ -69,6 +69,7 @@ const Contact = () => {
                             </div>
                             <button
                                 type="submit"
+                                title="Submit your message to us"
                                 className="mt-4 py-3 px-6 bg-black text-white rounded hover:bg-gray-800"
                             >
                                 Submit

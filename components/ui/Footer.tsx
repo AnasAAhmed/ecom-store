@@ -12,7 +12,7 @@ const Footer = () => {
       <div className="w-[70.938rem] flex flex-row items-start justify-start py-[0rem] px-[0.125rem] box-border max-w-full">
         <div className="flex-1 flex flex-col sm:flex-row items-start justify-between max-w-full gap-[0.25rem] mq1150:flex-wrap">
           <div className="flex flex-col items-start justify-start pb-[6.75rem] px-[0rem]s">
-            <Link href="/" className="mb-8">
+            <Link title="Home" href="/" className="mb-8">
               <Image src="/logo.png" alt="logo" width={130} height={100} />
             </Link>
             <p className="m-0 h-[4.5rem] relative inline-block z-[1] ">
@@ -20,8 +20,8 @@ const Footer = () => {
                 400 University Drive Suite 200 Coral Gables,
               </span>
               <span className="block">FL 33134 USA</span>
-              <a href="tel:+84 546-6789" className="block mt-8">+(84) 546-6789</a>
-              <a href="mailto:example@gmail.com" className="block">example@gmail.com</a>
+              <a title="Phone: +(84) 546-6789" href="tel:+84 546-6789" className="block mt-8">+(84) 546-6789</a>
+              <a title="Email us at example@gmail.com" href="mailto:example@gmail.com" className="block">example@gmail.com</a>
             </p>
           </div>
           <div className="flex flex-col items-start justify-start py-[0rem] pr-[0.5rem] pl-[0rem] gap-[1.437rem]">
@@ -30,17 +30,17 @@ const Footer = () => {
             </div>
             <div className="flex flex-row items-start justify-start py-[0rem] pr-[0rem] pl-[0.125rem] text-black">
               <div className="flex flex-col items-start justify-start gap-2">
-                <Link href={'/'} className="h-[1.5rem] relative font-medium inline-block z-[1]">
+                <Link title="Go to home" prefetch={false} href={'/'} className="h-[1.5rem] relative font-medium inline-block z-[1]">
                   Home
                 </Link>
-                <Link href={'/search'} className="relative font-medium z-[1]">Shop</Link>
-                <Link href={'/contact'} className="h-[1.5rem] relative font-medium inline-block z-[1]">
+                <Link title="Go to search" prefetch={false} href={'/search'} className="relative font-medium z-[1]">Shop</Link>
+                <Link title="About us" prefetch={false} href={'/contact'} className="h-[1.5rem] relative font-medium inline-block z-[1]">
                   About
                 </Link>
-                <Link href={'/blog'} className="h-[1.5rem] relative font-medium inline-block z-[1]">
+                <Link title="Go to our blogs" prefetch={false} href={'/blog'} className="h-[1.5rem] relative font-medium inline-block z-[1]">
                   Blog
                 </Link>
-                <Link href={'/contact'} className="h-[1.5rem] relative font-medium inline-block z-[1]">
+                <Link title="Contact us" prefetch={false} href={'/contact'} className="h-[1.5rem] relative font-medium inline-block z-[1]">
                   Contact
                 </Link>
 
@@ -54,14 +54,14 @@ const Footer = () => {
             <div className="h-[1.5rem] relative font-medium inline-block z-[1]">
               Returns
             </div>
-            <Link href={'/contact'} className="relative font-medium z-[1]">Privacy Policies</Link>
-            <Link href={'/contact'} className="relative font-medium z-[1]">Help</Link>
+            <Link title="Our Privacy Policies" prefetch={false} href={'/contact'} className="relative font-medium z-[1]">Privacy Policies</Link>
+            <Link title="Help?" prefetch={false} href={'/contact'} className="relative font-medium z-[1]">Help</Link>
             <form className="flex-1 flex flex-wrap items-start justify-start gap-[0.687rem] min-w-[11.625rem] text-[0.875rem] text-darkgray">
               <div className="flex-1 flex flex-col items-start justify-start gap-[0.187rem]">
                 <input type="email" required placeholder="Enter your Email" className="h-[1.313rem] relative inline-block  z-[1] border border-black py-4 px-2 rounded-sm" />
               </div>
               <div className="w-[4.688rem] flex flex-col items-start justify-start gap-[0.187rem]">
-                <button type="submit" className=" bg-black p-2 rounded-md text-white hover:opacity-45">SUBSCRIBE</button>
+                <button title="Subscribe our newsletter" type="submit" className=" bg-black p-2 rounded-md text-white hover:opacity-45">SUBSCRIBE</button>
               </div>
             </form>
           </div>

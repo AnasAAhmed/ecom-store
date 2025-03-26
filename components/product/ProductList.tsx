@@ -17,7 +17,7 @@ const ProductList = async ({ Products, heading }: { Products: ProductType[], hea
       )}
       <div className="self-stretch flex flex-row items-start justify-center py-[0rem] px-[1.25rem]">
         <div className="w-[12.875rem] flex flex-col items-start justify-start ">
-          <Link href="/search" className="h-[1.875rem] mx-auto relative font-medium inline-block z-[1] text-heading4-bold">
+          <Link title=" View All Products" href="/search" className="h-[1.875rem] mx-auto relative font-medium inline-block z-[1] text-heading4-bold">
             View All Products
           </Link>
           <div className="self-stretch flex flex-row items-start justify-start py-[0rem] pr-[0.187rem] pl-[0.375rem]">

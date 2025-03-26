@@ -13,7 +13,7 @@ export const CopyText = ({ text, heading }: { text: any, heading?: string }) => 
     return (
         <div className="flex flex-row">
             <span className="text-black">{heading && heading} </span>
-            <button className="copy-text-btn" onClick={copyToClipboard}>
+            <button title="Copy to clipboard" className="copy-text-btn" onClick={copyToClipboard}>
                 {text}
                 <span>
                     Copy

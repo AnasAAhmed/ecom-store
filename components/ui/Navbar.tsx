@@ -39,6 +39,7 @@ const Navbar = () => {
         <div className="flex gap-4 text-base-bold">
           {["watch", "hat", "shoes", "kids", "women", "men"].map((item) => (
             <Link
+              title={item + " collection"}
               key={item}
               prefetch={false}
               aria-label={item}
@@ -49,13 +50,13 @@ const Navbar = () => {
             </Link>
           ))}
         </div>
-        <h1>Help:               <a href="tel:+84 546-6789" >+(84) 546-6789</a>
+        <h1>Help: <a title="get help at tel:+(84) 546-6789" href="tel:+84 546-6789" >+(84) 546-6789</a>
         </h1>
       </nav>
 
       <nav className="sticky max-sm:fixed top-0 z-30 w-full bg-white shadow-md">
         <div className="flex justify-between items-center p-2">
-          <Link href="/">
+          <Link title="home" aria-label="go to home" href="/">
             <Image src="/logo.png" priority alt="logo" width={130} height={100} />
           </Link>
 
@@ -69,13 +70,14 @@ const Navbar = () => {
               onKeyDown={onKeyDown}
               onChange={(e) => setQuery(e.target.value)}
             />
-            <Search onClick={handleSearch} className="cursor-pointer h-4 w-4 hover:text-blue-500" />
-          </div>
+           <button title="Confirm Search"> <Search onClick={handleSearch} className="cursor-pointer h-4 w-4 hover:text-blue-500" /></button>
+           </div>
 
           <div className="hidden lg:flex gap-4">
             {["/", "/search", "/contact", "/wishlist", "/orders"].map(
               (path, idx) => (
                 <Link
+                  title={"Go to " + ["Home", "Shop", "Contact", "Wishlist", "Orders"][idx]}
                   key={idx}
                   href={path}
                   prefetch={false}
@@ -90,16 +92,18 @@ const Navbar = () => {
 
           <div className="flex items-center gap-2">
             <Currency className="none" />
-            <Link  aria-label={'Go to cart'} href="/cart" className="hidden md:flex items-center gap-1 border px-1 py-1 rounded-lg hover:bg-black hover:text-white">
+            <Link title="Go to Cart" aria-label={'Go to cart'} href="/cart" className="hidden md:flex items-center gap-1 border px-1 py-1 rounded-lg hover:bg-black hover:text-white">
               <ShoppingCart />
               <span>({cart.cartItems.length})</span>
             </Link>
-            {session?.user? <><img src={session?.user.image!} alt="avatar" className="w-8 h-8 rounded-full" /> <button 
-            id="Sign-out"
-            onClick={() => signOut()}>
-              Sign Out
-            </button></> : <Link href="/login"><CircleUserRound /></Link>}
-            <button id="Mob-menu" onClick={toggleModal} onBlur={() => setTimeout(() => setIsOpen(false), 70)}>
+            {session?.user ? <><img src={session?.user.image!} alt="avatar" className="w-8 h-8 rounded-full" />
+              <button
+                id="Sign-out"
+                title="click here to sign-out"
+                onClick={() => signOut()}>
+                Sign Out
+              </button></> : <Link title="Login" href="/login"><CircleUserRound /></Link>}
+            <button title="mobile hamburger menu" aria-label="mobile hamburger menu" id="Mob-menu" onClick={toggleModal} onBlur={() => setTimeout(() => setIsOpen(false), 70)}>
               <Menu className="lg:hidden cursor-pointer" size={'1.7rem'} />
             </button>
           </div>
@@ -116,7 +120,7 @@ const Navbar = () => {
               type="search"
               onChange={(e) => setQuery(e.target.value)}
             />
-            <Search onClick={handleSearch} className="cursor-pointer h-4 w-4 hover:text-blue-500" />
+           <button title="Confirm Search"> <Search onClick={handleSearch} className="cursor-pointer h-4 w-4 hover:text-blue-500" /></button>
           </div>
         </div>
         {/* Mobile Modal */}
@@ -135,7 +139,7 @@ const Navbar = () => {
 
               </Link>
             ))}
-            <Link aria-label={'go to cart'} href="/cart" className="flex items-center gap-2 border rounded-lg px-2 py-1 hover:bg-black hover:text-white" >
+            <Link title="Go to cart" aria-label={'go to cart'} href="/cart" className="flex items-center gap-2 border rounded-lg px-2 py-1 hover:bg-black hover:text-white" >
               <ShoppingCart />
               <span>({cart.cartItems.length})</span>
             </Link>

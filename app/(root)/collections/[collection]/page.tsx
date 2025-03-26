@@ -44,7 +44,7 @@ const CollectionDetails = async ({
           }),
         }}
       />
-      <div className="px-3 sm:px-10 py-5 flex flex-col items-center gap-8">
+      <div className="px-3 min-h-[90vh] sm:px-10 py-5 flex flex-col items-center gap-8">
         {collectionDetails.image && <Image
           src={collectionDetails.image}
           width={1300}
@@ -53,7 +53,8 @@ const CollectionDetails = async ({
           className="w-full object-cover rounded-xl"
         />}
         <p className="text-heading3-bold text-grey-2">{collectionDetails.title}</p>
-        {collectionDetails.image && <p className="text-body-normal text-grey-2 text-center max-w-[900px]">{collectionDetails.description}</p>}        <div className="flex flex-wrap gap-16 justify-center  min-h-[90vh]">
+        {collectionDetails.image && <p className="text-body-normal text-grey-2 text-center max-w-[900px]">{collectionDetails.description}</p>}       
+         <div className="flex flex-wrap gap-16 justify-center ">
           {collectionDetails.products.map((product: ProductType) => (
             <ProductCard key={product._id} product={product} />
           ))}

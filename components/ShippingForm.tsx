@@ -93,7 +93,7 @@ const ShippingForm = ({ user }: { user: { id: string,email: string, image: strin
 
     return (
         <div className="px-4 py-8 sm:px-24">
-            <Link href="/cart" className="back-btn">
+            <Link title='back to cart' aria-label='back to cart' href="/cart" className="back-btn">
                 <ArrowLeftIcon />
             </Link>
             <form onSubmit={handleSubmit(submitHandler)}>
@@ -170,6 +170,7 @@ const ShippingForm = ({ user }: { user: { id: string,email: string, image: strin
                 {/* Submit Button */}
                 <button
                     type="submit"
+                    title='Confirm Place Order'
                     className="flex items-center justify-center rounded-lg transition-all duration-200 text-lg text-white bg-black py-3 w-full hover:bg-gray-200 hover:text-black"
                 >
                     {isProcessing ? <LoaderIcon className="animate-spin" /> : `Place Order for ${currency} ${totalAmount}`}

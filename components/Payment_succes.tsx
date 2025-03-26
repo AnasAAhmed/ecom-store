@@ -15,6 +15,7 @@ const Payment_succes = () => {
             <p className="text-heading4-bold text-red-1">Payment Successful</p>
             <p>Thank you for your purchase</p>
             <Link
+            title='Go to shop'
                 href="/search"
                 prefetch={false}
                 className="p-4 border rounded-md text-base-bold hover:bg-black hover:text-white"
@@ -23,6 +24,7 @@ const Payment_succes = () => {
             </Link>
             <a
                 href="/orders"
+                title='View your orders'
                 className="p-4 rounded-md border text-base-bold hover:bg-black hover:text-white"
             >
                 Check Order

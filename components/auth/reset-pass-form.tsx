@@ -9,7 +9,7 @@ import toast from 'react-hot-toast'
 import { useSession } from 'next-auth/react'
 
 export default function ResetForm({ token, userId }: { token: string, userId: string }) {
-  const { data: session } = useSession();
+    const { data: session } = useSession();
 
     const router = useRouter();
     const [result, setResult] = useState<Result | null>({ type: '', resultCode: "" });
@@ -70,15 +70,16 @@ export default function ResetForm({ token, userId }: { token: string, userId: st
                 toast.error(result.resultCode)
             } else {
                 toast.success(result.resultCode)
-                location.reload()
-
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 500);
             }
         }
     }, [result, router])
 
     if (session) {
         router.push('/')
-      }
+    }
 
     return (
         <form
@@ -148,7 +149,8 @@ function ResetBtn() {
 
     return (
         <button
-        className="w-full py-2 bg-black text-white rounded-md hover:opacity-65 mt-4 text-center"
+            title='Click here to reset password'
+            className="w-full py-2 bg-black text-white rounded-md hover:opacity-65 mt-4 text-center"
             aria-disabled={pending}
         >
             {pending ? <Loader className='animate-spin' /> : 'Confirm'}

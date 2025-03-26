@@ -79,6 +79,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ productReviews, product
                     {review.userId === session?.user?.id && (
                       <div className="flex flex-row items-center">
                         <button
+                        title='Delete Review'
                           onClick={() => handleDeleteReview(review._id)}
                           className="px-1 text-[0.7rem] sm:text-sm py-1 rounded-md"
                         >

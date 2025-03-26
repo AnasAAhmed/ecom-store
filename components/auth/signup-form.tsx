@@ -56,7 +56,9 @@ export default function SignupForm() {
         toast.error(result.resultCode)
       } else {
         toast.success(result.resultCode)
-        location.reload()
+        setTimeout(() => {
+          window.location.href='/'; 
+        }, 500);
       }
     }
   }, [result, router])
@@ -111,6 +113,7 @@ function LoginButton() {
 
   return (
     <button
+    title='Click here to Sign-up'
     className="w-full py-2 bg-black text-white rounded-md hover:opacity-65 mt-4 text-center"
     aria-disabled={pending}
     >

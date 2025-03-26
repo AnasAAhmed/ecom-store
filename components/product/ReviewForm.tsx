@@ -113,7 +113,7 @@ const ReviewForm = ({ isEditing, productId, user, oldRating, oldComment }: Revie
                                 required
                             />
                         </div>
-                        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md" disabled={isCreatingReview}>
+                        <button title="Click here to submit review" type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md" disabled={isCreatingReview}>
                             {isCreatingReview ? <Loader2 className='animate-spin text-heading3-bold mx-3' /> : "Submit"}
                         </button>
                     </form>

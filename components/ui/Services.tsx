@@ -86,7 +86,7 @@ const GroupComponent7: NextPage<GroupComponent7Type> = ({
         </p>
       </div>
       <div className="w-full hover:scale-105 duration-300 pb-3 sm:w-[23.5rem] flex flex-col items-center justify-center max-w-full text-center">
-        <Link target="blank" href={'https://stripe.com'}
+        <Link title="See more on Stripe.com" target="blank" href={'https://stripe.com'}
           className="h-[3rem] relative text-inherit font-medium font-inherit inline-block z-[1] mq450:text-[1.188rem] mq800:text-[1.625rem]"
           style={securePaymentStyle}
         >

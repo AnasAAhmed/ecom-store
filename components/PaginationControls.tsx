@@ -22,6 +22,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({ currentPage, to
       <article className="flex justify-center items-center mt-4">
         <button
           disabled={currentPage === 1}
+          title='previous page'
           onClick={() => handlePageChange(currentPage - 1)}
           className={`px-4 py-2 text-white rounded mr-2 bg-indigo-400 disabled:bg-gray-400 disabled:cursor-not-allowed`}
         >
@@ -31,6 +32,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({ currentPage, to
           {currentPage}/{totalPages}
         </span>
         <button
+          title='Next page'
           disabled={currentPage === totalPages}
           onClick={() => handlePageChange(currentPage + 1)}
           className={`px-4 py-2 bg-indigo-400 disabled:bg-gray-400 disabled:cursor-not-allowed text-white rounded ml-2`}
