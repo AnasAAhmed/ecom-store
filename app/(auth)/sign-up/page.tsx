@@ -7,7 +7,7 @@ import SignupForm from '@/components/auth/signup-form'
 
 export default async function LoginPage() {
   return (
-    <div className="flex flex-col mt-12 h-screen items-center">
+    <div className="flex flex-col mt-28 sm:mt-12 h-screen items-center">
   
       <div className="sm:w-[400px]">
       <div className='pb-0'>

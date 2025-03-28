@@ -7,7 +7,9 @@ const Gallery = ({ productMedia }: { productMedia: string[] }) => {
   const [mainImage, setMainImage] = useState(productMedia[0]);
   return (
     <div className="flex flex-col gap-3 ">
-       <ImageZoom src={mainImage} alt={"product"} />
+      {/* <ImageZoom src={mainImage} alt={"product"} /> */}
+      <Image src={mainImage} alt={'product'} width={500} height={500} className="w-96 lg:w-[500px] h-s96  rounded-lg md:hiddden md:h-[500px] h-[300px] object-cover" />
+
       <div className="flex gap-2 overflow-auto tailwind-scrollbar-hide">
         {productMedia.map((image, index) => (
           <Image

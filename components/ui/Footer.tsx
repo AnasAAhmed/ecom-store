@@ -71,7 +71,7 @@ const Footer = () => {
         <div className="self-stretch h-[0.063rem] relative box-border z-[1] border-t-[1px] border-solid border-gainsboro-200" />
         <div className="flex flex-row items-start justify-start py-[0rem] px-[0.125rem]">
           <div className="relative z-[1]">
-            2024 Ecommerce All rights reverved
+           &copy; 2024 Ecommerce MAde by Anas Ahmed All rights reverved
           </div>
         </div>
       </div>

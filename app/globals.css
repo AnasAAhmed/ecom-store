@@ -75,3 +75,20 @@ body,
   scroll-snap-destination: 0 100%;
   scroll-snap-points-x: repeat(100%);
 }
+
+
+.image-height{
+  height: 16rem;
+}
+
+@media screen and (width<=700px) {
+  .image-height{
+    height: 12rem;
+  } 
+}
+
+@media screen and (width<=500px) {
+  .image-height{
+    height: 8rem;
+  } 
+}

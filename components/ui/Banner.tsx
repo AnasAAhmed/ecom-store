@@ -31,7 +31,7 @@ const Banner = ({ imgUrl, text, heading, textColor, shade, link, buttonText, scr
             <button onClick={() => window.scroll(0, 800)} className="bg-white text-black font-medium py-3 px-8 rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out">
               {buttonText}
             </button> :
-            <Link title={"Click here to "+buttonText} href={link}>
+            <Link title={"Go to to "+buttonText} href={link}>
               <div className="bg-white text-black font-medium py-3 px-8 rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out">
               {buttonText}
               </div>

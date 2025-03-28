@@ -15,7 +15,7 @@ const Blog: NextPage = () => {
             <Banner
                 heading="Blog"
                 text="Discover and Explore our latest blogs."
-                imgUrl={'/banner.jpg'}
+                imgUrl={'/banner.avif'}
                 shade=""
                 textColor="white"
                 link="/search"

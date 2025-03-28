@@ -128,8 +128,6 @@ import ProductList from '@/components/product/ProductList';
 import BlogSection from "@/components/ui/BlogSection";
 import Social from "@/components/ui/Social";
 import GroupComponent7 from "@/components/ui/Services";
-import { Suspense } from "react";
-
 
 //Rendering with SSG & ISG
 export const dynamic = 'force-static';
@@ -171,7 +169,7 @@ export default async function Home() {
       <Banner
         heading="Summer Collection 2024"
         text="Embrace the warmth with our stylish and comfortable summer wear"
-        imgUrl={'/banner2.png'}
+        imgUrl={'/banner3.avif'}
         shade="gray"
         textColor="white"
         link="/search?query=summer"
@@ -183,7 +181,6 @@ export default async function Home() {
       <BlogSection />
 
       <Social />
-
       <GroupComponent7
         freeDeliveryHeight="unset"
         freeDeliveryDisplay="unset"

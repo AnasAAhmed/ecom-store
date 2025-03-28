@@ -64,10 +64,10 @@ export function ForgetPassForm({ btnText }: { btnText: string }) {
       <Modal isOpen={modalOpen} onClose={closeModal} overLay={true}>
         <div className="bg-white p-5 rounded-md">
           <div className="flex flex-col space-y-1.5 text-center sm:text-left">
-            <h1 className="text-heading4-bold">Forget password?</h1>
-            <div className="text-sm text-gay-600">
+            <h1 className="text-heading4-bold text-gray-900">Forget password?</h1>
+            <div className="text-sm text-gray-600">
               We will send you the email for password reset.
-              {process.env.NODE_ENV === 'production' && <div className="bg-yellow-200 flex px-3 gap-3 items-center mt-4 h-8 w-full rounded-md">
+              {process.env.NODE_ENV === 'production' && <div className="bg-yellow-200 flex px-3 gap-3 items-center mt-4 py-1 w-full rounded-md">
                 <Info /><p className="text-primary">This feature is disabled in production.</p>
               </div>}
             </div>

@@ -8,7 +8,7 @@ import LoginForm from '@/components/auth/login-form'
 export default async function LoginPage() {
 
   return (
-    <div className="flex flex-col  mt-12 h-screen items-center">
+    <div className="flex flex-col mt-28 sm:mt-12 h-screen items-center">
       <div className="sm:w-[400px]">
         <div className='pb-0'>
           <h1 className='text-heading3-bold'>Login</h1>

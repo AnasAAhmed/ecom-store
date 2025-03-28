@@ -17,7 +17,7 @@ const Collections = async ({ collections }: { collections: CollectionType[] }) =
               <Image
                 key={collection._id}
                 src={collection.image}
-                alt={collection.title}
+                alt={"this is the image of collection: "+collection.title}
                 width={350}
                 height={200}
                 className="rounded-lg cursor-pointer "

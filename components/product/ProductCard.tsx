@@ -47,14 +47,14 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
       className={`relative bg-white max-w-64 rounded-t-lg shadow-md overflow-hidden transition-transform transform hover:scale-105 ${isSoldOut ? "opacity-70" : ""
         }`}
     >
-      <Link title={"See details of "+title} href={`/products/${slug}`} className="block" prefetch={false} >
+      <Link title={"See details of " + title} href={`/products/${slug}`} className="block" prefetch={false} >
         <div className="relative group">
           <Image
             src={media[0]}
             alt={title}
             width={350}
             height={320}
-            className="w-full h-64 object-cover"
+            className="w-full image-height object-cover"
           />
           {isSoldOut ? (
             <span className="absolute top-2 left-2 bg-red-500 text-white text-[12px] font-semibold px-2 py-1 rounded">
@@ -85,15 +85,15 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
           )}
         </div>
         <div className="py-1 px-3">
-          <h3 className="text-lg sm:pb-1 font-medium text-gray-900 line-clamp-2 ">
+          <h6 className="text-lg sm:pb-1 font-medium text-gray-900 line-clamp-2 ">
             <abbr title={title} className="no-underline">
-            {title}
+              {title}
             </abbr>
-            </h3>
+          </h6>
           <div className="mt-1 flex items-center justify-between">
             <div className="flex gap-2 items-center">
               <p className="text-lg font-bold text-gray-900">
-               <small>{currency}</small>  {productPrice}
+                <small>{currency}</small>  {productPrice}
               </p>
               {expense > price && (
                 <p className="text-small-medium max-sm:hidden line-through text-gray-500">
@@ -106,9 +106,9 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
           <div className="mt-1 flex flex-wrap items-center space-x-1 text-small-medium text-gray-600">
             <StarRatings rating={ratings} />
             <span>({numOfReviews})</span>
-          {sold > 0 && (
-            <p className="mtd-1 text-xs text-gray-500">Sold ({sold})</p>
-          )}
+            {sold > 0 && (
+              <p className="mtd-1 text-xs text-gray-500">Sold ({sold})</p>
+            )}
           </div>
         </div>
       </Link>

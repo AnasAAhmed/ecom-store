@@ -1,4 +1,4 @@
-import { auth, signIn } from '@/auth'
+import { auth } from '@/auth'
 import { ForgetPassForm } from '@/components/auth/Forget-passwordForm'
 import ResetForm from '@/components/auth/reset-pass-form'
 import { Session } from 'next-auth'
@@ -16,11 +16,10 @@ export default async function ResetPassPage({ searchParams }: { searchParams: { 
     }
 
     return (
-        <div className="flex flex-col mt-16 h-screen items-center">
+        <div className="flex flex-col mt-28 sm:mt-12 h-screen items-center">
             <div className="sm:w-[400px]">
                 <div className='pb-0'>
-                    <div >Reset Password</div>
-                    <div>Reset password with token to continue.</div>
+                    <h1 className='text-heading3-bold mb-2'>Reset Password</h1>
                 </div>
                 <div>
                     <ResetForm token={searchParams.token} userId={searchParams.id} />

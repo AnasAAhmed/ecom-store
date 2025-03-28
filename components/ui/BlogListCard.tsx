@@ -1,3 +1,4 @@
+import { Calendar, Tag, User2 } from "lucide-react";
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useMemo, type CSSProperties } from "react";
@@ -76,12 +77,7 @@ const GroupComponent13: NextPage<GroupComponent13Type> = ({
           >
             <div className="flex flex-row items-start justify-start gap-[0.437rem]">
               <div className="flex flex-col items-start justify-start pt-[0.125rem] px-[0rem] pb-[0rem]">
-                <img
-                  className="w-[1.25rem] h-[1.25rem] relative overflow-hidden shrink-0"
-                  loading="lazy"
-                  alt=""
-                  src="https://figma-to-code-ecom-design.vercel.app/dashiconsadminusers.svg"
-                />
+                <User2 className="w-[1.25rem] h-[1.25rem] relative overflow-hidden shrink-0" />
               </div>
               <div className="relative inline-block min-w-[3.313rem]">
                 Admin
@@ -91,11 +87,8 @@ const GroupComponent13: NextPage<GroupComponent13Type> = ({
               className="flex flex-row items-start justify-start gap-[0.687rem]"
               style={dateIconsStyle}
             >
-              <img
-                className="h-[1.25rem] w-[1.25rem] relative overflow-hidden shrink-0"
-                alt=""
-                src="https://figma-to-code-ecom-design.vercel.app/uiscalender.svg"
-              />
+             
+              <Calendar className="w-[1.25rem] h-[1.25rem] relative overflow-hidden shrink-0"/>
               <div className="relative inline-block min-w-[5.625rem]">
                 14 Oct 2022
               </div>
@@ -104,12 +97,7 @@ const GroupComponent13: NextPage<GroupComponent13Type> = ({
               className="flex flex-row items-start justify-start gap-[0.437rem]"
               style={tagIconsStyle}
             >
-              <img
-                className="h-[1.5rem] w-[1.5rem] relative overflow-hidden shrink-0 min-h-[1.5rem]"
-                loading="lazy"
-                alt=""
-                src="https://figma-to-code-ecom-design.vercel.app/citag.svg"
-              />
+             <Tag className="h-[1.5rem] w-[1.5rem] relative overflow-hidden shrink-0 min-h-[1.5rem]"/>
               <div
                 className="relative inline-block min-w-[2.938rem]"
                 style={woodStyle}

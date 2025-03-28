@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import GroupComponent13 from "./BlogListCard";
+import { Search } from "lucide-react";
 
 export type BlogPostListType = {
   className?: string;
@@ -46,11 +47,8 @@ const BlogPostList: NextPage<BlogPostListType> = ({ className = "" }) => {
           <div className="w-[24.563rem] h-[33.563rem] relative bg-white hidden max-w-full" />
           <div className="self-stretch rounded-3xs bg-white flex flex-row items-start justify-end py-[0.937rem] px-[0.625rem] z-[1] border-[1px] border-solid border-darkgray">
             <div className="h-[3.625rem] w-[19.438rem] relative rounded-3xs bg-white box-border hidden border-[1px] border-solid border-darkgray" />
-            <img
-              className="h-[1.5rem] w-[1.5rem] relative overflow-hidden shrink-0 z-[1]"
-              alt=""
-              src="https://figma-to-code-ecom-design.vercel.app/akariconssearch-1.svg"
-            />
+           
+            <Search className="h-[1.5rem] w-[1.5rem] relative overflow-hidden shrink-0 z-[1]"/>
           </div>
           <div className="w-[18.688rem] flex flex-row items-start justify-end py-[0rem] px-[1.5rem] box-border">
             <div className="flex-1 flex flex-col items-start justify-start gap-[2.062rem] mq450:gap-[1rem]">
@@ -116,7 +114,7 @@ const BlogPostList: NextPage<BlogPostListType> = ({ className = "" }) => {
               className="h-[5rem] w-[5rem] relative rounded-3xs object-cover z-[1]"
               loading="lazy"
               alt=""
-              src="https://figma-to-code-ecom-design.vercel.app/rectangle-69@2x.png"
+              src="/blog5.png"
             />
             <div className="flex-1 flex flex-col items-start justify-end pt-[0rem] px-[0rem] pb-[0.437rem]">
               <div className="self-stretch flex flex-col items-start justify-start gap-[0.312rem]">
@@ -134,7 +132,7 @@ const BlogPostList: NextPage<BlogPostListType> = ({ className = "" }) => {
               className="h-[5rem] w-[5rem] relative rounded-3xs object-cover z-[1]"
               loading="lazy"
               alt=""
-              src="https://figma-to-code-ecom-design.vercel.app/rectangle-69-1@2x.png"
+              src="/blog3.png"
             />
             <div className="flex-1 flex flex-col items-start justify-end pt-[0rem] px-[0rem] pb-[0.437rem]">
               <div className="self-stretch flex flex-col items-start justify-start gap-[0.312rem]">
@@ -152,7 +150,7 @@ const BlogPostList: NextPage<BlogPostListType> = ({ className = "" }) => {
               className="h-[5rem] w-[5rem] relative rounded-3xs object-cover z-[1]"
               loading="lazy"
               alt=""
-              src="https://figma-to-code-ecom-design.vercel.app/rectangle-69-2@2x.png"
+              src="/banner.avif"
             />
             <div className="flex-1 flex flex-col items-start justify-end pt-[0rem] px-[0rem] pb-[0.437rem]">
               <div className="self-stretch flex flex-col items-start justify-start gap-[0.312rem]">
@@ -170,7 +168,7 @@ const BlogPostList: NextPage<BlogPostListType> = ({ className = "" }) => {
               className="h-[5rem] w-[5rem] relative rounded-3xs object-cover z-[1]"
               loading="lazy"
               alt=""
-              src="https://figma-to-code-ecom-design.vercel.app/rectangle-69-3@2x.png"
+              src="banner2.avif"
             />
             <div className="flex-1 flex flex-col items-start justify-end pt-[0rem] px-[0rem] pb-[0.437rem]">
               <div className="self-stretch flex flex-col items-start justify-start gap-[0.312rem]">
@@ -188,7 +186,7 @@ const BlogPostList: NextPage<BlogPostListType> = ({ className = "" }) => {
               className="h-[5rem] w-[5rem] relative rounded-3xs object-cover z-[1]"
               loading="lazy"
               alt=""
-              src="https://figma-to-code-ecom-design.vercel.app/rectangle-69-4@2x.png"
+              src="/blog2.png"
             />
             <div className="flex-1 flex flex-col items-start justify-end pt-[0rem] px-[0rem] pb-[0.437rem]">
               <div className="self-stretch flex flex-col items-start justify-start gap-[0.312rem]">
