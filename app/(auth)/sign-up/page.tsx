@@ -1,16 +1,17 @@
-import {  signIn } from '@/auth'
+import { signIn } from '@/auth'
 import * as React from "react"
 import Link from 'next/link'
 import SignupForm from '@/components/auth/signup-form'
+import AuthLink from '@/components/AuthLink'
 
 
 
 export default async function LoginPage() {
   return (
     <div className="flex flex-col mt-28 sm:mt-12 h-screen items-center">
-  
+
       <div className="sm:w-[400px]">
-      <div className='pb-0'>
+        <div className='pb-0'>
           <h1 className='text-heading3-bold'>Sign-up</h1>
           <p className='text-body-medium mt-2'>Sign-up with your account to continue.</p>
         </div>
@@ -30,13 +31,9 @@ export default async function LoginPage() {
           <SignupForm />
         </div>
       </div>
-      <Link
-        href="/login"
-        title='Go to login page if you already have an account'
-        className="flex flex-row gap-1 mt-4 text-sm text-zinc-400"
-      >
-        Already have an account? <div className="font-semibold underline">Login</div>
-      </Link>
+      <AuthLink url='login' title='No account yet? Go to login page'>
+        Already have an account? <span className="font-semibold underline">Login</span>
+      </AuthLink>
     </div>
   )
 }

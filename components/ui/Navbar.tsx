@@ -8,6 +8,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Currency from "../Currency";
 import { signOut, useSession } from "next-auth/react";
+import { Session } from "@auth/core/types";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -70,8 +71,8 @@ const Navbar = () => {
               onKeyDown={onKeyDown}
               onChange={(e) => setQuery(e.target.value)}
             />
-           <button title="Confirm Search"> <Search onClick={handleSearch} className="cursor-pointer h-4 w-4 hover:text-blue-500" /></button>
-           </div>
+            <button title="Confirm Search"> <Search onClick={handleSearch} className="cursor-pointer h-4 w-4 hover:text-blue-500" /></button>
+          </div>
 
           <div className="hidden lg:flex gap-4">
             {["/", "/search", "/contact", "/wishlist", "/orders"].map(
@@ -96,20 +97,14 @@ const Navbar = () => {
               <ShoppingCart />
               <span>({cart.cartItems.length})</span>
             </Link>
-            {session?.user ? <><img src={session?.user.image!} alt="avatar" className="w-8 h-8 rounded-full" />
-              <button
-                id="Sign-out"
-                title="click here to sign-out"
-                onClick={() => signOut()}>
-                Sign Out
-              </button></> : <Link title="Login" href="/login"><CircleUserRound /></Link>}
+           <User session={session}/>
             <button title="mobile hamburger menu" aria-label="mobile hamburger menu" id="Mob-menu" onClick={toggleModal} onBlur={() => setTimeout(() => setIsOpen(false), 70)}>
               <Menu className="lg:hidden cursor-pointer" size={'1.7rem'} />
             </button>
           </div>
-
-          {/* Mobile search bar */}
         </div>
+
+        {/* Mobile search bar */}
         <div className="px-4 flex sm:hidden pb-2">
           <div className="flex sm:hidden w-full items-center border rounded-lg px-4 py-1">
             <input
@@ -120,7 +115,7 @@ const Navbar = () => {
               type="search"
               onChange={(e) => setQuery(e.target.value)}
             />
-           <button title="Confirm Search"> <Search onClick={handleSearch} className="cursor-pointer h-4 w-4 hover:text-blue-500" /></button>
+            <button title="Confirm Search"> <Search onClick={handleSearch} className="cursor-pointer h-4 w-4 hover:text-blue-500" /></button>
           </div>
         </div>
         {/* Mobile Modal */}
@@ -132,7 +127,7 @@ const Navbar = () => {
                 key={idx}
                 href={name}
                 aria-label={name}
-                className="border-b"
+                className="border-b px-8 text-center"
                 prefetch={false}
               >
                 {["Home", "Shop", "Contact", "Blog", "Wishlist", "Orders"][idx]}
@@ -149,5 +144,40 @@ const Navbar = () => {
     </>
   );
 };
+const User = ({ session }: { session: Session | null }) => {
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="relative"onBlur={()=>setTimeout(()=>setOpen(false),120)}>
+    {session?.user ? (
+      <>
+      <button title="Avatar dropdown btn"onClick={() => setOpen(!open)}>
+        <img
+          src={session.user.image ?? ""}
+          alt="avatar"
+          className="w-8 h-8 rounded-full cursor-pointer"
+          
+        />
+        </button>
+        {open && (
+          <div className="absolute right-0 mt-2 w-s48 bg-white shadow-lg rounded-md p-2 border border-gray-200">
+            <p className="text-sm rounded-md cursor-pointer hover:bg-gray-100 p-2 py-2 text-gray-700">{session.user.email}</p>
+            <button
+              className="w-full text-left p-2 py-2 text-sm text-red-600 hover:bg-gray-100 rounded-md"
+              onClick={() => signOut()}
+            >
+              Sign Out
+            </button>
+          </div>
+        )}
+      </>
+    ) : (
+      <Link title="Login" href={`/login?redirect_url=${encodeURIComponent(pathname)}`}>
+        <CircleUserRound className="w-8 h-8 cursor-pointer" />
+      </Link>
+    )}
+  </div>
+  )
+}
 
 export default Navbar;

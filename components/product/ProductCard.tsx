@@ -47,7 +47,7 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
       className={`relative bg-white max-w-64 rounded-t-lg shadow-md overflow-hidden transition-transform transform hover:scale-105 ${isSoldOut ? "opacity-70" : ""
         }`}
     >
-      <Link title={"See details of " + title} href={`/products/${slug}`} className="block" prefetch={false} >
+      <Link title={"See details of " + title} href='/product/[slug]' as={`/products/${slug}`} className="block" prefetch={false} >
         <div className="relative group">
           <Image
             src={media[0]}

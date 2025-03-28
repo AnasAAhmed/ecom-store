@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { MinusCircle, PlusCircle } from "lucide-react";
 import useCart, { useRegion } from "@/lib/hooks/useCart";
 import StarRatings from "./StarRatings";
+import HeartFavorite from "./HeartFavorite";
 
 const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
     const [selectedVariant, setSelectedVariant] = useState<VariantType | null>(null);
@@ -37,21 +38,25 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
 
     return (
         <div className="max-w-1/2 sm:w-[500px] flex flex-col gap-4">
-            <div className="flex justify-between items-center">
-                <p className="text-heading4-bold sm:text-heading3-bold">{productInfo.title}</p>
+            <div className="flex justify-between items-start">
+                <h4 className="text-heading4-bold sm:text-heading3-bold">{productInfo.title}</h4>
+
             </div>
 
             {/* Price & Discounts */}
-            <div className="text-heading4-bold">
-                <span className="text-small-medium mr-1"><small>{currency}</small></span>{price}
-                {productInfo.expense > 0 && (
-                    <>
-                        <span className="bg-red-600 ml-3 text-white text-[17px] px-2 py-1 rounded-md">
-                            {((productInfo.expense - productInfo.price) / productInfo.expense * 100).toFixed(0)}% Off
-                        </span>
-                        <p className="text-small-medium line-through mt-3 text-red-1"><small>{currency}</small> {expense}</p>
-                    </>
-                )}
+            <div className="text-heading4-bold flex justify-between items-start">
+                <div className="mt-[2spx]">
+                    <span className="text-small-medium mr-1"><small>{currency}</small></span>{price}
+                    {productInfo.expense > 0 && (
+                        <>
+                            <span className="bg-red-600 ml-3 text-white text-[17px] px-2 py-1 rounded-md">
+                                {((productInfo.expense - productInfo.price) / productInfo.expense * 100).toFixed(0)}% Off
+                            </span>
+                            <p className="text-small-medium line-through  text-red-1"><small>{currency}</small> {expense}</p>
+                        </>
+                    )}
+                </div>
+                <HeartFavorite productId={productInfo._id} />
             </div>
 
             {/* Rating and Sold Count */}

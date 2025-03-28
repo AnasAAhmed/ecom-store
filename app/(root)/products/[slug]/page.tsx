@@ -85,7 +85,7 @@ export default async function ProductPage({ params, searchParams }: { params: { 
           }),
         }}
       />
-      <section className="flex px-5 justify-center items-start gap-16 max-md:flex-col max-md:items-center">
+      <section className="flex px-5 justify-center items-start gap-16 max-lg:flex-col max-lg:items-center">
         <Gallery productMedia={product.media} />
         <ProductInfo productInfo={product} />
       </section>

@@ -51,8 +51,8 @@ const HeartFavorite = ({ productId, updateSignedInUser }: HeartFavoriteProps) =>
   };
 
   return (
-    <button title="Click here to add on wishlist" onClick={handleLike} disabled={loading}>
-      {loading ? <Loader size={'1.2rem'} className="animate-spin" /> : <Heart size={'1.2rem'} fill={isLiked ? "red" : "white"} />}
+    <button style={{fontSize:'24px'}} title="Click here to add on wishlist" onClick={handleLike} disabled={loading}>
+      {loading ? <Loader size={'1.2rem'} className="animate-spin" /> : <Heart className="ml-[10px]" size={'1.2rem'} fill={isLiked ? "red" : "white"} />}
     </button>
   );
 };

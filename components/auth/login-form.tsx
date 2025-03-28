@@ -2,17 +2,19 @@
 
 import { useFormStatus } from 'react-dom'
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Loader } from 'lucide-react'
 import { ForgetPassForm } from './Forget-passwordForm'
 import { z } from 'zod'
 import toast from 'react-hot-toast'
-import { useSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
 
 
 export default function LoginForm() {
   const { data: session } = useSession();
+  const searchParams = useSearchParams();
 
+  const redirectUrl = searchParams.get("redirect_url") || "/";
   const router = useRouter();
   const [result, setResult] = useState<Result | null>({ type: '', resultCode: "" });
 
@@ -54,19 +56,20 @@ export default function LoginForm() {
 
 
   useEffect(() => {
-    if (result && result.type) {
-      if (result.type === 'error') {
-        toast.error(result.resultCode)
-      } else {
-        toast.success(result.resultCode)
-        setTimeout(() => {
-          window.location.href = '/';
-        }, 500);
+    async function updateSession() {
+      if (result && result.type) {
+        if (result.type === 'error') {
+          toast.error(result.resultCode)
+        } else {
+          toast.success(result.resultCode)
+          await getSession();
+        }
       }
     }
+    updateSession();
   }, [result, router])
   if (session) {
-    router.push('/')
+    router.push(redirectUrl)
   }
   return (
     <form

@@ -2,15 +2,17 @@
 
 import { useFormStatus } from 'react-dom'
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { CheckCircleIcon, Loader } from 'lucide-react'
 import { z } from 'zod'
 import toast from 'react-hot-toast'
-import { useSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
 
 export default function ResetForm({ token, userId }: { token: string, userId: string }) {
     const { data: session } = useSession();
+    const searchParams = useSearchParams();
 
+    const redirectUrl = searchParams.get("redirect_url") || "/";
     const router = useRouter();
     const [result, setResult] = useState<Result | null>({ type: '', resultCode: "" });
 
@@ -65,20 +67,21 @@ export default function ResetForm({ token, userId }: { token: string, userId: st
 
 
     useEffect(() => {
+        async function updateSession() {
         if (result && result.type) {
-            if (result.type === 'error') {
-                toast.error(result.resultCode)
-            } else {
-                toast.success(result.resultCode)
-                setTimeout(() => {
-                    window.location.href = '/';
-                }, 500);
-            }
+          if (result.type === 'error') {
+            toast.error(result.resultCode)
+          } else {
+            toast.success(result.resultCode)
+            await getSession(); 
+          }
         }
-    }, [result, router])
+      }
+      updateSession();
+      }, [result, router])
 
     if (session) {
-        router.push('/')
+        router.push(redirectUrl)
     }
 
     return (

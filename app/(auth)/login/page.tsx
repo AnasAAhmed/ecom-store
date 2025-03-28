@@ -2,6 +2,7 @@ import { signIn } from '@/auth'
 import * as React from "react"
 import Link from 'next/link'
 import LoginForm from '@/components/auth/login-form'
+import AuthLink from '@/components/AuthLink'
 
 
 
@@ -30,13 +31,9 @@ export default async function LoginPage() {
           <LoginForm />
         </div>
       </div>
-      <Link
-        href="/sign-up"
-        title='Go to sign-up page to create new account'
-        className="flex flex-row gap-1 mt-4 text-sm text-zinc-400"
-      >
-        No account yet? <div className="font-semibold underline">Sign up</div>
-      </Link>
+      <AuthLink url='sign-up' title='No account yet? Go to sign-up page'>
+          No account yet? <span className="font-semibold underline">Sign up</span>
+      </AuthLink>
     </div>
   )
 }
