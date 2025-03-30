@@ -20,11 +20,11 @@ const Currency = ({ className }: { className: string }) => {
         className="py-1 cursor-pointer text-[14px] border-gray-300 rounded"
       >
         <option title='US Dollar' value="USD">USD ($)</option>
-        <option value="Pakistani rupee">PKR (Rs)</option>
-        <option value="Euro">EUR (€)</option>
-        <option value="Pound Sterling">GBP (£)</option>
-        <option value="Canadian Dollar">CAD (C$)</option>
-        <option value="Australian Dollar">AUD (A$)</option>
+        <option title='Pakistani rupee' value="PKR">PKR (Rs)</option>
+        <option title='Euro' value="EUR">EUR (€)</option>
+        <option title='Pound Sterling' value="GBP">GBP (£)</option>
+        <option title='Canadian Dollar' value="CAD">CAD (C$)</option>
+        <option title='ustralian Dollar' value="AUD">AUD (A$)</option>
       </select>
     </div>
   );

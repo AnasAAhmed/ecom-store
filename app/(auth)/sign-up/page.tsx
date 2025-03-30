@@ -23,7 +23,7 @@ export default async function LoginPage() {
             }}
           >
             <button title='Sign-up With Goole' className='w-full border p-2 rounded-md flex items-center gap-4 mt-4 mb-2' >
-              <img height="24" width="24" id="provider-logo" src="https://authjs.dev/img/providers/google.svg" />
+              <img alt='google logo' height="24" width="24" id="provider-logo" src="https://authjs.dev/img/providers/google.svg" />
               Sign up with Google
             </button>
           </form>
