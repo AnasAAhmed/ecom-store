@@ -39,7 +39,7 @@ const GroupComponent3 = ({ blogCardImage }: GroupComponent3Type) => {
       />
       <div className="self-stretch flex flex-col items-start justify-start p-4 box-border max-w-full">
         <div className="text-xl">Going all-in with millennial design</div>
-        <Link title="Read more" href='/blog' className="text-2xl font-medium" >Read More</Link>
+        <Link title={"Read more on our blog page "+blogCardImage.slice(4,6)} href='/blog' className="text-2xl font-medium" >Read More</Link>
         <div className="flex items-center justify-between w-full mt-4">
           <div className="flex items-center gap-2">
             <Clock />

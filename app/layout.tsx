@@ -19,6 +19,9 @@ const roboto = Roboto({
 export const metadata: Metadata = {
   title: "Borcelle Store",
   description: "Borcelle Ecommerce Store",
+  other: {
+    "google-site-verification": "OG4--pwhuorqRhEHtEXwiAIdavrU1KXFAi1sRUu38EY",
+  },
 };
 
 export default async function RootLayout({

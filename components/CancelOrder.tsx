@@ -91,15 +91,15 @@ const CancelOrder = ({ order }: OrderManageProps) => {
                 Currency: <span className="text-base-medium">{order.currency}</span>
               </p>
               <p className="text-base-bold">
-                Total {!order.status.startsWith('COD') && 'Paid'}: <span className="text-base-medium">${order.totalAmount} ({order.exchangeRate} x {order.totalAmount} = {order.totalAmount*order.exchangeRate}{order.currency})</span>
+                Total {!order.status.startsWith('COD') && 'Paid'}: <span className="text-base-medium">${order.totalAmount} ({order.exchangeRate} x {order.totalAmount} = {order.totalAmount * order.exchangeRate}{order.currency})</span>
               </p>
               <p className="text-base-bold">
                 Shipping rate: <span className="text-base-medium">({order.currency}) {order.shippingRate}</span>
               </p>
               <p className="text-base-bold"
-                  style={{ color: order.status.startsWith('Canceled') ? 'red' : '' }}>
-                  Status: {order.status}
-                </p>
+                style={{ color: order.status.startsWith('Canceled') ? 'red' : '' }}>
+                Status: {order.status}
+              </p>
               <p className="text-base-bold">
                 Products: <span className="text-base-medium">{order.products.length}</span>
               </p>
@@ -115,13 +115,24 @@ const CancelOrder = ({ order }: OrderManageProps) => {
                 </thead>
                 {order.products.map((i) => (
                   <tbody className='border'>
-                    <th className='border'>{i.product.title}</th>
-                    <th className='border'>{i.size || 'N/A'}</th>
-                    <th className='border'>{i.color || 'N/A'}</th>
-                    <th className='border'>{i.quantity}</th>
-                    <th className='border'>${i.product.price} </th>
-                    <th className='border'>{order.exchangeRate}</th>
-                    <th className='border'>{i.product.price*order.exchangeRate}</th>
+                    {i.product ? <>
+                      <th className='border'>{i.product.title}</th>
+                      <th className='border'>{i.size || 'N/A'}</th>
+                      <th className='border'>{i.color || 'N/A'}</th>
+                      <th className='border'>{i.quantity}</th>
+                      <th className='border'>${i.product.price} </th>
+                      <th className='border'>{order.exchangeRate}</th>
+                      <th className='border'>{i.product.price * order.exchangeRate}</th>
+                    </>
+                      : <>
+                        <th className='border'> This product has been deleted from the website.</th>
+                        <th className='border'>{i.size || 'N/A'}</th>
+                        <th className='border'>{i.color || 'N/A'}</th>
+                        <th className='border'>{i.quantity}</th>
+                        <th className='border'> This product has been deleted from the website.</th>
+                        <th className='border'>{order.exchangeRate}</th>
+                        <th className='border'> This product has been deleted from the website.</th>
+                      </>}
                   </tbody>
                 ))}
               </table>
@@ -137,7 +148,7 @@ const CancelOrder = ({ order }: OrderManageProps) => {
                 ))}
               </select>
               {newStatus !== order.status && (
-                <button title='Confirm Order Cancelation' className="bg-blue-500 rounded-md p-3 hover:opacity-55 text-white" onClick={()=>handleSubmit()}>
+                <button title='Confirm Order Cancelation' className="bg-blue-500 rounded-md p-3 hover:opacity-55 text-white" onClick={() => handleSubmit()}>
                   {loadingUp ? <LoaderIcon className='mx-[7px] animate-spin' /> : "Confirm"}
                 </button>
               )}
