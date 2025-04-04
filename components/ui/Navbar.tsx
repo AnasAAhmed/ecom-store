@@ -172,7 +172,7 @@ const User = ({ session }: { session: Session | null }) => {
         )}
       </>
     ) : (
-      <Link title="Login" href={`/login?redirect_url=${encodeURIComponent(pathname)}`}>
+      <Link title="Login" prefetch={false} href={`/login?redirect_url=${encodeURIComponent(pathname)}`}>
         <CircleUserRound className="w-8 h-8 cursor-pointer" />
       </Link>
     )}
