@@ -14,7 +14,7 @@ const WishlistPage: FC = async () => {
   const session = (await auth()) as Session
 
   if (!session) {
-    return redirect('/login?redirect_url=/wishlist');
+    return redirect('/login');
   }
   const wishlist = await getWishList(session.user.id);
 

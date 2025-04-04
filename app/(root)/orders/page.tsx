@@ -17,7 +17,7 @@ const Orders = async ({ searchParams }: { searchParams: any }) => {
   const page = Number(searchParams?.page) || 1;
   const session = (await auth()) as Session
   if (!session) {
-    return redirect('/login?redirect_url=/orders');
+    return redirect('/login');
   };
   const data = await getOrders(session?.user?.email!, page);
 
