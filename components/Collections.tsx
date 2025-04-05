@@ -1,7 +1,6 @@
 import { slugify, unSlugify } from "@/lib/utils/features";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 const Collections = async ({ collections }: { collections: CollectionType[] }) => {
 
@@ -13,14 +12,14 @@ const Collections = async ({ collections }: { collections: CollectionType[] }) =
       ) : (
         <div className="flex flex-wrap items-center justify-center gap-8">
           {collections.map((collection: CollectionType) => (
-            <Link title={"See details of "+collection.title+ " collection"} prefetch={false} href={`/collections/${slugify(collection.title)}`} key={collection._id} className="group relative">
+            <Link title={"See details of " + collection.title + " collection"} prefetch={false} href={`/collections/${slugify(collection.title)}`} key={collection._id} className="group relative">
               <Image
                 key={collection._id}
                 src={collection.image}
-                alt={"this is the image of collection: "+collection.title}
-                width={350}
-                height={200}
-                className="rounded-lg cursor-pointer "
+                alt={"this is the image of collection: " + collection.title}
+                width={850}
+                height={850}
+                className="w-auto h-auto rounded-lg cursor-pointer"
               />
               <h1 className="text-heading3-bold group-hover:left-7 duration-300 text-white absolute bottom-4 left-3">{unSlugify(collection.title)}</h1>
             </Link>

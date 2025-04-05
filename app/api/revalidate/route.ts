@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
 
     const secret = searchParams.get('secret');
 
-    if (secret !== "pandu-boom") {
+    if (secret !==  process.env.REVALIDATE_SECRET_TOKEN) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 

@@ -80,15 +80,24 @@ body,
 .image-height{
   height: 16rem;
 }
+.image-width{
+  width: 16rem;
+}
 
 @media screen and (width<=700px) {
   .image-height{
     height: 12rem;
   } 
+  .image-width{
+    width: 12rem;
+  }
 }
 
-@media screen and (width<=500px) {
+@media screen and (width<=450px) {
   .image-height{
-    height: 8rem;
+    height: 9rem;
   } 
+  .image-width{
+    width: 9rem;
+  }
 }

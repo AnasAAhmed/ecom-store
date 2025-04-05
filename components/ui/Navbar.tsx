@@ -58,7 +58,7 @@ const Navbar = () => {
       <nav className="sticky max-sm:fixed top-0 z-30 w-full bg-white shadow-md">
         <div className="flex justify-between items-center p-2">
           <Link title="home" aria-label="go to home" href="/">
-            <Image src="/logo.png" priority alt="logo" width={130} height={100} />
+            <Image src="/logo.png" priority alt="logo" width={130} height={130} />
           </Link>
 
           {/* Desktop search bar */}

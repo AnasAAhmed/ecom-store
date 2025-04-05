@@ -44,17 +44,17 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
 
   return (
     <div
-      className={`relative bg-white max-w-64 rounded-t-lg shadow-md overflow-hidden transition-transform transform hover:scale-105 ${isSoldOut ? "opacity-70" : ""
+      className={`relative bg-white image-width rounded-t-lg shadow-md overflow-hidden transition-transform transform hover:scale-105 ${isSoldOut ? "opacity-70" : ""
         }`}
     >
       <Link title={"See details of " + title} href='/product/[slug]' as={`/products/${slug}`} className="block" prefetch={false} >
-        <div className="relative group">
+        <div className="relative image-height group">
           <Image
             src={media[0]}
             alt={title}
-            width={350}
-            height={320}
-            className="w-full image-height object-cover"
+            fill
+            sizes="(max-width: 450px) 9rem, (max-width: 700px) 12rem, 16rem"
+            className="w-full object-cover"
           />
           {isSoldOut ? (
             <span className="absolute top-2 left-2 bg-red-500 text-white text-[12px] font-semibold px-2 py-1 rounded">

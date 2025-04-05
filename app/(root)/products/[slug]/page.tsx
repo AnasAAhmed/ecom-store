@@ -3,7 +3,7 @@ import Gallery from "@/components/product/Gallery";
 import ProductInfo from "@/components/product/ProductInfo";
 import PaginationControls from "@/components/PaginationControls";
 import { notFound } from "next/navigation";
-import { getProductDetails, getProductDetailsForSeo, getProductReviews, getRelatedProduct } from "@/lib/actions/actions";
+import { getProductDetails, getProductReviews, getRelatedProduct } from "@/lib/actions/actions";
 import ProductReviews from "@/components/product/ProductReviews";
 import ProductList from "@/components/product/ProductList";
 
@@ -22,7 +22,7 @@ function ProductReviewsLoadingSkeleton() {
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const product = await getProductDetailsForSeo(params.slug);
+  const product = await getProductDetails(params.slug);
 
   if (!product) notFound();
 
@@ -68,6 +68,12 @@ export default async function ProductPage({ params, searchParams }: { params: { 
             "@type": "Product",
             name: product.title,
             description: product.description,
+            sku: product._id,
+            brand: {
+              "@type": "Brand",
+              name: "Borcelle"
+            },
+            url: `https://ecom-store-anas.vercel.app/products/${product.slug}`,
             image: product.media[0],
             offers: {
               "@type": "AggregateOffer",

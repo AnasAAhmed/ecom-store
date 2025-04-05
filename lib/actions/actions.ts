@@ -8,6 +8,34 @@ import Customer from "../models/Customer"
 import { extractNameFromEmail, ResultCode } from "../utils/features"
 import Wishlist from "../models/Wishlist"
 
+//for app/sitemap.ts
+export async function getAllCollections() {
+  try {
+
+    const collections = await Collection.find().select("image title");
+
+    return JSON.parse(JSON.stringify(collections))
+
+  } catch (err) {
+    console.log("[collections_GET]", err)
+    throw new Error('Internal Server Error'+ (err as Error).message)
+  }
+};
+
+//for app/sitemap.ts
+export async function getAllProducts() {
+  try {
+    await connectToDB();
+
+    const products = await Product.find()
+      .select("slug media category tags");
+
+    return JSON.parse(JSON.stringify(products))
+  } catch (err) {
+    console.log("[products_GET]", err);
+    throw new Error('Internal Server Error 500');
+  }
+};
 
 export async function getCollections() {
   try {
@@ -39,7 +67,7 @@ export async function getCollectionDetails(title: string) {
 };
 
 export async function getSearchProducts(query: string, sort: string, sortField: string, page: number) {
-  const limit = 6;
+  const limit = 12;
   const search = query ? decodeURIComponent(query) : '';
   const sortOptions: { [key: string]: 1 | -1 } = {};
   if (sort && sortField) {

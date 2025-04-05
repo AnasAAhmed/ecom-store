@@ -9,7 +9,7 @@ const AuthLink = ({ children, url, title }: { children: ReactNode; url: 'login' 
     
       const redirectUrl = searchParams.get("redirect_url") || "/";
     return (
-        <Link className='mt-12' title={title} prefetch={false} href={`/${url}?redirect_url=${encodeURIComponent(redirectUrl)}`}>
+        <Link className='mt-8' title={title} prefetch={false} href={`/${url}?redirect_url=${encodeURIComponent(redirectUrl)}`}>
             {children}
         </Link>
     )
