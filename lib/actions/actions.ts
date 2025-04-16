@@ -319,9 +319,9 @@ export async function getUser(
     const user = await Customer.findOne({ email });
     if (user && !isSiginingUpUserWithCredientials) {
       user.signInHistory.unshift({
-        country: country,
-        city: city,
-        ip: ip,
+        country,
+        city,
+        ip,
         browser,
         os,
         device,
@@ -331,8 +331,6 @@ export async function getUser(
 
       // Limit the sign-in history to 3 entries
       user.signInHistory = user.signInHistory.slice(0, 3);
-      user.country = country;  
-      user.city = city; 
       await user.save();
     }
     return user as User;
@@ -374,17 +372,15 @@ export async function createUser(
       resultCode: ResultCode.UserAlreadyExists
     }
   } else {
+    console.log("Before createUser:", { country, city });
     const name = extractNameFromEmail(email);
     await Customer.create({
       name: name,
       email: email,
-      country,
-      city,
+      country: country.toLowerCase(),
+      city: city.toLowerCase(),
       password: hashedPassword,
       image: `https://ui-avatars.com/api/?name=${name}`,
-      signInHistory: [{
-
-      }]
     })
     return {
       type: 'success',

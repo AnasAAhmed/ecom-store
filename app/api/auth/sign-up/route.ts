@@ -38,36 +38,44 @@ export async function POST(req: Request) {
     const forwardedFor = req.headers.get("x-real-ip");
     const ip = forwardedFor?.split(",")[0]?.trim() || req.headers.get("x-real-ip") || "";
 
-    let country = "Unknown";
-    let city = "Unknown";
+    let country = "oooo";
+    let city = "pppp";
     console.log('ip', ip);
 
     if (ip && ip !== '::1' && ip !== '127.0.0.1') {
         try {
-            const geoRes = await fetch(`https://ipapi.co/${ip}/json/`);
-            if (geoRes.ok) {
-                const geoData = await geoRes.json();
-                country = geoData.country_name || "Unknown";
-                city = geoData.city || "Unknown";
-                console.log(city, country);
-            }
+            const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
+            const geoData = await geoRes.json();
+            console.log(geoData);
+
+            country = geoData.country || 'unknown';
+            city = geoData.city || 'unknown';
+            console.log("Geo login:", city, country);
         } catch (geoErr) {
             console.warn("Geo lookup failed:", geoErr);
         }
     } else {
-        country = "from local host";
-        city = "from local host";
+        country = "Localhost";
+        city = "Localhost";
         console.log("Skipping geo lookup for local IP:", ip);
     }
 
 
+
     try {
-        const result = await createUser(email, hashedPassword,ip, userAgent, country, city, browser, device, os);
+        const result = await createUser(email, hashedPassword, ip, userAgent, country, city, browser, device, os);
 
         if (result.resultCode === ResultCode.UserCreated) {
             await signIn('credentials', {
                 email,
                 password,
+                ip,
+                userAgent,
+                country,
+                city,
+                browser,
+                device,
+                os,
                 redirect: false
             });
         }

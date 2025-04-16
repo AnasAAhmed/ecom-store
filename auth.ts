@@ -25,25 +25,27 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       credentials: {
         email: { label: 'Email', type: 'email', placeholder: 'jsmith@example.com' },
         password: { label: 'Password', type: 'password' },
+        userAgent: { label: 'userAgent', type: 'text', placeholder: 'Pakistan' },
+        ip: { label: 'ip', type: 'text', placeholder: '36.255.42.109' },
+        country: { label: 'country', type: 'text', placeholder: 'Pakistan' },
+        city: { label: 'city', type: 'text', placeholder: 'KArachi' },
+        device: { label: 'device', type: 'text', placeholder: 'Desktop' },
+        browser: { label: 'browser', type: 'text', placeholder: 'chrome, firefox' },
+        os: { label: 'os', type: 'text', placeholder: "mac os, windows, linux" },
       },
       async authorize(credentials) {
         if (!credentials) {
           throw new Error('No credentials provided');
         }
-        const ip = headers().get('x-real-ip') || '';
-        const geoRes = await fetch(`https://ipapi.co/${ip}/json/`);
-        const geoData = await geoRes.json();
-        const userAgent = headers().get('x-user-agent') || '';
-        const parser = new UAParser(userAgent);
-        const result = parser.getResult();
-
-        const country = geoData.country_name || 'Unknown';
-        const city = geoData.city || 'Unknown';
-        const os = `${result.os.name} ${result.os.version}`;
-        const device = result.device.type || "Desktop";
-        const browser = `${result.browser.name} ${result.browser.version}`;
+        const ip = credentials.ip as string || 'unknown';
+        const userAgent = credentials.userAgent as string || 'unknown';
+        const country = credentials.country as string || 'unknown';
+        const city = credentials.city as string || 'unknown';
+        const device = credentials.device as string || "desktop";
+        const browser = credentials.browser as string || 'unknown';
         const email = credentials.email as string;
         const password = credentials.password as string;
+        const os = credentials.os as string || 'unknown';
 
         const user: User | null = await getUser(email, ip, userAgent, country, city, browser, device, os, false);
 
@@ -70,14 +72,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (account?.provider === 'google') {
         try {
 
-          const ip = headers().get('x-real-ip') || '';
-          const geoRes = await fetch(`https://ipapi.co/${ip}/json/`);
+          const ip = '36.255.42.109';
+          // const ip = headers().get('x-real-ip') || '36.255.42.109';
+          const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
           const geoData = await geoRes.json();
           const userAgent = headers().get('x-user-agent') || '';
           const parser = new UAParser(userAgent);
           const result = parser.getResult();
 
-          const country = geoData.country_name || 'Unknown';
+          const country = geoData.country|| 'Unknown';
           const city = geoData.city || 'Unknown';
           const os = `${result.os.name} ${result.os.version}`;
           const device = result.device.type || "Desktop";
@@ -97,21 +100,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             (user as any).dbId = newUser.id;
             (user as any).username = newUser.name;
 
-            // Set user's country and city from their IP
-            const ip = headers().get('x-real-ip') || '';
-            const geoRes = await fetch(`https://ipapi.co/${ip}/json/`);
-            const geoData = await geoRes.json();
-            const country = geoData.country_name || 'Unknown';
-            const city = geoData.city || 'Unknown';
-            const userAgent = headers().get('x-user-agent') || '';
-            const parser = new UAParser(userAgent);
-            const result = parser.getResult();
-
-            const os = `${result.os.name} ${result.os.version}`;
-            const device = result.device.type || "Desktop";
-            const browser = `${result.browser.name} ${result.browser.version}`;
-
-            // Add country, city to user profile and sign-in history
             newUser.country = country;
             newUser.city = city;
             newUser.signInHistory = [{
