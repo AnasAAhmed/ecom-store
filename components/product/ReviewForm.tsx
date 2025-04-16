@@ -9,7 +9,12 @@ type ReviewFormProps = {
     oldRating?: number;
     oldComment?: string;
     productId: string;
-    user: User | null;
+    user: {
+        id?: string
+        name?: string | null
+        email?: string | null
+        image?: string | null
+    };
 };
 
 const ReviewForm = ({ isEditing, productId, user, oldRating, oldComment }: ReviewFormProps) => {
