@@ -122,7 +122,7 @@
 // };
 
 import Banner from "@/components/ui/Banner";
-import { getBestSellingProducts, getCollections, getProducts } from "@/lib/actions/actions";
+import { getBestSellingProducts, getCollections, getProducts, migrateCustomerLocationFields } from "@/lib/actions/actions";
 import Collections from '@/components/Collections';
 import ProductList from '@/components/product/ProductList';
 import BlogSection from "@/components/ui/BlogSection";
@@ -193,5 +193,5 @@ export default async function Home() {
   );
 };
 
-export const revalidate= 86400;
+export const revalidate = 86400;
 

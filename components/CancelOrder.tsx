@@ -39,13 +39,14 @@ const CancelOrder = ({ order }: OrderManageProps) => {
         onClose()
         toast.success('Order Canceled successfully we will Contact you in an hour');
       } else {
-        toast.error('Internal server error. Please try again.');
+        const errorResponse = await res.json();
+        throw new Error(errorResponse.message || 'Failed to place order')
         setLoadingUp(false);
       }
     } catch (err) {
       setLoadingUp(false);
       console.error('Error updating order status:', err);
-      toast.error('Internal server error. Please try again.');
+      toast.error('Internal server error: ' + (err as Error).message + ' Please try again.');
     }
   };
 
@@ -138,7 +139,7 @@ const CancelOrder = ({ order }: OrderManageProps) => {
               </table>
             </div>
           </div>
-          {!order.status.startsWith('Canceled') && timeDifference <= 12 && (
+          {!order.status.startsWith('Canceled') && timeDifference <= 2 && (
             <div className='mx-auto print:hidden items-center flex gap-3'>
               <label htmlFor='Cancel'>Cancel Order:</label>
               <select id='Cancel' className='h-8' value={newStatus} onChange={(e) => setNewStatus(e.target.value)}>

@@ -29,6 +29,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   return {
     title: `${product.title} | Borcelle`,
     description: product.description || "Shop high-quality products at Borcelle.",
+    keywords: product.tags?.join(', ') ?? '',
     robots: {
       index: true,
       follow: true,
@@ -88,6 +89,7 @@ export default async function ProductPage({ params, searchParams }: { params: { 
               ratingValue: product.ratings,
               reviewCount: product.numOfReviews,
             },
+            keywords: product.tags?.join(', ') ?? '',
           }),
         }}
       />

@@ -120,7 +120,7 @@ function LoginButton() {
   return (
     <button
       title='Click here to Login'
-      className="w-full py-2 bg-black text-white rounded-md hover:opacity-65 mt-4 text-center"
+      className="w-full py-2 flex justify-center bg-black text-white rounded-md hover:opacity-65 mt-4 text-center"
       aria-disabled={pending}
     >
       {pending ? <Loader className='animate-spin' /> : 'Log in'}

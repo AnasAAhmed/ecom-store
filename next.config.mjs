@@ -5,7 +5,14 @@ const nextConfig = {
       {
         hostname: "res.cloudinary.com",
       },
+      {
+        hostname: "lh3.googleusercontent.com",
+      },
+      {
+        hostname: "ui-avatars.com",
+      },
     ],
+
   },
 };
 

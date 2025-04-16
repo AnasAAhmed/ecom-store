@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
+      phone_number_collection: { enabled: true },
       shipping_address_collection: {
         allowed_countries: ["US", "PK"],
       },
@@ -54,8 +55,8 @@ export async function POST(req: NextRequest) {
       metadata: {
         exchange_rate: exchangeRate.toString(),
       },
-      client_reference_id: customer.clerkId,
-      customer_email:customer.email,
+      client_reference_id: customer.id,
+      customer_email: customer.email!,
       success_url: `${process.env.ECOM_STORE_URL}/payment_success`,
       cancel_url: `${process.env.ECOM_STORE_URL}/cart`,
 

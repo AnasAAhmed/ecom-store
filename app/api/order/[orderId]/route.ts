@@ -7,11 +7,28 @@ export const PUT = async (req: NextRequest, { params }: { params: { orderId: Str
   try {
     await connectToDB();
 
-    const order = await Order.findById(params.orderId);
+    const order = await Order.findById(params.orderId).select('_id status createdAt');
 
     if (!order) return new NextResponse("Order not found", {
       status: 404,
     });
+    const orderCreationTime = new Date(order.createdAt).getTime();
+    const currentTime = new Date().getTime();
+    const timeDifference = (currentTime - orderCreationTime) / (1000 * 60 * 60);
+
+    if (order.status.startsWith("Canceled")) {
+      return NextResponse.json(
+        { message: "Order is already canceled" },
+        { status: 409 } // Conflict
+      );
+    }
+
+    if (timeDifference >= 2) {
+      return NextResponse.json(
+        { message: "Cancelling order is only allowed within 2 hours after it's placed" },
+        { status: 403 } // Forbidden
+      );
+    }
 
     const { status } = await req.json();
 
@@ -22,11 +39,8 @@ export const PUT = async (req: NextRequest, { params }: { params: { orderId: Str
     revalidatePath('/orders')
     return NextResponse.json("Order Canceled Successfully", { status: 200 })
   } catch (error) {
-    if (error instanceof Error) {
-      return new NextResponse(`Internal Server Error: ${error.message}`, { status: 500 });
-    } else {
-      return new NextResponse('An unknown error occurred', { status: 500 });
-    }
+    return NextResponse.json({ message: (error as Error).message }, { status: 500 });
+
   }
 };
 

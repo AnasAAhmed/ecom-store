@@ -21,7 +21,7 @@ const shippingSchema = z.object({
     shippingRate: z.enum(['Fast (COD)', 'Standard (COD)']),
 });
 
-const ShippingForm = ({ user }: { user: { id: string,email: string, image: string } | null }) => {
+const ShippingForm = ({ user }: { user: { id: string, email: string, image: string } | null }) => {
     const cart = useCart();
     const { currency, exchangeRate } = useRegion();
     const router = useRouter();
@@ -79,13 +79,14 @@ const ShippingForm = ({ user }: { user: { id: string,email: string, image: strin
 
             if (!response.ok) {
                 const errorResponse = await response.json();
-                toast.error(errorResponse.message || 'Failed to place order');
+                // toast.error(errorResponse.message || 'Failed to place order');
+                throw new Error(errorResponse.message || 'Failed to place order')
             } else {
-                toast.error('Order Placed Successfully');
+                toast.success('Order Placed Successfully');
                 router.push('/payment_success');
             }
         } catch (err) {
-            toast.error(err instanceof Error ? err.message : 'An error occurred');
+            toast.error('An error occurred: '+ (err as Error).message );
         } finally {
             setIsProcessing(false);
         }

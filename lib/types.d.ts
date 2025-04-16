@@ -37,7 +37,7 @@ type CartProductType = {
   price: number;
   expense: number;
 }
- interface Session {
+interface Session {
   user: {
     id: string
     email: string
@@ -46,20 +46,34 @@ type CartProductType = {
   }
 }
 
- interface AuthResult {
+interface AuthResult {
   type: string
   message: string
 }
- interface Result {
+interface Result {
   type: string
   resultCode: string
 };
- interface User {
+interface User {
   id?: string
   name?: string | null
   password?: string | null
   email?: string | null
   image?: string | null
+  country: string,
+  city: string,
+  signInHistory: [
+    {
+      country: string,
+      city: string,
+      ip: string,
+      userAgent: string,
+      os: string,
+      device: string,
+      browser: string,
+      signedInAt: Date
+    }
+  ] | []
 }
 
 type OrderProductCOD = {
@@ -101,7 +115,7 @@ type ReviewType = {
 
 type VariantType = {
   _id?: string;
-  size?: string ;
+  size?: string;
   color?: string;
   quantity: number
 }

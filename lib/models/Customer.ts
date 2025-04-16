@@ -11,6 +11,23 @@ const customerSchema = new mongoose.Schema({
   },
   reset_token: { type: String },
   token_expires: { type: String },
+  country: { type: String, index: true },
+  city: { type: String, index: true },
+  signInHistory: {
+    type: [
+      {
+        country: String,
+        city: String,
+        ip: String,
+        userAgent: String,
+        os: String,
+        device: String,
+        browser: String,
+        signedInAt: { type: Date, default: Date.now }
+      }
+    ],
+    default: []
+  },
   ordersCount: { type: Number, default: 0 },
   createdAt: {
     type: Date,

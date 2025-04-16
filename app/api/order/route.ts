@@ -61,6 +61,6 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json({ orderId: newOrder._id }, { status: 200 });
   } catch (error) {
     console.log("NEW_ORDER.Post", error);
-    return NextResponse.json({ message: `Internal server error` }, { status: 500 });
+    return NextResponse.json({ message: (error as Error).message  }, { status: 500 });
   }
 };

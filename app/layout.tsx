@@ -16,9 +16,33 @@ const roboto = Roboto({
   subsets: ['latin'],
 })
 
-export const metadata: Metadata = {
-  title: "Borcelle Store",
-  description: "Borcelle Ecommerce Store",
+export const metadata: Metadata = 
+  {
+    title: ` Borcelle`,
+    description: "Shop high-quality products at Borcelle professinaol spa website in nextjs mongodb Tcs Courier api. By Anas Ahmed Gituhb:https://github.com/AnasAAhmed",
+    keywords: ['Borcelle','Anas Ahmed','Ecommerce',"professional ecommerce site in nextjs",'mongodb','SPA Ecommerce','TCS courier APIs'],
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true
+      }
+    },
+    openGraph: {
+      title: `Borcelle`,
+      description: "Shop high-quality products at Borcelle professinaol spa website in nextjs mongodb Tcs Courier api. By Anas Ahmed Gituhb:https://github.com/AnasAAhmed",
+      url: `${process.env.ECOM_STORE_URL}`,
+      images: [
+        {
+          url: '/logo.png',
+          width: 220,
+          height: 250,
+          alt:'Borcelle logo',
+        },
+      ],
+      siteName: 'Borcelle Next.js by anas ahmed',
+    },
   other: {
     "google-site-verification": "OG4--pwhuorqRhEHtEXwiAIdavrU1KXFAi1sRUu38EY",
   },

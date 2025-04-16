@@ -135,12 +135,12 @@ const Cart = () => {
                       alt="product"
                     />
                     <div className="flex flex-col gap-3 ml-4">
-                      <Link title={'See details of product '+cartItem.item.title} href={`products/${slugify(cartItem.item.title)}`} className="text-body-bold line-clamp-2 max-w-[32rem]">{cartItem.item.title}</Link>
+                      <Link title={'See details of product ' + cartItem.item.title} href={`products/${slugify(cartItem.item.title)}`} className="text-body-bold line-clamp-2 max-w-[32rem]">{cartItem.item.title}</Link>
 
-                        <p className="text-small-medium">
-                          {cartItem.color && cartItem.color}
-                          {cartItem.color && cartItem.size && '/'}
-                          {cartItem.size && cartItem.size}</p>
+                      <p className="text-small-medium">
+                        {cartItem.color && cartItem.color}
+                        {cartItem.color && cartItem.size && '/'}
+                        {cartItem.size && cartItem.size}</p>
 
                       {cartItem.item.stock < 5 && <p className="text-small-medium">{`only ${cartItem.item.stock} left`}</p>}
                     </div>
@@ -224,14 +224,14 @@ const Cart = () => {
                 className={`border rounded-lg flex justify-center ${cart.cartItems.length === 0 && "cursor-not-allowed"} text-body-bold bg-white py-3 w-full hover:bg-black hover:text-white`}
                 onClick={handleCheckout}
                 title='Confirm Checkout'
-                disabled={cart.cartItems.length === 0}
+                disabled={cart.cartItems.length === 0 || isRevalidating}
               >
                 {loading ? <LoaderIcon className='animate-spin h-[17px]' /> : "Checkout"}
               </button>
             </div>
           }
           {!expand && <button
-          title='Proceed further process'
+            title='Proceed further process'
             className={`border rounded-lg flex justify-center ${cart.cartItems.length === 0 && "cursor-not-allowed"} text-body-bold bg-white py-3 w-full hover:bg-black hover:text-white`}
             onClick={revalidateStockBeforeCheckout}
             disabled={cart.cartItems.length === 0 || totalRounded < 1}

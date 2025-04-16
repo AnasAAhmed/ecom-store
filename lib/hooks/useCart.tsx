@@ -110,9 +110,11 @@ const useCart = create(
             } else {
               return {
                 ...cartItem,
+                quantity: 1,
                 item: {
                   ...cartItem.item,
-                  stock: updatedProduct.stock
+                  stock: updatedProduct.stock,
+
                 }
               };
             }

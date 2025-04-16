@@ -100,7 +100,7 @@ function ReqBtn() {
   return (
     <button
       title="Send email request"
-      className="w-full py-2 mt-4 bg-black text-white rounded-md hover:opacity-45"
+      className="w-full py-2 flex justify-center mt-4 bg-black text-white rounded-md hover:opacity-45"
       disabled={pending || process.env.NODE_ENV === 'production'}
       type="submit"
     >

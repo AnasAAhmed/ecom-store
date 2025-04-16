@@ -18,7 +18,7 @@ export async function getAllCollections() {
 
   } catch (err) {
     console.log("[collections_GET]", err)
-    throw new Error('Internal Server Error'+ (err as Error).message)
+    throw new Error('Internal Server Error' + (err as Error).message)
   }
 };
 
@@ -46,7 +46,7 @@ export async function getCollections() {
 
   } catch (err) {
     console.log("[collections_GET]", err)
-    throw new Error('Internal Server Error'+ (err as Error).message)
+    throw new Error('Internal Server Error' + (err as Error).message)
   }
 };
 
@@ -62,7 +62,7 @@ export async function getCollectionDetails(title: string) {
     return JSON.parse(JSON.stringify(collection))
   } catch (err) {
     console.log("[collectionId_GET]", err);
-    throw new Error('Internal Server Error'+ (err as Error).message)
+    throw new Error('Internal Server Error' + (err as Error).message)
   }
 };
 
@@ -161,7 +161,7 @@ export async function getProductDetails(slug: string) {
 
   } catch (err) {
     console.log("[productId_GET]", err);
-    throw new Error('Internal Server Error'+ (err as Error).message)
+    throw new Error('Internal Server Error' + (err as Error).message)
 
   }
 };
@@ -179,7 +179,7 @@ export async function getRelatedProduct(productId: string, category: string, col
 
   } catch (err) {
     console.log("[productId_GET]", err);
-    throw new Error('Internal Server Error'+ (err as Error).message)
+    throw new Error('Internal Server Error' + (err as Error).message)
 
   }
 };
@@ -199,7 +199,7 @@ export async function getProductDetailsForSeo(slug: string) {
     return JSON.parse(JSON.stringify(product))
   } catch (err) {
     console.log("[productId_GET]", err);
-    throw new Error('Internal Server Error'+ (err as Error).message)
+    throw new Error('Internal Server Error' + (err as Error).message)
 
   }
 };
@@ -214,7 +214,7 @@ export async function getProductReviews(productId: string, page: number) {
     return JSON.parse(JSON.stringify(reviews))
   } catch (err) {
     console.log("[productId_GET]", err);
-    throw new Error('Internal Server Error'+ (err as Error).message)
+    throw new Error('Internal Server Error' + (err as Error).message)
 
   }
 };
@@ -223,7 +223,7 @@ export async function getWishList(userId: string) {
   try {
     await connectToDB();
 
-    const wishlist = await Wishlist.findOne({userId})
+    const wishlist = await Wishlist.findOne({ userId })
       .populate({
         path: "wishlist",
         model: Product,
@@ -261,7 +261,7 @@ export async function getOrders(customerEmail: string, page: number) {
 
   } catch (err) {
     console.log("[customerId_GET", err);
-    throw new Error('Internal Server Error'+ (err as Error).message)
+    throw new Error('Internal Server Error' + (err as Error).message)
 
   };
 };
@@ -303,22 +303,70 @@ export const stockReduce = async (products: OrderProductCOD[]) => {
     revalidatePath(`/products/${order.product}`);
   };
 };
-export async function getUser(email: string) {
+export async function getUser(
+  email: string,
+  ip: string,
+  userAgent: string,
+  country: string,
+  city: string,
+  browser: string,
+  device: string,
+  os: string,
+  isSiginingUpUserWithCredientials?: boolean
+) {
   try {
     await connectToDB();
     const user = await Customer.findOne({ email });
+    if (user && !isSiginingUpUserWithCredientials) {
+      user.signInHistory.unshift({
+        country: country,
+        city: city,
+        ip: ip,
+        browser,
+        os,
+        device,
+        userAgent: userAgent || '',
+        signedInAt: new Date(),
+      });
+
+      // Limit the sign-in history to 3 entries
+      user.signInHistory = user.signInHistory.slice(0, 3);
+      user.country = country;  
+      user.city = city; 
+      await user.save();
+    }
     return user as User;
   } catch (error) {
     const err = error as Error
     throw new Error('Internal Server Error' + err.message)
   }
-}
+};// assuming you have a DB connection util
+
+
+
 
 export async function createUser(
   email: string,
   hashedPassword: string,
+  ip: string,
+  userAgent: string,
+  country: string,
+  city: string,
+  browser: string,
+  device: string,
+  os: string,
 ) {
-  const existingUser = await getUser(email)
+  const existingUser = await getUser(
+    email,
+    ip,
+    userAgent,
+    country,
+    city,
+    browser,
+    device,
+    os,
+    true
+  )
 
   if (existingUser) {
     return {
@@ -326,12 +374,17 @@ export async function createUser(
       resultCode: ResultCode.UserAlreadyExists
     }
   } else {
-    const name = extractNameFromEmail(email)
+    const name = extractNameFromEmail(email);
     await Customer.create({
       name: name,
       email: email,
+      country,
+      city,
       password: hashedPassword,
-      image:`https://ui-avatars.com/api/?name=${name}`
+      image: `https://ui-avatars.com/api/?name=${name}`,
+      signInHistory: [{
+
+      }]
     })
     return {
       type: 'success',
