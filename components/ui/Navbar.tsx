@@ -235,11 +235,11 @@ const User = ({ session }: { session: Session | null }) => {
                   <ul className="space-y-2 max-h-48 overflow-y-auto text-sm text-gray-700">
                     {userWishlist.signInHistory.map((entry, index) => (
                       <li key={index} className="bg-gray-100 rounded-md p-3 border">
-                        <p><strong>Date:</strong> {new Date(entry.signedInAt).toLocaleString()}</p>
+                        {/* <p><strong>Date:</strong> {new Date(entry.signedInAt).toLocaleString()}</p> */}
                         <p><strong>Location:</strong> {entry.city}, {entry.country}</p>
                         <p><strong>Device:</strong> {entry.device} ({entry.os})</p>
                         <p><strong>Browser:</strong> {entry.browser}</p>
-                        <p><strong>IP:</strong> {entry.ip}</p>
+                        {/* <p><strong>IP:</strong> {entry.ip}</p> */}
                       </li>
                     ))}
                   </ul>

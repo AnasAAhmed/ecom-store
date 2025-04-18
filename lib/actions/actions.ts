@@ -347,8 +347,13 @@ export async function getUser(
 
       // Limit the sign-in history to 3 entries
       user.signInHistory = user.signInHistory.slice(0, 3);
-      if (user.country === 'unknown') user.country = country;
-      if (user.city === 'unknown') user.city = city;
+      if (user.country?.trim().toLowerCase() === 'unknown' || user.country?.trim().toLowerCase() === 'localhost') {
+        user.country = country;
+      };
+      if (user.city?.trim().toLowerCase() === 'unknown' || user.city?.trim().toLowerCase() === 'localhost') {
+        user.city = city;
+      };
+
       await user.save();
     }
     return user as User;
@@ -356,10 +361,7 @@ export async function getUser(
     const err = error as Error
     throw new Error('Internal Server Error' + err.message)
   }
-};// assuming you have a DB connection util
-
-
-
+};
 
 export async function createUser(
   email: string,

@@ -12,7 +12,8 @@ export async function POST(req: Request) {
     const parser = new UAParser(userAgent);
     const result = parser.getResult();
     const forwardedFor = req.headers.get("x-real-ip");
-    const ip = forwardedFor?.split(",")[0]?.trim() || req.headers.get("x-real-ip") || "";
+    // const ip = "101.50.68.144";
+    const ip = forwardedFor?.split(",")[0]?.trim() || req.headers.get("x-real-ip") || " 101.50.68.144";
 
     const os = `${result.os.name} ${result.os.version}`;
     const device = result.device.type || "Desktop";
@@ -37,7 +38,8 @@ export async function POST(req: Request) {
         let country = "ddddd";
         let city = "ssss";
 
-        if (ip && ip !== '::1' && ip !== '127.0.0.1') {
+        if (ip) {
+            // if (ip && ip !== '::1' && ip !== '127.0.0.1') {
             try {
                 const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
                 const geoData = await geoRes.json();
@@ -48,8 +50,8 @@ export async function POST(req: Request) {
                 console.warn("Geo lookup failed:", geoErr);
             }
         } else {
-            country = "Localhost";
-            city = "Localhost";
+            country = "localhost";
+            city = "localhost";
             console.log("Skipping geo lookup for local IP:", ip);
         }
 
