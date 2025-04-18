@@ -19,7 +19,15 @@ export const dynamic = 'force-static';
 //     id: String(post.id),
 //   }))
 // }
-
+const brands = [
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHCZClMNdR82a7kjOZBjnH9nuNq50hKa2kRg&s",
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWhCKfrK3dxWoaGmyrrwmaOijVv8NbKuc7WA&s",
+  "https://www.junaidjamshed.com/media/logo/stores/1/new_logo.png",
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrRRjFf56niBWtgzHcuLK1dC1iCVRNlPONiw&s",
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC9gxPThsTRepB3JiNYlFfPvR5oXBvj05IAQ&s",
+  "https://zaraye.co/images/uploaded/756d7d89902ff6517250e574acf3e4b7b7ef7764-alkaramlogo21.jpeg",
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIo5J2RXZWsYV-njuemjGatLusjgt28AwJNg&s",
+];
 export default async function Home() {
   const [collections, products, bestSellingProducts] = await Promise.all([
     getCollections(),
@@ -38,7 +46,21 @@ export default async function Home() {
         link="/search"
         buttonText="Shop"
       />
-
+      <div className="overflow-hidden py-2 bg-white border-y border-gray-200">
+        <div className="relative w-full">
+          <div className="flex gap-12 animate-marquee w-max">
+            {[...brands, ...brands].map((src, i) => (
+              <div key={i} className="flex items-center justify-center min-w-[120px]">
+                <img
+                  src={src}
+                  alt={`Brand ${i}`}
+                  className="w-24 h-24 object-contain grayscale hover:grayscale-0 transition duration-300"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
       <Collections collections={collections} />
 
       <ProductList heading="Latest Products" Products={products} />

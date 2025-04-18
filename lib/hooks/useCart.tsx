@@ -200,6 +200,20 @@ interface UserState {
   userWishlist: {
     userId: string;
     wishlist: [string];
+    signInHistory: [
+      {
+        country: string,
+        city: string,
+        ip: string,
+        userAgent: string,
+        os: string,
+        device: string,
+        browser: string,
+        signedInAt: Date
+      }
+    ] | [];
+    country: string;
+    city: string;
   } | null;
   setUserWishlist: (userWishlist: any) => void;
   resetUserWishlist: () => void;

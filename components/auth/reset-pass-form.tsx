@@ -68,17 +68,17 @@ export default function ResetForm({ token, userId }: { token: string, userId: st
 
     useEffect(() => {
         async function updateSession() {
-        if (result && result.type) {
-          if (result.type === 'error') {
-            toast.error(result.resultCode)
-          } else {
-            toast.success(result.resultCode)
-            await getSession(); 
-          }
+            if (result && result.type) {
+                if (result.type === 'error') {
+                    toast.error(result.resultCode)
+                } else {
+                    toast.success(result.resultCode)
+                    await getSession();
+                }
+            }
         }
-      }
-      updateSession();
-      }, [result, router])
+        updateSession();
+    }, [result, router])
 
     if (session) {
         router.push(redirectUrl)
@@ -106,36 +106,96 @@ export default function ResetForm({ token, userId }: { token: string, userId: st
                 required
                 defaultValue={userId}
             />
-            <label
-                className="block text-xs font-medium my-3 text-zinc-400"
-                htmlFor="password"
-            >
-                New Password
-            </label>
-            <input
-                className="peer block w-full valid:border-green-500 rounded-md border bg-zinc-50 px-2 py-[9px] text-sm outline-none placeholder:text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950"
-                id="password"
-                type="password"
-                name="password"
-                placeholder="Enter password"
-                required
-                minLength={6}
-            />
-            <label
-                className="block text-xs font-medium my-3 text-zinc-400"
-                htmlFor="cpassword"
-            >
-                Confirm Password
-            </label>
-            <input
-                className="peer block w-full valid:border-green-500 rounded-md border bg-zinc-50 px-2 py-[9px] text-sm outline-none placeholder:text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950"
-                id="cpassword"
-                type="password"
-                name="cpassword"
-                placeholder="Enter confirm password"
-                required
-                minLength={6}
-            />
+            <div className="mb-6 group">
+                <div className='mt-3 mb-1 flex justify-between items-center'>
+                    <label
+                        className="block text-small-medium text-zinc-400"
+                        htmlFor="password"
+                    >
+                        New Password
+                    </label>
+                </div>
+                <input
+                    className="peer valid:border-green-500 block w-full rounded-md border bg-zinc-50 px-2 py-[9px] text-sm outline-none placeholder:text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950"
+                    id="password"
+                    type="password"
+                    name="password"
+                    placeholder="Enter password"
+                    required
+                    minLength={6}
+                />
+                <div className="absolute z-10 hidden group-hover:inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-xs w-72 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
+                    <div className="p-3 space-y-2">
+                        <h3 className="font-semibold text-gray-900 dark:text-white">Must have at least 6 characters</h3>
+                        <div className="grid grid-cols-4 gap-2">
+                            <div className="h-1 bg-orange-300 dark:bg-orange-400"></div>
+                            <div className="h-1 bg-orange-300 dark:bg-orange-400"></div>
+                            <div className="h-1 bg-gray-200 dark:bg-gray-600"></div>
+                            <div className="h-1 bg-gray-200 dark:bg-gray-600"></div>
+                        </div>
+                        <p>Its better to have:</p>
+                        <ul>
+                            <li className="flex items-center mb-1">
+
+                                Upper & lower case letters
+                            </li>
+                            <li className="flex items-center mb-1">
+
+                                A symbol (#$&)
+                            </li>
+                            <li className="flex items-center">
+
+                                A longer password (min. 12 chars.)
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div className="mb-6 group">
+                <div className='mt-3 mb-1 flex justify-between items-center'>
+                    <label
+                        className="block text-small-medium text-zinc-400"
+                        htmlFor="cpassword"
+                    >
+                       Confirm Password
+                    </label>
+                </div>
+                <input
+                    className="peer valid:border-green-500 block w-full rounded-md border bg-zinc-50 px-2 py-[9px] text-sm outline-none placeholder:text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950"
+                    id="cpassword"
+                    type="cpassword"
+                    name="cpassword"
+                    placeholder="Enter password"
+                    required
+                    minLength={6}
+                />
+                <div className="absolute z-10 hidden group-hover:inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-xs w-72 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
+                    <div className="p-3 space-y-2">
+                        <h3 className="font-semibold text-gray-900 dark:text-white">Must have at least 6 characters</h3>
+                        <div className="grid grid-cols-4 gap-2">
+                            <div className="h-1 bg-orange-300 dark:bg-orange-400"></div>
+                            <div className="h-1 bg-orange-300 dark:bg-orange-400"></div>
+                            <div className="h-1 bg-gray-200 dark:bg-gray-600"></div>
+                            <div className="h-1 bg-gray-200 dark:bg-gray-600"></div>
+                        </div>
+                        <p>Its better to have:</p>
+                        <ul>
+                            <li className="flex items-center mb-1">
+
+                                Upper & lower case letters
+                            </li>
+                            <li className="flex items-center mb-1">
+
+                                A symbol (#$&)
+                            </li>
+                            <li className="flex items-center">
+
+                                A longer password (min. 12 chars.)
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <ResetBtn />
             {result && result.type === 'succes' && <div className="bg-green-200 flex px-3 gap-3 items-center mt-4 py-3 w-full rounded-md">
                 <CheckCircleIcon />

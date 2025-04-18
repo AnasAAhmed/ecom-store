@@ -1,19 +1,19 @@
 import { signIn } from '@/auth'
 import * as React from "react"
-import Link from 'next/link'
 import LoginForm from '@/components/auth/login-form'
 import AuthLink from '@/components/AuthLink'
+import { ForgetPassForm } from '@/components/auth/Forget-passwordForm'
 
 
 
 export default async function LoginPage() {
 
   return (
-    <div className="flex flex-col mt-28 sm:mt-12 h-screen items-center">
+    <div className="flex flex-col mt-28 sm:mt-20 h-screen items-center">
       <div className="sm:w-[400px]">
         <div className='pb-0'>
-          <h1 className='text-heading3-bold'>Login</h1>
-          <p className='text-body-medium mt-2'>Login with your account to continue.</p>
+          <h1 className='text-heading3-base'>Login</h1>
+          <p className='text-body-medium mt-4 text-gray-500'>Login with your account to continue.</p>
         </div>
         <div>
           <form
@@ -29,10 +29,12 @@ export default async function LoginPage() {
           </form>
           <div className="text-md text-zinc-400 flex justify-center">or</div>
           <LoginForm />
+
         </div>
       </div>
+        <ForgetPassForm btnText='Forget Password?' />
       <AuthLink url='sign-up' title='No account yet? Go to sign-up page'>
-          No account yet? <span className="font-semibold underline">Sign up</span>
+          No account yet? <span className="underline text-body-medium">Sign up</span>
       </AuthLink>
     </div>
   )

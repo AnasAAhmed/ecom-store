@@ -29,6 +29,13 @@ const config: Config = {
           fontWeight: "600",
         },
       ],
+      "heading3-base": [
+        "24px",
+        {
+          lineHeight: "100%",
+          fontWeight: "500",
+        },
+      ],
       "heading4-bold": [
         "20px",
         {

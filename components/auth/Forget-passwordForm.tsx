@@ -59,12 +59,12 @@ export function ForgetPassForm({ btnText }: { btnText: string }) {
   return (
     <div>
       <div >
-        <button title="Click here for forget Password" onClick={openModal} type="button" className="px-0 text-zinc-500">{btnText}</button>
+        <button title="Click  here for forget Password" onClick={openModal} type="button" className="px-0 text-small-medium text-zinc-500">{btnText}</button>
       </div>
       <Modal isOpen={modalOpen} onClose={closeModal} overLay={true}>
-        <div className="bg-white p-5 rounded-md">
+        <div className="bg-white animate-modal p-5 rounded-md">
           <div className="flex flex-col space-y-1.5 text-center sm:text-left">
-            <h1 className="text-heading4-bold text-gray-900">Forget password?</h1>
+            <h1 className="text-heading3-base text-gray-900">Forget password?</h1>
             <div className="text-sm text-gray-600">
               We will send you the email for password reset.
               {process.env.NODE_ENV === 'production' && <div className="bg-yellow-200 flex px-3 gap-3 items-center mt-4 py-1 w-full rounded-md">

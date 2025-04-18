@@ -11,15 +11,15 @@ import * as React from "react"
 export default async function ResetPassPage({ searchParams }: { searchParams: { token: string,id:string} }) {
     const session = (await auth()) as Session
 
-    if (session||!searchParams.token) {
+    if (session||!searchParams.token||!searchParams.id) {
         redirect('/')
     }
 
     return (
-        <div className="flex flex-col mt-28 sm:mt-12 h-screen items-center">
+        <div className="flex flex-col mt-28 sm:mt-20 h-screen items-center">
             <div className="sm:w-[400px]">
                 <div className='pb-0'>
-                    <h1 className='text-heading3-bold mb-2'>Reset Password</h1>
+                    <h1 className='text-heading3-base mb-2'>Reset Password</h1>
                 </div>
                 <div>
                     <ResetForm token={searchParams.token} userId={searchParams.id} />

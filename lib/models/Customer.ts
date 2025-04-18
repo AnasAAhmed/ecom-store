@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Wishlist from "./Wishlist";
 
 const customerSchema = new mongoose.Schema({
   name: { type: String },
@@ -37,6 +38,12 @@ const customerSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   }
+});
+
+customerSchema.pre("deleteOne", { document: true, query: false }, async function (next) {
+  const customerId = this._id;
+  await Wishlist.deleteMany({ userId: customerId });
+  next();
 });
 
 const Customer = mongoose.models.Customer || mongoose.model("Customer", customerSchema);

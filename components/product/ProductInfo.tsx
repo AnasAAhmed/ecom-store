@@ -5,6 +5,7 @@ import { MinusCircle, PlusCircle } from "lucide-react";
 import useCart, { useRegion } from "@/lib/hooks/useCart";
 import StarRatings from "./StarRatings";
 import HeartFavorite from "./HeartFavorite";
+import { currencyToSymbolMap } from "@/lib/utils/features";
 
 const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
     const [selectedVariant, setSelectedVariant] = useState<VariantType | null>(null);
@@ -46,13 +47,13 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
             {/* Price & Discounts */}
             <div className="text-heading4-bold flex justify-between items-start">
                 <div className="mt-[2spx]">
-                    <span className="text-small-medium mr-1"><small>{currency}</small></span>{price}
+                    <span className="text-small-medium mr-1">{currencyToSymbolMap[currency]}</span>{price}
                     {productInfo.expense > 0 && (
                         <>
                             <span className="bg-red-600 ml-3 text-white text-[17px] px-2 py-1 rounded-md">
                                 {((productInfo.expense - productInfo.price) / productInfo.expense * 100).toFixed(0)}% Off
                             </span>
-                            <p className="text-small-medium line-through  text-red-1"><small>{currency}</small> {expense}</p>
+                            <p className="text-small-medium line-through  text-red-1">{currencyToSymbolMap[currency]} {expense}</p>
                         </>
                     )}
                 </div>

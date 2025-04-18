@@ -6,6 +6,7 @@ import { ChevronDown, ShoppingCart } from "lucide-react";
 import HeartFavorite from "./HeartFavorite";
 import StarRatings from "./StarRatings";
 import useCart, { useRegion } from "@/lib/hooks/useCart";
+import { currencyToSymbolMap } from "@/lib/utils/features";
 
 interface ProductCardProps {
   product: ProductType;
@@ -93,11 +94,11 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
           <div className="mt-1 flex items-center justify-between">
             <div className="flex gap-2 items-center">
               <p className="text-lg font-bold text-gray-900">
-                <small>{currency}</small>  {productPrice}
+                <small>{currencyToSymbolMap[currency]}</small>  {productPrice}
               </p>
               {expense > price && (
                 <p className="text-small-medium max-sm:hidden line-through text-gray-500">
-                  <small>{currency}</small> {productExpense}
+                  <small>{currencyToSymbolMap[currency]}</small> {productExpense}
                 </p>
               )}
             </div>

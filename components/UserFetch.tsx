@@ -13,19 +13,13 @@ const UserFetcher = (
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const res = await fetch('/api/wishlist', {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        id: session?.user?.id
-                    }),
+                const res = await fetch('/api/wishlist?userId='+session?.user?.id, {
+                    method: "GET",
                 });
                 const data = await res.json();
                 setUserWishlist(data);
             } catch (err) {
-                console.log('[users_GET]', err);
+                console.log('[wishlist_GET]', err);
                 resetUserWishlist();
             }
         };

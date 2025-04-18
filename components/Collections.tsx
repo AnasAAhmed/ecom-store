@@ -17,7 +17,7 @@ const Collections = async ({ collections }: { collections: CollectionType[] }) =
                 key={collection._id}
                 src={collection.image}
                 alt={"this is the image of collection: " + collection.title}
-                width={850}
+                width={1200}
                 height={850}
                 className="w-auto h-auto rounded-lg cursor-pointer"
               />

@@ -72,16 +72,24 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (account?.provider === 'google') {
         try {
 
-          const ip = '36.255.42.109';
-          // const ip = headers().get('x-real-ip') || '36.255.42.109';
+          const ip = headers().get('x-real-ip') || '36.255.42.109';
           const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
           const geoData = await geoRes.json();
           const userAgent = headers().get('x-user-agent') || '';
           const parser = new UAParser(userAgent);
           const result = parser.getResult();
+          let country = "oooo";
+          let city = "pppp";
 
-          const country = geoData.country|| 'Unknown';
-          const city = geoData.city || 'Unknown';
+          if (ip && ip !== '::1' && ip !== '127.0.0.1') {
+            country = geoData.country || 'Unknown';
+            city = geoData.city || 'Unknown';
+          } else {
+            country = "Localhost";
+            city = "Localhost";
+            console.log("Skipping geo lookup for local IP:", ip);
+          }
+
           const os = `${result.os.name} ${result.os.version}`;
           const device = result.device.type || "Desktop";
           const browser = `${result.browser.name} ${result.browser.version}`;
@@ -94,25 +102,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
               email: user.email!,
               name: extractNameFromEmail(user.email!),
               googleId: user.id,
-              image: user.image!
+              image: user.image!,
+              city,
+              country,
+              signInHistory: [{
+                country: country,
+                city: city,
+                ip: ip,
+                browser,
+                os,
+                device,
+                userAgent: userAgent || '',
+                signedInAt: new Date(),
+              }]
             });
 
             (user as any).dbId = newUser.id;
             (user as any).username = newUser.name;
-
-            newUser.country = country;
-            newUser.city = city;
-            newUser.signInHistory = [{
-              country: country,
-              city: city,
-              ip: ip,
-              browser,
-              os,
-              device,
-              userAgent: userAgent || '',
-              signedInAt: new Date(),
-            }];
-            await newUser.save();
           } else {
             (user as any).dbId = googleUser.id;
             (user as any).username = googleUser.name;

@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import toast from 'react-hot-toast';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react'
-import { slugify } from '@/lib/utils/features';
+import { currencyToSymbolMap, slugify } from '@/lib/utils/features';
 
 const Cart = () => {
   const router = useRouter();
@@ -138,17 +138,17 @@ const Cart = () => {
                       <Link title={'See details of product ' + cartItem.item.title} href={`products/${slugify(cartItem.item.title)}`} className="text-body-bold line-clamp-2 max-w-[32rem]">{cartItem.item.title}</Link>
 
                       <p className="text-small-medium">
-                        {cartItem.color && cartItem.color}
+                        {cartItem.color &&'color: '+cartItem.color}
                         {cartItem.color && cartItem.size && '/'}
-                        {cartItem.size && cartItem.size}</p>
+                        {cartItem.size &&'size: '+ cartItem.size}</p>
 
                       {cartItem.item.stock < 5 && <p className="text-small-medium">{`only ${cartItem.item.stock} left`}</p>}
                     </div>
                   </div>
                   <div className='flex gap-2 justify-center flex-col'>
 
-                    <p className="flex gap-1 text-small-medium">{currency} {(cartItem.item.price * exchangeRate).toFixed()}
-                      {cartItem.item.expense > 0 && <span className="line-through text-[12px] text-red-1">{currency} {cartItem.item.expense}</span>}
+                    <p className="flex gap-1 text-small-medium">{currencyToSymbolMap[currency]} {(cartItem.item.price * exchangeRate).toFixed()}
+                      {cartItem.item.expense > 0 && <span className="line-through text-[12px] text-red-1">{currencyToSymbolMap[currency]} {cartItem.item.expense}</span>}
                     </p>
                     {cartItem.item.stock > 0 ? (
                       <div className="flex gap-4 items-center">
@@ -184,7 +184,7 @@ const Cart = () => {
           </p>
           <div className="flex justify-between text-body-semibold">
             <span>Total Amount</span>
-            <span>{currency} {totalRounded.toFixed()}</span>
+            <span>{currencyToSymbolMap[currency]} {totalRounded.toFixed()}</span>
           </div>
           {expand &&
             <div className="flex flex-col gap-4 ">

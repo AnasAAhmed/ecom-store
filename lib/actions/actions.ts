@@ -66,6 +66,22 @@ export async function getCollectionDetails(title: string) {
   }
 };
 
+export async function getCollectionDetailsForSeo(title: string) {
+  try {
+    await connectToDB();
+
+    const collection = await Collection.findOne({ title }).select(' title image description');
+
+    if (!collection) {
+      return null
+    }
+    return JSON.parse(JSON.stringify(collection))
+  } catch (err) {
+    console.log("[collectionId_GET]", err);
+    throw new Error('Internal Server Error' + (err as Error).message)
+  }
+};
+
 export async function getSearchProducts(query: string, sort: string, sortField: string, page: number) {
   const limit = 12;
   const search = query ? decodeURIComponent(query) : '';
@@ -331,6 +347,8 @@ export async function getUser(
 
       // Limit the sign-in history to 3 entries
       user.signInHistory = user.signInHistory.slice(0, 3);
+      if (user.country === 'unknown') user.country = country;
+      if (user.city === 'unknown') user.city = city;
       await user.save();
     }
     return user as User;
