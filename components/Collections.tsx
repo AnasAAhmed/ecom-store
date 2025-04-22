@@ -17,9 +17,9 @@ const Collections = async ({ collections }: { collections: CollectionType[] }) =
                 key={collection._id}
                 src={collection.image}
                 alt={"this is the image of collection: " + collection.title}
-                width={1200}
-                height={850}
-                className="w-auto h-auto rounded-lg cursor-pointer"
+                width={400}
+                height={250}
+                className="rounded-lg cursor-pointer"
               />
               <h1 className="text-heading3-bold group-hover:left-7 duration-300 text-white absolute bottom-4 left-3">{unSlugify(collection.title)}</h1>
             </Link>

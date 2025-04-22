@@ -8,12 +8,13 @@ const Gallery = ({ productMedia }: { productMedia: string[] }) => {
   return (
     <div className="flex flex-col gap-3 ">
       {/* <ImageZoom src={mainImage} alt={"product"} /> */}
-      <Image src={mainImage} alt={'product'} width={500} height={500} className="rounded-lg md:h-[500px] object-cover" />
+      <Image src={mainImage} loading="lazy" alt={'product'} width={500} height={500} className="rounded-lg md:h-[500px] object-cover" />
 
       <div className="flex gap-2 overflow-auto tailwind-scrollbar-hide">
         {productMedia.map((image, index) => (
           <Image
             key={index}
+            loading="lazy"
             src={image}
             height={200}
             width={200}

@@ -11,7 +11,7 @@ import { signOut, useSession } from "next-auth/react";
 import { Session } from "@auth/core/types";
 import Modal from "./Modal";
 
-const Navbar = ({ country, city }: { country: string, city: string }) => {
+const Navbar = ({ country, city ,countryCode}: { country: string, city: string,countryCode:string }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams.toString());
@@ -133,7 +133,7 @@ const Navbar = ({ country, city }: { country: string, city: string }) => {
           </div>
 
           <div className="flex items-center gap-2">
-            <Currency geoCountry={country} className="none" />
+            <Currency geoCountry={country} className="none"  geoCountryCode={countryCode}/>
             <Link title="Go to Cart" aria-label={'Go to cart'} href="/cart" className="hidden md:flex items-center gap-1 border px-1 py-1 rounded-lg hover:bg-black hover:text-white">
               <ShoppingCart />
               <span>({cart.cartItems.length})</span>
@@ -160,8 +160,8 @@ const Navbar = ({ country, city }: { country: string, city: string }) => {
           </div>
         </div>
         {/* Mobile Modal */}
-        {isOpen && <div className="fixed flex lg:hidden right-6 top-7 items-center justify-center bg-opacity-50 z-50">
-          <ul className="flex flex-col p-4 gap-3 bg-white animate-modal rounded-lg border">
+        {isOpen && <div className="fixed flex lg:hidden right-6 max-sm:top-20 items-center justify-center bg-opacity-50 z-50">
+          <ul className="flex flex-col p-4 gap-3 bg-white animate-menu rounded-lg border">
 
             {["/", "/search", "/contact", "/blog", "/wishlist", "/orders"].map((name, idx) => (
               <Link
@@ -225,8 +225,8 @@ const User = ({ session }: { session: Session | null }) => {
               <div className="space-y-2 text-sm text-gray-700">
                 <p><strong>Name:</strong> {session.user.name}</p>
                 <p><strong>Email:</strong> {session.user.email}</p>
-                <p><strong>Country:</strong> {userWishlist?.country || "N/A"}</p>
-                <p><strong>City:</strong> {userWishlist?.city || "N/A"}</p>
+                <p className="capitalize"><strong>Origin Country:</strong> {userWishlist?.country || "N/A"}</p>
+                <p className="capitalize"><strong>Origin City:</strong> {userWishlist?.city  || "N/A"}</p>
               </div>
 
               <div className="mt-4">

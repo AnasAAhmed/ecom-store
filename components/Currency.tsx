@@ -6,8 +6,8 @@ import { countryToCurrencyMap, countryToFlagMap, currencyToSymbolMap } from '@/l
 
 
 const allCountries = Object.keys(countryToCurrencyMap);
-const Currency = ({ className, geoCountry = '' }: { className: string; geoCountry: string }) => {
-  const { currency, setCurrency, country, setCountry } = useRegion();
+const Currency = ({ className, geoCountry, geoCountryCode }: { className: string; geoCountry?: string, geoCountryCode?: string }) => {
+  const { currency, setCurrency, country, setCountry, clearcon } = useRegion();
   const [modalOpen, setModalOpen] = useState(currency !== '' && country !== '');
 
   useEffect(() => {
@@ -36,8 +36,8 @@ const Currency = ({ className, geoCountry = '' }: { className: string; geoCountr
   const isCustomCountry = geoCountry && !allCountries.includes(geoCountry);
   return (
     <>
-      <button onClick={openModal} className='flex items-center text-small-medium gap-2'>
-        <img title={countryToFlagMap[country] + "flg"} src={`https://flagcdn.com/96x72/${countryToFlagMap[country]}.png`} alt={countryToFlagMap[country] + " Flag"} width={24} height={18} />
+      <button title='Change Currency & Region' onClick={openModal} className='flex items-center text-small-medium gap-2'>
+        <img title={countryToFlagMap[country] + " flg"} src={`https://flagcdn.com/96x72/${countryToFlagMap[country] || geoCountryCode?.toLowerCase() || 'ps'}.png` || 'https://flagcdn.com/96x72/pk.png'} alt={countryToFlagMap[country] + " Flag"} width={24} height={18} />
         {currency} {currencyToSymbolMap[currency]}
       </button>
       <Modal isOpen={modalOpen} onClose={closeModal} overLay={true}>
@@ -81,12 +81,20 @@ const Currency = ({ className, geoCountry = '' }: { className: string; geoCountr
               )}
             </select>
           </div>
-          <button
-            className="mt-4 self-end px-4 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700 transition"
-            onClick={closeModal}
-          >
-            Done
-          </button>
+          <div className="flex items-center gap-2 w-full">
+            <button
+              className="mt-4 self-end w-full px-4 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700 transition"
+              onClick={closeModal}
+            >
+              Done
+            </button>
+            <button
+              className="mt-4 self-end px-4 w-full py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700 transition"
+              onClick={() =>{ clearcon();closeModal()}}
+            >
+              Reset
+            </button>
+          </div>
         </div>
       </Modal>
     </>

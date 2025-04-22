@@ -319,51 +319,93 @@ export const stockReduce = async (products: OrderProductCOD[]) => {
     revalidatePath(`/products/${order.product}`);
   };
 };
-export async function getUser(
-  email: string,
-  ip: string,
-  userAgent: string,
-  country: string,
-  city: string,
-  browser: string,
-  device: string,
-  os: string,
-  isSiginingUpUserWithCredientials?: boolean
-) {
+
+export async function getUser({
+  email,
+  provider,
+  ip,
+  userAgent,
+  country,
+  city,
+  browser,
+  device,
+  os,
+  isSigningUpUserWithCredientials = false,
+}: {
+  email: string
+  provider: 'google' | 'github' | 'credentials' | 'none'
+  ip: string
+  userAgent: string
+  country: string
+  city: string
+  browser: string
+  device: string
+  os: string
+  isSigningUpUserWithCredientials?: boolean
+}) {
   try {
     await connectToDB();
     const user = await Customer.findOne({ email });
-    if (user && !isSiginingUpUserWithCredientials) {
-      user.signInHistory.unshift({
-        country,
-        city,
-        ip,
-        browser,
-        os,
-        device,
-        userAgent: userAgent || '',
-        signedInAt: new Date(),
-      });
 
-      // Limit the sign-in history to 3 entries
-      user.signInHistory = user.signInHistory.slice(0, 3);
-      if (user.country?.trim().toLowerCase() === 'unknown' || user.country?.trim().toLowerCase() === 'localhost') {
-        user.country = country;
-      };
-      if (user.city?.trim().toLowerCase() === 'unknown' || user.city?.trim().toLowerCase() === 'localhost') {
-        user.city = city;
-      };
-
-      await user.save();
+    if (!user) {
+      return null;
     }
+
+    const providerMatches =
+      (provider === 'google' && user.googleId) ||
+      (provider === 'credentials' && user.password);
+    //|| (provider === 'github' && user.githubid);
+
+
+    if (isSigningUpUserWithCredientials) {
+      if (providerMatches) {
+        return user as User;
+      }
+      throw new Error('A user with this email already exists with another sign-in method');
+    }
+
+    if (!providerMatches) {
+      throw new Error('Email already exists with a different sign-in method');
+    }
+    user.signInHistory.unshift({
+      country,
+      city,
+      ip,
+      browser,
+      os,
+      device,
+      userAgent: userAgent || '',
+      signedInAt: new Date(),
+    });
+
+    user.signInHistory = user.signInHistory.slice(0, 3);
+    if (user.country?.trim().toLowerCase() === 'unknown' || user.country?.trim().toLowerCase() === 'localhost') {
+      user.country = country;
+    };
+    if (user.city?.trim().toLowerCase() === 'unknown' || user.city?.trim().toLowerCase() === 'localhost') {
+      user.city = city;
+    };
+
+    await user.save();
+
     return user as User;
   } catch (error) {
     const err = error as Error
-    throw new Error('Internal Server Error' + err.message)
+    throw new Error(err.message)
   }
-};
+}
 
-export async function createUser(
+export async function createUser({ email,
+  ip,
+  hashedPassword,
+  userAgent,
+  country,
+  city,
+  browser,
+  device,
+  os,
+  isSigningUpUserWithCredientials = false
+}: {
   email: string,
   hashedPassword: string,
   ip: string,
@@ -373,39 +415,30 @@ export async function createUser(
   browser: string,
   device: string,
   os: string,
-) {
-  const existingUser = await getUser(
-    email,
-    ip,
-    userAgent,
-    country,
-    city,
-    browser,
-    device,
-    os,
-    true
-  )
+  isSigningUpUserWithCredientials?: boolean
+}) {
+  try {
 
-  if (existingUser) {
-    return {
-      type: 'error',
-      resultCode: ResultCode.UserAlreadyExists
+    const existingUser = await getUser({ email, provider: 'credentials', browser, city, country, ip, userAgent, os, device });
+
+
+    if (existingUser) {
+      return null;
+    } else {
+      const name = extractNameFromEmail(email);
+      const user = await Customer.create({
+        name: name,
+        email: email,
+        country: country.toLowerCase(),
+        city: city.toLowerCase(),
+        password: hashedPassword,
+        image: `https://ui-avatars.com/api/?name=${name}`,
+      })
+      return user as User;
     }
-  } else {
-    console.log("Before createUser:", { country, city });
-    const name = extractNameFromEmail(email);
-    await Customer.create({
-      name: name,
-      email: email,
-      country: country.toLowerCase(),
-      city: city.toLowerCase(),
-      password: hashedPassword,
-      image: `https://ui-avatars.com/api/?name=${name}`,
-    })
-    return {
-      type: 'success',
-      resultCode: ResultCode.UserCreated
-    }
+  } catch (error) {
+    console.log('creating User: ' + (error as Error).message);
+    throw new Error('creating User: ' + (error as Error).message);
   }
 }
 

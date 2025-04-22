@@ -22,7 +22,9 @@ export function ForgetPassForm({ btnText }: { btnText: string }) {
       })
 
     if (parsedCredentials.error) {
-      toast.error(parsedCredentials.error.message);
+     parsedCredentials.error.issues.map((i,_)=>(
+             toast.error(i.message)
+           ))
     } else {
       try {
         const response = await fetch('/api/auth/reset-mail', {

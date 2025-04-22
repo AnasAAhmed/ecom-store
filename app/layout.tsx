@@ -11,6 +11,7 @@ import { Roboto } from 'next/font/google'
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
+import IsOnline from "@/components/IsOnline";
 
 const roboto = Roboto({
   weight: ['500'],
@@ -36,11 +37,24 @@ export const metadata: Metadata =
     url: `${process.env.ECOM_STORE_URL}`,
     images: [
       {
-        url: '/logo.png',
+        url: '/home-preview.avif',
         width: 220,
         height: 250,
-        alt: 'Borcelle logo',
+        alt: 'home screenshot',
       },
+      {
+        url: '/home-insights.avif',
+        width: 220,
+        height: 250,
+        alt: 'home-insights',
+      },
+      {
+        url: '/product-seo.avif',
+        width: 220,
+        height: 250,
+        alt: 'Product seo preview',
+      },
+
     ],
     siteName: 'Borcelle Next.js by anas ahmed',
   },
@@ -54,9 +68,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const ip = headers().get('x-forward-for') || '36.255.42.109';
+  const ip = headers().get('x-forwarded-for') || '36.255.42.109';
   const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
   const geoData = await geoRes.json();
+ console.log(geoData.country,geoData.city);
+ 
 
   return (
     <html lang="en">
@@ -64,12 +80,13 @@ export default async function RootLayout({
         <SessionProvider>
           <ToasterProvider />
           <UserFetcher />
-          <Navbar city={geoData.city || ''} country={geoData.country || ''} />
+          <Navbar city={geoData.country||''} country={geoData.country||''} countryCode={geoData.countryCode||''}/>
           <Suspense fallback={<Loader />}>
             <div className="mt-28 sm:mt-12">
               {children}
             </div>
           </Suspense>
+          <IsOnline/>
           <Footer />
         </SessionProvider>
       </body>

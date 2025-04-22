@@ -61,7 +61,17 @@ body,
     opacity: 1;
   }
 }
+@keyframes rightScale {
+  from {
+    transform:translateX(10%);
+    opacity: 0;
+  }
 
+  to {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
 @keyframes marquee {
   0% {
     transform: translateX(0%);
@@ -90,6 +100,9 @@ body,
 
 .animate-modal {
   animation: upScale 0.2s ease-out forwards;
+}
+.animate-menu {
+  animation: rightScale 0.2s ease-out forwards;
 }
 .product-grid {
   display: flex;

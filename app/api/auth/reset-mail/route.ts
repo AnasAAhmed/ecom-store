@@ -36,10 +36,11 @@ export async function POST(req: Request) {
     });
 
   if (!parsedCredentials.success) {
-    return NextResponse.json({
-      type: 'error',
-      resultCode: parsedCredentials.error.message as string
-    });
+    let messages = ''
+    parsedCredentials.error.issues.map((i, _) => (
+        messages+=`${_>0?' & ':''}`+i.message
+    ))
+    return NextResponse.json({ type: 'error', resultCode:messages });
   }
 
   const token = crypto.randomUUID();
@@ -49,7 +50,7 @@ export async function POST(req: Request) {
     await connectToDB();
 
     const user = await Customer.findOneAndUpdate(
-      { email: parsedCredentials.data.email },
+      { email: parsedCredentials.data.email, password: { $ne: null } },
       {
         reset_token: token,
         token_expires: tokenExpirationTime,
@@ -60,13 +61,13 @@ export async function POST(req: Request) {
       }
     );
     if (user) {
-      const resetUrl = `${process.env.DOMAIN_URL}/reset-password?token=${token}&id=${user.id}`
+      const resetUrl = `${process.env.ECOM_STORE_URL}/reset-password?token=${token}&id=${user.id}`
 
       const res = await client.testing.send({
         from: sender,
         to: recipients,//for testing its only an owner email
         subject: "Password Reset Request",
-        html: PASSWORD_RESET_REQUEST_TEMPLATE.replace("{resetURL}", resetUrl),
+        html: PASSWORD_RESET_REQUEST_TEMPLATE(resetUrl),
         category: "Reset Token",
       });
       if (res.success) {
@@ -94,26 +95,3 @@ export async function POST(req: Request) {
     });
   }
 }
-//   const { emailsToSend,userId, token } = body;
-
-//   if (!recipients || !token) {
-//     return NextResponse.json({ error: 'Recipients and reset token are required' }, { status: 400 });
-//   }
-//   // const emailRecipients = emailsToSend.map((email: string) => ({ email }));
-//   const resetUrl = `${process.env.DOMAIN_URL}/reset-password?token=${token}&id=${userId}`
-
-//   const response = await client.testing.send({
-//     from: sender,
-//     to: recipients,//for testing its only an owner email
-//     subject: "Password Reset Request",
-//     html: PASSWORD_RESET_REQUEST_TEMPLATE.replace("{resetURL}", resetUrl),
-//     category: "Reset Token",
-//   });
-
-//   return NextResponse.json({ success: true, response });
-// } catch (error) {
-//   console.error('Error sending email:', error);
-//   return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
-// }
-
-

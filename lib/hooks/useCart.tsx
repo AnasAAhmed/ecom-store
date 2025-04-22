@@ -143,7 +143,7 @@ interface RegionStore {
   setCountry: (country: string) => void;
   setCurrency: (currency: string) => void;
   clearcur: () => void;
-  clearcor: () => void;
+  clearcon: () => void;
 }
 
 export const useRegion = create<RegionStore>()(
@@ -183,12 +183,11 @@ export const useRegion = create<RegionStore>()(
           set({ currency, exchangeRate, lastFetched: currentTime });
         } else {
           set({ currency });
-          console.log('currency-api:set');
         }
       },
 
       clearcur: () => set({ currency: 'USD', exchangeRate: 1 }), // reset to default USD
-      clearcor: () => set({ country: '' }),
+      clearcon: () => set({ country: '' }),
     }),
     {
       name: "region-storage",

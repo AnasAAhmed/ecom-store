@@ -12,7 +12,7 @@ export async function POST(req: Request) {
         const parsedCredentials = z
             .object({
                 token: z.string().uuid(),
-                userId: z.string().min(30, "Invalid userId"),
+                userId:z.string().min(23, "Invalid userId").transform((id) => String(id)),
                 password: z.string().min(6, "Password must be at least 8 characters long"),
                 ConfirmPassword: z.string().min(6, "ConfirmPassword must be at least 8 characters long"),
             })
@@ -23,26 +23,30 @@ export async function POST(req: Request) {
                 ConfirmPassword
             });
 
+        if (parsedCredentials.error) {
+            let messages = ''
+            parsedCredentials.error.issues.map((i, _) => (
+                messages += `${_ > 0 ? ' & ' : ''}` + i.message
+            ))
+            return NextResponse.json({ type: 'error', resultCode: messages });
+        }
         if (parsedCredentials.data?.ConfirmPassword !== parsedCredentials.data?.password) {
             return NextResponse.json({
                 type: 'error',
                 resultCode: 'Password do not match',
             });
         }
-        if (!parsedCredentials.success) {
-            return NextResponse.json({
-                type: 'error',
-                resultCode: parsedCredentials.error.message as string,
-            });
-        }
         await connectToDB();
 
-        const user = await Customer.findById(parsedCredentials.data.userId).select('_id, reset_token, token_expires');
+        const user = await Customer.findById(parsedCredentials.data.userId).select('_id reset_token token_expires');
 
         const isValidToken = user.reset_token === parsedCredentials.data.token;
-        const isExpiredToken = user.reset_token_expires > Math.floor(Date.now() / 1000);
+        const isExpiredToken = user.token_expires > Math.floor(Date.now() / 1000);
 
         if (!isValidToken || !isExpiredToken) {
+            console.log(user.reset_token,user.token_expires);
+            console.log(isValidToken,isExpiredToken);
+            
             return NextResponse.json({
                 type: 'error',
                 resultCode: 'Invalid or expired token',
@@ -55,8 +59,8 @@ export async function POST(req: Request) {
             password: hashedPassword,
             reset_token: null,
             token_expires: null,
-          });
-          
+        });
+
         return NextResponse.json({
             type: 'succes',
             resultCode: 'Password successfully reset',
