@@ -2,11 +2,12 @@
 import React, { useEffect, useState } from 'react'
 
 const IsOnline = () => {
-    const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
-    const [showMessage, setShowMessage] = useState<boolean>(!navigator.onLine);
+    const [isOnline, setIsOnline] = useState<boolean>(false);
+    const [showMessage, setShowMessage] = useState<boolean>(false);
     const [message, setMessage] = useState<string>('');
 
     useEffect(() => {
+        if (typeof window === undefined) return;
         const handleOnline = () => {
             setIsOnline(true);
             setMessage("You're back online!");
@@ -29,7 +30,7 @@ const IsOnline = () => {
         };
     }, []);
 
-    if (!showMessage ) return null;
+    if (!showMessage) return null;
     if (message === '') return null;
 
     return (

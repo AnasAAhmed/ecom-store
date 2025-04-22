@@ -9,10 +9,12 @@ import Loader from "@/components/ui/Loader";
 import UserFetcher from "@/components/UserFetch";
 import { Roboto } from 'next/font/google'
 import { SessionProvider } from "next-auth/react";
-import { auth } from "@/auth";
 import { headers } from "next/headers";
-import IsOnline from "@/components/IsOnline";
+import dynamic from "next/dynamic";
 
+const IsOnline = dynamic(() => import("@/components/IsOnline"), {
+  ssr: false,
+});
 const roboto = Roboto({
   weight: ['500'],
   subsets: ['latin'],
