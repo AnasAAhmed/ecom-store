@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
   customerEmail: { type: String, index: true },
+  customerPhone: { type: String },
   products: [
     {
       product: {
@@ -22,11 +23,23 @@ const orderSchema = new mongoose.Schema({
     phone: String,
     country: String,
   },
-  shippingRate: String, 
+  shippingRate: String,
   totalAmount: Number,
   currency: String,
   method: String,
-  status: String,
+  statusHistory: [
+    {
+      status: { type: String},
+      changedAt: { type: Date, default: Date.now }
+    }
+  ],  
+  isPaid: { type: Boolean, default: false,index:true },
+  status: {
+    type: String,
+    enum: ['pending', 'shipped', 'delivered', 'canceled'],
+    default: 'pending',
+    index: true,
+  },
   exchangeRate: Number,
   createdAt: {
     type: Date,

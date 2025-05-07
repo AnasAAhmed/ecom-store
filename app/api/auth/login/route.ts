@@ -1,5 +1,5 @@
 import { signIn } from "@/auth";
-import { getUser } from "@/lib/actions/actions";
+import { getUser } from "@/lib/actions/user.actions";
 import { ResultCode } from "@/lib/utils/features";
 import { compare } from "bcryptjs";
 import { headers } from "next/headers";

@@ -4,6 +4,8 @@ import { z } from 'zod';
 import Customer from '@/lib/models/Customer';
 import { connectToDB } from '@/lib/mongoDB';
 import { PASSWORD_RESET_REQUEST_TEMPLATE } from '@/lib/utils/features';
+import { headers } from 'next/headers';
+import { UAParser } from 'ua-parser-js';
 
 const TOKEN = process.env.MAILTRAP_TOKEN!;
 
@@ -24,6 +26,29 @@ const recipients = [
   }
 ];
 export async function POST(req: Request) {
+
+  const ip = headers().get('x-forwarded-for') || '36.255.42.109';
+  const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
+  const geoData = await geoRes.json();
+  const userAgent = headers().get('user-agent') || '';
+  const parser = new UAParser(userAgent);
+  const result = parser.getResult();
+  let country = "oooo";
+  let city = "pppp";
+
+  if (ip && ip !== '::1' && ip !== '127.0.0.1') {
+    country = geoData.country || 'Unknown';
+    city = geoData.city || 'Unknown';
+  } else {
+    country = "Localhost";
+    city = "Localhost";
+    console.log("Skipping geo lookup for local IP:", ip);
+  }
+
+  const os = `${result.os.name} ${result.os.version}`;
+  const device = result.device.type || "Desktop";
+  const browser = `${result.browser.name} ${result.browser.version}`;
+
   const body = await req.json();
   const { email } = body;
 
@@ -38,9 +63,9 @@ export async function POST(req: Request) {
   if (!parsedCredentials.success) {
     let messages = ''
     parsedCredentials.error.issues.map((i, _) => (
-        messages+=`${_>0?' & ':''}`+i.message
+      messages += `${_ > 0 ? ' & ' : ''}` + i.message
     ))
-    return NextResponse.json({ type: 'error', resultCode:messages });
+    return NextResponse.json({ type: 'error', resultCode: messages });
   }
 
   const token = crypto.randomUUID();
@@ -67,7 +92,7 @@ export async function POST(req: Request) {
         from: sender,
         to: recipients,//for testing its only an owner email
         subject: "Password Reset Request",
-        html: PASSWORD_RESET_REQUEST_TEMPLATE(resetUrl),
+        html: PASSWORD_RESET_REQUEST_TEMPLATE({resetUrl,ip,country,city,os,browser,userAgent,device}),
         category: "Reset Token",
       });
       if (res.success) {

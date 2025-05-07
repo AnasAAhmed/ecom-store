@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useRegion } from '@/lib/hooks/useCart';
 import Modal from './ui/Modal';
-import { countryToCurrencyMap, countryToFlagMap, currencyToSymbolMap } from '@/lib/utils/features';
+import { countryToCurrencyMap, countryToFlagMap, currencyToSymbolMap } from '@/lib/utils/features.csr';
 
 
 const allCountries = Object.keys(countryToCurrencyMap);
@@ -11,7 +11,7 @@ const Currency = ({ className, geoCountry, geoCountryCode }: { className: string
   const [modalOpen, setModalOpen] = useState(currency !== '' && country !== '');
 
   useEffect(() => {
-    if (!country && geoCountry) {
+    if (country === '' && geoCountry) {
       setCountry(geoCountry);
       const mappedCurrency = countryToCurrencyMap[geoCountry];
       if (mappedCurrency) setCurrency(mappedCurrency);
@@ -90,7 +90,7 @@ const Currency = ({ className, geoCountry, geoCountryCode }: { className: string
             </button>
             <button
               className="mt-4 self-end px-4 w-full py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700 transition"
-              onClick={() =>{ clearcon();closeModal()}}
+              onClick={() => { clearcon(); closeModal() }}
             >
               Reset
             </button>

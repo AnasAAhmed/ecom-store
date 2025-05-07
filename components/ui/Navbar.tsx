@@ -5,13 +5,13 @@ import { CircleUserRound, Menu, Search, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Currency from "../Currency";
 import { signOut, useSession } from "next-auth/react";
 import { Session } from "@auth/core/types";
 import Modal from "./Modal";
 
-const Navbar = ({ country, city ,countryCode}: { country: string, city: string,countryCode:string }) => {
+const Navbar = ({ country, city, countryCode }: { country: string, city: string, countryCode: string }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams.toString());
@@ -24,15 +24,14 @@ const Navbar = ({ country, city ,countryCode}: { country: string, city: string,c
   const [lastScrollY, setLastScrollY] = useState(0);
   const [scrolled, setScrolled] = useState(false);
 
-  const handleSearch = () => {
+  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const page = params.get("page");
     if (page) params.delete("page");
     router.push(`/search?query=${query}`);
   };
 
-  const onKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && query) handleSearch();
-  };
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,18 +55,18 @@ const Navbar = ({ country, city ,countryCode}: { country: string, city: string,c
   }, [lastScrollY]);
   const toggleModal = () => setIsOpen(!isOpen);
   const text = [
-    "Free Shipping around the world over $120  ",
-    "Easter Summer sale 50% off ",
-    "Free Shipping  all over Pakistan over Rs 2000 ",
+    { id: 1, text: "Free Shipping around the world over $120  " },
+    {  id: 2, text:"Easter Summer sale 50% off "},
+    {  id: 3, text:"Free Shipping  all over Pakistan over Rs 2000 "},
   ];
   return (
     <>
       <div className="overflow-hidden text-white py-2 bg-black border-b border-gray-300">
         <div className="relative w-full">
           <div className="flex gap-24 animate-marquee2 w-max">
-            {[...text, ...text].map((src, i) => (
-              <div key={i} className="flex items-center justify-center min-w-[120px]">
-                <p>&nbsp;{src}&nbsp;•</p>
+            {[...text, ...text].map((i, _) => (
+              <div key={`${i.id}-${_+i.id}`} id={`${i.id}-${_+i.id}`} className="flex items-center justify-center min-w-[120px]">
+                <p>&nbsp;{i.text}&nbsp;•</p>
               </div>
             ))}
           </div>
@@ -78,7 +77,7 @@ const Navbar = ({ country, city ,countryCode}: { country: string, city: string,c
         <h1 className="text-red-600 font-bold px-4">🔥 50% Off Summer Sale</h1>
 
         <div className="flex gap-6 items-center">
-          {['men', 'women', 'kids', 'shoes', 'accessories'].map((item) => (
+          {['men', 'women', 'kids', 'footwear', 'accessories'].map((item) => (
             <Link
               title={`${item} collection`}
               key={item}
@@ -99,21 +98,30 @@ const Navbar = ({ country, city ,countryCode}: { country: string, city: string,c
       <nav className={`${scrolled ? 'top-0 fixed shadow-md bg-white' : 'top-13 sm:top-[85px] absolute bg-transparent'} z-30 w-full bg-white shadow-md`}>
         <div className="flex justify-between items-center p-2">
           <Link title="home" aria-label="go to home" href="/">
-            <Image src="/logo.png" priority alt="logo" width={130} height={130} />
+            <Image src="/logo.png" alt=" borcelle logo" width={130} height={130} />
           </Link>
 
           {/* Desktop search bar */}
-          <div className="hidden sm:flex items-center gap-3 border rounded-lg px-3 py-1">
+          <form onSubmit={(e) => handleSearch(e)} className="hidden sm:flex items-center gap-3 border rounded-lg px-3 py-1">
             <input
               className="outline-none w-full"
               placeholder="Search..."
               value={query}
               type="search"
-              onKeyDown={onKeyDown}
+              list="pp"
               onChange={(e) => setQuery(e.target.value)}
             />
-            <button title="Confirm Search"> <Search onClick={handleSearch} className="cursor-pointer h-4 w-4 hover:text-blue-500" /></button>
-          </div>
+            <datalist id="pp">
+              <option value="Gray sneakers with dense surface">Gray sneakers with dense surface</option>
+              <option value="Casual dark gray tshirt">Casual dark gray tshirt</option>
+              <option value="Casual white T shirt">Casual white T shirt</option>
+              <option value="Sony PS5 Console">Sony PS5 Console</option>
+              <option value="Trendycasual sneaker-Light weight fashion sheos white">Trendycasual sneaker-Light weight fashion sheos white</option>
+              <option value="Rain Jacket Women Windbreaker Striped Climbing">Rain Jacket Women Windbreaker Striped Climbing</option>
+              <option value="BIYLACLESEN Women 3 in 1 Snowboard Jacket Winter Coats">BIYLACLESEN Women 3 in 1 Snowboard Jacket Winter Coats</option>
+            </datalist>
+            <button title="Confirm Search" type="submit"> <Search className="cursor-pointer h-4 w-4 hover:text-blue-500" /></button>
+          </form>
 
           <div className="hidden lg:flex gap-4">
             {["/", "/search", "/contact", "/wishlist", "/orders"].map(
@@ -133,7 +141,7 @@ const Navbar = ({ country, city ,countryCode}: { country: string, city: string,c
           </div>
 
           <div className="flex items-center gap-2">
-            <Currency geoCountry={country} className="none"  geoCountryCode={countryCode}/>
+            <Currency geoCountry={country} className="none" geoCountryCode={countryCode} />
             <Link title="Go to Cart" aria-label={'Go to cart'} href="/cart" className="hidden md:flex items-center gap-1 border px-1 py-1 rounded-lg hover:bg-black hover:text-white">
               <ShoppingCart />
               <span>({cart.cartItems.length})</span>
@@ -147,17 +155,26 @@ const Navbar = ({ country, city ,countryCode}: { country: string, city: string,c
 
         {/* Mobile search bar */}
         <div className="px-4 flex sm:hidden pb-2">
-          <div className="flex sm:hidden w-full items-center border rounded-lg px-4 py-1">
+          <form onSubmit={(e) => handleSearch(e)} className="flex sm:hidden w-full items-center border rounded-lg px-4 py-1">
             <input
+              list="pp"
               className="outline-none w-full"
               placeholder="Search..."
               value={query}
-              onKeyDown={onKeyDown}
               type="search"
               onChange={(e) => setQuery(e.target.value)}
             />
-            <button title="Confirm Search"> <Search onClick={handleSearch} className="cursor-pointer h-4 w-4 hover:text-blue-500" /></button>
-          </div>
+            <datalist id="pp">
+              <option value="Gray sneakers with dense surface">Gray sneakers with dense surface</option>
+              <option value="Casual dark gray tshirt">Casual dark gray tshirt</option>
+              <option value="Casual white T shirt">Casual white T shirt</option>
+              <option value="Sony PS5 Console">Sony PS5 Console</option>
+              <option value="Trendycasual sneaker-Light weight fashion sheos white">Trendycasual sneaker-Light weight fashion sheos white</option>
+              <option value="Rain Jacket Women Windbreaker Striped Climbing">Rain Jacket Women Windbreaker Striped Climbing</option>
+              <option value="BIYLACLESEN Women 3 in 1 Snowboard Jacket Winter Coats">BIYLACLESEN Women 3 in 1 Snowboard Jacket Winter Coats</option>
+            </datalist>
+            <button title="Confirm Search" type="submit"><Search className="cursor-pointer h-4 w-4 hover:text-blue-500" /></button>
+          </form>
         </div>
         {/* Mobile Modal */}
         {isOpen && <div className="fixed flex lg:hidden right-6 max-sm:top-20 items-center justify-center bg-opacity-50 z-50">
@@ -226,7 +243,7 @@ const User = ({ session }: { session: Session | null }) => {
                 <p><strong>Name:</strong> {session.user.name}</p>
                 <p><strong>Email:</strong> {session.user.email}</p>
                 <p className="capitalize"><strong>Origin Country:</strong> {userWishlist?.country || "N/A"}</p>
-                <p className="capitalize"><strong>Origin City:</strong> {userWishlist?.city  || "N/A"}</p>
+                <p className="capitalize"><strong>Origin City:</strong> {userWishlist?.city || "N/A"}</p>
               </div>
 
               <div className="mt-4">

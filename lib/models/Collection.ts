@@ -26,7 +26,8 @@ const collectionSchema = new mongoose.Schema({
     default: Date.now,
   }
 })
+collectionSchema.index({ title: 1 });
 
-const Collection =mongoose.models.Collection || mongoose.model("Collection", collectionSchema);
+const Collection = mongoose.models.Collection || mongoose.model("Collection", collectionSchema);
 
 export default Collection;

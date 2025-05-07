@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import CancelOrder from "@/components/CancelOrder";
 import PaginationControls from "@/components/PaginationControls";
-import { getOrders } from "@/lib/actions/actions";
+import { getOrders } from "@/lib/actions/order.actions";
 import { slugify } from "@/lib/utils/features";
 import type { Metadata } from "next";
 import Image from "next/image";

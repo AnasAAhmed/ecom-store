@@ -1,6 +1,7 @@
 // app/sitemap.ts
 import { MetadataRoute } from "next";
-import { getAllCollections, getAllProducts } from "@/lib/actions/actions";
+import { getAllProducts } from "@/lib/actions/product.actions";
+import { getAllCollections } from "@/lib/actions/collection.actions";
 
 export const dynamic = "force-static";
 

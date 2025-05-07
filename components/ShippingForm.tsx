@@ -56,6 +56,7 @@ const ShippingForm = ({ user }: { user: { id: string, email: string, image: stri
 
         const shippingAddress = { street, city, state, postalCode, phone, country };
         const orderData = {
+            customerPhone: phone,
             shippingAddress,
             products: cart.cartItems.map((item) => ({
                 product: item.item._id,
@@ -86,7 +87,7 @@ const ShippingForm = ({ user }: { user: { id: string, email: string, image: stri
                 router.push('/payment_success');
             }
         } catch (err) {
-            toast.error('An error occurred: '+ (err as Error).message );
+            toast.error('An error occurred: ' + (err as Error).message);
         } finally {
             setIsProcessing(false);
         }

@@ -1,6 +1,5 @@
-import ProductCard from "@/components/product/ProductCard";
 import { FC } from "react";
-import { getWishList } from "@/lib/actions/actions";
+import { getWishList } from "@/lib/actions/product.actions";
 import type { Metadata } from 'next';
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";

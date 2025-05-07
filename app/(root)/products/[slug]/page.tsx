@@ -3,9 +3,10 @@ import Gallery from "@/components/product/Gallery";
 import ProductInfo from "@/components/product/ProductInfo";
 import PaginationControls from "@/components/PaginationControls";
 import { notFound } from "next/navigation";
-import { getProductDetails, getProductReviews, getRelatedProduct } from "@/lib/actions/actions";
+import { getProductReviews, getRelatedProduct } from "@/lib/actions/product.actions";
 import ProductReviews from "@/components/product/ProductReviews";
 import ProductList from "@/components/product/ProductList";
+import { getCachedProductDetails } from "@/lib/actions/cached";
 
 function RelatedProductsLoadingSkeleton() {
   return (
@@ -22,9 +23,34 @@ function ProductReviewsLoadingSkeleton() {
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const product = await getProductDetails(params.slug);
+  const product = await getCachedProductDetails(params.slug);
 
-  if (!product) notFound();
+  if (!product) return {
+    title: "Product 404 Not Found | Borcelle",
+    description: "No such product exists at borcelle store by anas ahmed",
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true
+      }
+    },
+    openGraph: {
+      title: `Product Not Found 404 | Borcelle`,
+      description: 'There is no Product at borcelle store by anas ahmed',
+      url: `${process.env.ECOM_STORE_URL}/products/${params.slug}`,
+      images: [
+        {
+          url: '/404.png',
+          width: 220,
+          height: 250,
+          alt: '404 Not Found',
+        },
+      ],
+      site_name: 'Borcelle Next.js by anas ahmed',
+    },
+  };
 
   return {
     title: `${product.title} | Borcelle`,
@@ -56,7 +82,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default async function ProductPage({ params, searchParams }: { params: { slug: string }, searchParams: { page: string } }) {
-  const product: ProductType = await getProductDetails(params.slug);
+  const product: ProductType = await getCachedProductDetails(params.slug);
   if (!product) return notFound();
 
   return (
@@ -95,6 +121,7 @@ export default async function ProductPage({ params, searchParams }: { params: { 
       />
       <section className="flex px-5 justify-center items-start gap-16 max-lg:flex-col max-lg:items-center">
         <Gallery productMedia={product.media} />
+        
         <ProductInfo productInfo={product} />
       </section>
 

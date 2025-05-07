@@ -6,7 +6,7 @@ import { ChevronDown, ShoppingCart } from "lucide-react";
 import HeartFavorite from "./HeartFavorite";
 import StarRatings from "./StarRatings";
 import useCart, { useRegion } from "@/lib/hooks/useCart";
-import { currencyToSymbolMap } from "@/lib/utils/features";
+import { currencyToSymbolMap } from "@/lib/utils/features.csr";
 
 interface ProductCardProps {
   product: ProductType;
@@ -14,6 +14,8 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
+  const image1 = product.media[0];
+  const image2 = product.media[1] ? product.media[1] : null;
   const { currency, exchangeRate } = useRegion();
   const cart = useCart();
   const {
@@ -45,18 +47,29 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
 
   return (
     <div
-      className={`relative bg-white image-width rounded-t-lg shadow-md overflow-hidden transition-transform transform hover:scale-105 ${isSoldOut ? "opacity-70" : ""
+      className={`relative bg-white image-width roundsed-t-lg shadosw-md overflow-hidden  ${isSoldOut ? "opacity-70" : ""
         }`}
     >
       <Link title={"See details of " + title} href='/product/[slug]' as={`/products/${slug}`} className="block" prefetch={false} >
-        <div className="relative image-height group">
-          <Image
-            src={media[0]}
-            alt={title}
-            fill
-            sizes="(max-width: 450px) 9rem, (max-width: 700px) 12rem, 16rem"
-            className="w-full object-cover"
-          />
+        <div className="relative image-height group overflow-hidden">
+          <div className="relative rousnded-md w-full max- h-64 overflow-hidden">
+            <Image
+              src={image1}
+              fill
+              sizes="(max-width: 450px) 9rem, (max-width: 700px) 12rem, 16rem"
+              alt={product.title}
+              className={` inset-0 object-cover transition-transform hover:scale-110 duration-300 ${image2 && 'group-hover:opacity-0'}`}
+            />
+            {image2 && (
+              <Image
+                src={image2}
+                fill
+                sizes="(max-width: 450px) 9rem, (max-width: 700px) 12rem, 16rem"
+                alt={`${product.title} alt`}
+                className="absolute inset-0 object-cover opacity-0 hover:scale-110 transition-transform duration-300 group-hover:opacity-100"
+              />
+            )}
+          </div>
           {isSoldOut ? (
             <span className="absolute top-2 left-2 bg-red-500 text-white text-[12px] font-semibold px-2 py-1 rounded">
               Sold Out
@@ -70,7 +83,9 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
           )}
 
           {!isSoldOut && variants?.length > 0 ? (
-            <span className="absolute top-2 right-2 bg-gray-900 text-white p-2 rounded-full">
+            <span title={JSON.stringify(
+              variants.map(({ size, color }) => ({ size, color  }))
+            ).replace(/[\[{"}-]/g, ' ')} className="absolute top-2 right-2 bg-gray-900 text-white p-2 rounded-full">
               <ChevronDown className="w-4 h-4" />
             </span>
           ) : (
@@ -85,15 +100,15 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
             </button>
           )}
         </div>
-        <div className="py-1 px-3">
-          <h6 className="text-lg sm:pb-1 font-medium text-gray-900 line-clamp-2 ">
+        <div className="py-2 px-1">
+          <h6 className="text-body-medium font-medium text-gray-900 line-clamp-2 ">
             <abbr title={title} className="no-underline">
               {title}
             </abbr>
           </h6>
           <div className="mt-1 flex items-center justify-between">
             <div className="flex gap-2 items-center">
-              <p className="text-lg font-bold text-gray-900">
+              <p className="text-body-medium font-bold text-gray-900">
                 <small>{currencyToSymbolMap[currency]}</small>  {productPrice}
               </p>
               {expense > price && (
@@ -104,9 +119,12 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
             </div>
             <HeartFavorite productId={_id} updateSignedInUser={updateSignedInUser} />
           </div>
-          <div className="mt-1 flex flex-wrap items-center space-x-1 text-small-medium text-gray-600">
+          <div className="mt-1 flex flex-wrap justify-between items-center space-x-1 text-small-medium text-gray-600">
+            <div className="flex justify-start items-center">
+
             <StarRatings rating={ratings} />
             <span>({numOfReviews})</span>
+            </div>
             {sold > 0 && (
               <p className="mtd-1 text-xs text-gray-500">Sold ({sold})</p>
             )}

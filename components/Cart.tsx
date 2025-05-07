@@ -8,7 +8,17 @@ import { useRouter } from "next/navigation";
 import toast from 'react-hot-toast';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react'
-import { currencyToSymbolMap, slugify } from '@/lib/utils/features';
+import { currencyToSymbolMap } from '@/lib/utils/features.csr';
+
+const slugify = (title: string) => {
+  return title
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "");
+};
 
 const Cart = () => {
   const router = useRouter();
@@ -148,7 +158,7 @@ const Cart = () => {
                   <div className='flex gap-2 justify-center flex-col'>
 
                     <p className="flex gap-1 text-small-medium">{currencyToSymbolMap[currency]} {(cartItem.item.price * exchangeRate).toFixed()}
-                      {cartItem.item.expense > 0 && <span className="line-through text-[12px] text-red-1">{currencyToSymbolMap[currency]} {cartItem.item.expense}</span>}
+                      {cartItem.item.expense > 0 && <span className="line-through text-[12px] text-red-1">{currencyToSymbolMap[currency]} {(cartItem.item.expense * exchangeRate).toFixed()}</span>}
                     </p>
                     {cartItem.item.stock > 0 ? (
                       <div className="flex gap-4 items-center">

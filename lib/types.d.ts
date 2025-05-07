@@ -9,7 +9,7 @@ type ProductType = {
   _id: string;
   title: string;
   description: string;
-  media: [string];
+  media: string[];
   category: string;
   slug: string;
   collections: string[];
@@ -32,7 +32,7 @@ type ProductType = {
 type CartProductType = {
   _id: string;
   title: string;
-  media: [string];
+  media: string[];
   stock: number;
   price: number;
   expense: number;
@@ -54,6 +54,46 @@ interface Result {
   type: string
   resultCode: string
 };
+interface HomePage {
+  hero: {
+    heading?: string;
+    text?: string;
+    imgUrl: string
+    shade?: string;
+    textColor?: string;
+    link: string;
+    textPosition?: string;
+    textPositionV?: string;
+    buttonText?: string;
+    isVideo: boolean;
+  },
+  collections: [
+    {
+      heading?: string;
+      text?: string;
+      imgUrl: string;
+      shade?: string;
+      textColor?: string;
+      link: string;
+      textPosition?: string;
+      textPositionV?: string;
+      buttonText?: string;
+      collection: string;
+      isVideo: boolean;
+    }
+  ]
+}
+interface GridBannerProps {
+  imageUrl: string;
+  imageSize: number;
+  collectionId: string;
+  imageClass?: string;
+  gridColumn?: string
+  gridRow?: string
+  ariaLabel?: string;
+  aspectRatio?: string;
+}
+
 interface User {
   id?: string
   name?: string | null
@@ -61,6 +101,7 @@ interface User {
   email?: string | null
   image?: string | null
   country: string,
+  role: string,
   city: string,
   signInHistory: [
     {

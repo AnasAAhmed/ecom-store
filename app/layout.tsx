@@ -12,6 +12,7 @@ import { SessionProvider } from "next-auth/react";
 import { headers } from "next/headers";
 import dynamic from "next/dynamic";
 
+import { encode, decode } from "next-auth/jwt";
 const IsOnline = dynamic(() => import("@/components/IsOnline"), {
   ssr: false,
 });
@@ -40,8 +41,8 @@ export const metadata: Metadata =
     images: [
       {
         url: '/home-preview.avif',
-        width: 220,
-        height: 250,
+        width: 260,
+        height: 220,
         alt: 'home screenshot',
       },
       {
@@ -70,11 +71,20 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const ip = headers().get('x-forwarded-for') || '36.255.42.109';
-  const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
-  const geoData = await geoRes.json();
- console.log(geoData.country,geoData.city);
- 
+
+  let country = '';
+  let city = ''
+  let countryCode = ''
+  if (process.env.NODE_ENV === 'production') {
+    const ip = headers().get('x-forwarded-for') || '36.255.42.109';
+    // const ip = '85.214.132.117';
+    const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
+    const geoData = await geoRes.json();
+    country = geoData.country;
+    city = geoData.city;
+    countryCode = geoData.countryCode;
+    console.log(geoData.country, geoData.city);
+  }
 
   return (
     <html lang="en">
@@ -82,13 +92,13 @@ export default async function RootLayout({
         <SessionProvider>
           <ToasterProvider />
           <UserFetcher />
-          <Navbar city={geoData.country||''} country={geoData.country||''} countryCode={geoData.countryCode||''}/>
+          <Navbar city={country} country={country} countryCode={countryCode} />
           <Suspense fallback={<Loader />}>
             <div className="mt-28 sm:mt-12">
               {children}
             </div>
           </Suspense>
-          <IsOnline/>
+          <IsOnline />
           <Footer />
         </SessionProvider>
       </body>

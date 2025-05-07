@@ -3,7 +3,7 @@ import { connectToDB } from "@/lib/mongoDB";
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import Customer from "@/lib/models/Customer";
-import { stockReduce } from "@/lib/actions/actions";
+import { stockReduce } from "@/lib/actions/order.actions";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -23,6 +23,7 @@ export const POST = async (req: NextRequest) => {
         clerkId: session?.client_reference_id,
         name: session?.customer_details?.name,
         email: session?.customer_details?.email,
+        phone: session?.customer_details?.phone,
       }
 
       const shippingAddress = {
@@ -58,6 +59,7 @@ export const POST = async (req: NextRequest) => {
       await connectToDB()
 
       const newOrder = new Order({
+        customerPhone:customerInfo.phone,
         customerEmail: customerInfo.email,
         products: orderItems,
         shippingAddress,

@@ -5,7 +5,7 @@ import { MinusCircle, PlusCircle } from "lucide-react";
 import useCart, { useRegion } from "@/lib/hooks/useCart";
 import StarRatings from "./StarRatings";
 import HeartFavorite from "./HeartFavorite";
-import { currencyToSymbolMap } from "@/lib/utils/features";
+import { currencyToSymbolMap } from "@/lib/utils/features.csr";
 
 const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
     const [selectedVariant, setSelectedVariant] = useState<VariantType | null>(null);

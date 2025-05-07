@@ -1,25 +1,54 @@
 import ProductCard from '@/components/product/ProductCard';
 import PaginationControls from '@/components/PaginationControls';
-import { getSearchProducts } from '@/lib/actions/actions';
-import type { Metadata } from 'next';
+import { getSearchProducts } from '@/lib/actions/product.actions';
 import Sort from '@/components/Sort';
+import Link from 'next/link';
 
-export const metadata: Metadata = {
-  title: "Borcelle | Shop",
-  description: "Borcelle Shop where you can search all products",
-};
+export async function generateMetadata({ searchParams }: { searchParams: { query: string } }) {
+  return {
+    title: `Search ${searchParams.query?'results for '+searchParams.query:''} | Borcelle`,
+    description: "Search high-quality products at Borcelle.",
+    keywords: ['search',"products",'Borcelle'],
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true
+      }
+    },
+    openGraph: {
+      title: `Search | Borcelle`,
+      description: "Search high-quality products at Borcelle.",
+      url: `${process.env.ECOM_STORE_URL}/search`,
+      images: [
+        {
+          url: '/home-preview.avif',
+          width: 220,
+          height: 250,
+          alt: 'hero banner',
+        },
+      ],
+      site_name: 'Borcelle Next.js by anas ahmed',
+    },
+  };
+}
+
 
 const SearchPage = async ({ searchParams }: { searchParams: any }) => {
   const query = (searchParams?.query as string) || '';
+  const color = (searchParams?.color as string) || '';
+  const size = (searchParams?.size as string) || '';
   const sort = (searchParams?.order as string) || '';
+  const category = (searchParams?.category as string) || '';
   const sortField = (searchParams?.field as string) || '';
   let page = Number(searchParams?.page) || 1;
 
-  const data = await getSearchProducts(query, sort, sortField, page);
+  const data = await getSearchProducts(query, sort, sortField, page, category, color,size);
 
   return (
     <div className='sm:px-10 px-3 py-8 '>
-      {query && <p className='text-heading3-bold my-10'>Search results for {query}</p>}
+      {query && <p className='text-heading3-bold my-10'>Search results for {query} <Link className='underline text-small-medium text-blue-500' title='Clear filters' href={'/search'}>Clear &times;</Link></p>}
       <Sort />
       <div className='min-h-[80vh]'>
 

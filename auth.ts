@@ -4,7 +4,7 @@ import Google from 'next-auth/providers/google';
 import { extractNameFromEmail } from './lib/utils/features';
 import { connectToDB } from './lib/mongoDB';
 import Customer from './lib/models/Customer';
-import { getUser } from './lib/actions/actions';
+import { getUser } from './lib/actions/user.actions';
 import { headers } from 'next/headers';
 import fetch from 'node-fetch';
 import { UAParser } from 'ua-parser-js';

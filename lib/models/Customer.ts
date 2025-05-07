@@ -5,6 +5,7 @@ const customerSchema = new mongoose.Schema({
   name: { type: String },
   password: { type: String, default: null },
   googleId: { type: String, default: null },
+  role: { type: String, default: 'user' },
   image: { type: String },//avatar
   email: { type: String, index: true },
   orders: {

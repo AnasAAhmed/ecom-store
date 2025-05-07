@@ -1,7 +1,6 @@
 import Product from "@/lib/models/Product";
 import Review from "@/lib/models/Review";
 import { connectToDB } from "@/lib/mongoDB";
-import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {

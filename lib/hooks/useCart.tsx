@@ -38,14 +38,17 @@ const useCart = create(
         };
 
         set({ cartItems: [...newCartItems, { item, quantity, color, size, variantId }] });
-        toast.success("Item added to cart");
+        toast.success(item.title + ' (Added to cart)');
       },
       removeItem: (idToRemove: string) => {
         const newCartItems = get().cartItems.filter(
           (cartItem) => cartItem.item._id !== idToRemove
         );
+        const item = get().cartItems.find(
+          (cartItem) => cartItem.item._id === idToRemove
+        );
         set({ cartItems: newCartItems });
-        toast.success("Item removed from cart");
+        toast.success(item?.item.title + ' (Removed from cart)');
       },
       increaseQuantity: async (idToIncrease: string) => {
         const newCartItems = get().cartItems.map((cartItem) => {

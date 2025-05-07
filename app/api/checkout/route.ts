@@ -27,12 +27,13 @@ export async function POST(req: NextRequest) {
         { shipping_rate: "shr_1PltIeBxsJkAdKVPFWU8YWzr" },
         { shipping_rate: "shr_1PltJDBxsJkAdKVPArU5k5L6" },
       ];
+    const country = currency === 'USD' ? "US" : "PK";
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
       phone_number_collection: { enabled: true },
       shipping_address_collection: {
-        allowed_countries: ["US", "PK"],
+        allowed_countries: [country],
       },
       shipping_options: shippingOptions,
       line_items: cartItems.map((cartItem: any) => ({

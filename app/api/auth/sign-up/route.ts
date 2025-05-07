@@ -1,5 +1,5 @@
 import { signIn } from "@/auth";
-import { createUser } from "@/lib/actions/actions";
+import { createUser } from "@/lib/actions/user.actions";
 import { ResultCode } from "@/lib/utils/features";
 import { genSalt, hash } from "bcryptjs";
 import { AuthError } from "next-auth";

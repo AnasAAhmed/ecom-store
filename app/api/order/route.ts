@@ -1,4 +1,4 @@
-import { stockReduce } from "@/lib/actions/actions";
+import { stockReduce } from "@/lib/actions/order.actions";
 import Customer from "@/lib/models/Customer";
 import Order from "@/lib/models/Order";
 import { connectToDB } from "@/lib/mongoDB";
@@ -14,6 +14,7 @@ export const POST = async (req: NextRequest) => {
     } = body;
 
     const {
+      customerPhone,
       shippingAddress,
       products,
       totalAmount,
@@ -32,6 +33,7 @@ export const POST = async (req: NextRequest) => {
     await stockReduce(products);
 
     const newOrder = new Order({
+      customerPhone,
       shippingAddress,
       products,
       totalAmount: totalAmount / exchangeRate,

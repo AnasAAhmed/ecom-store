@@ -1,14 +1,19 @@
-import { getCollectionDetails, getCollectionDetailsForSeo } from "@/lib/actions/actions";
+import { collectionProducts, getCollectionDetails } from "@/lib/actions/collection.actions";
 import { unSlugify } from "@/lib/utils/features";
 import { notFound } from "next/navigation";
-import React from "react";
+import React, { Suspense } from "react";
 import Image from "next/image";
 import ProductList from "@/components/product/ProductList";
+import Banner from "@/components/ui/Banner";
+import Loader from "@/components/ui/Loader";
+import Sort from "@/components/Sort";
+import PaginationControls from "@/components/PaginationControls";
+import { getCachedCollectionDetails } from "@/lib/actions/cached";
 
 export const generateMetadata = async ({ params }: { params: { collection: string } }) => {
-  const collectionDetails = await getCollectionDetailsForSeo(params.collection);
+  const collectionDetails = await getCachedCollectionDetails(params.collection);
   if (!collectionDetails) return {
-    title: `Borcelle | Collection Not Found 404`,
+    title: `Collection Not Found 404 | Borcelle`,
     description: 'There is no Collection at borcelle store by anas ahmed',
     robots: {
       index: true,
@@ -19,15 +24,15 @@ export const generateMetadata = async ({ params }: { params: { collection: strin
       }
     },
     openGraph: {
-      title: `Borcelle | Collection Not Found 404`,
+      title: `Collection Not Found 404 | Borcelle`,
       description: 'There is no Collection at borcelle store by anas ahmed',
       url: `${process.env.ECOM_STORE_URL}/collections/${params.collection}`,
       images: [
         {
-          url: '/logo.png',
+          url: '/404.png',
           width: 220,
           height: 250,
-          alt: '/logo.png',
+          alt: '404 Not Found',
         },
       ],
       site_name: 'Borcelle Next.js by anas ahmed',
@@ -36,8 +41,8 @@ export const generateMetadata = async ({ params }: { params: { collection: strin
 
   return {
     title: `Borcelle | ${unSlugify(params.collection)} `,
-    description: 'This is the Collection of ' + params.collection+' at borcelle store by anas ahmed',
-    keywords: [collectionDetails.title,'borcelle collection'+collectionDetails.title,'https://ecom-store-anas.com'],
+    description: 'This is the Collection of ' + params.collection + ' at borcelle store by anas ahmed',
+    keywords: [collectionDetails.title, 'borcelle collection' + collectionDetails.title, 'https://ecom-store-anas.com'],
     robots: {
       index: true,
       follow: true,
@@ -62,13 +67,15 @@ export const generateMetadata = async ({ params }: { params: { collection: strin
     },
   };
 };
+// params: { collection: string }
 
-const CollectionDetails = async ({
-  params
-}: {
-  params: { collection: string }
-}) => {
-  const collectionDetails = await getCollectionDetails(params.collection);
+const CollectionDetails = async ({ searchParams, params }: { searchParams: any; params: { collection: string } }) => {
+  const sort = (searchParams?.order as string) || '';
+  const color = (searchParams?.color as string) || '';
+  const size = (searchParams?.size as string) || '';
+  const sortField = (searchParams?.field as string) || '';
+  let page = Number(searchParams?.page) || 1;
+  const collectionDetails = await getCachedCollectionDetails(params.collection);
   if (!collectionDetails) return notFound();
 
   return (
@@ -95,26 +102,57 @@ const CollectionDetails = async ({
           }),
         }}
       />
-      <div className="px-3 min-h-[90vh] py-12 sm:py-5  flex flex-col items-center gap-8">
+      <div className="pxd-3 min-h-[90vh] py-12 sm:py-5  flex flex-col items-center gap-8">
         {collectionDetails.image && <Image
           src={collectionDetails.image}
           width={1300}
           height={1000}
           alt="collection"
-          className="w-full object-cover rounded-xl"
+          className="w-full max-h-[500px] object-cover roudnded-xl"
         />}
-        <p className="text-heading3-bold text-grey-2">{collectionDetails.title}</p>
-        {collectionDetails.image && <p className="text-body-normal text-grey-2 text-center max-w-[900px]">{collectionDetails.description}</p>}       
-        <div className="flex flex-wrap justify-center gap-16">
-        <ProductList isViewAll={false} heading="Our Top Selling Products" Products={collectionDetails.products} />
-
-      </div>
+        {/* <Banner
+          heading={collectionDetails.title+' Collection'}
+          text={collectionDetails.description}
+          imgUrl={collectionDetails.image}
+          shade=""
+          textColor="#ffff"
+          textPosition="end"
+          link="#products"
+          buttonText="Explore"
+        /> */}
+        <p className="text-heading3-bold text-grey-2 capitalize">{collectionDetails.title}</p>
+        {collectionDetails.image && <p className="text-body-normal text-grey-2 text-center max-w-[900px]">{collectionDetails.description}</p>}
+        <Sort />
+        <Suspense fallback={<Loader />}>
+          <CollectionProduct collectionId={collectionDetails._id} page={page} size={size} color={color} sort={sort} sortField={sortField} />
+        </Suspense>
       </div>
     </>
   );
 };
 
+type CPs = {
+  collectionId: String;
+  page: number;
+  size?: string;
+  color?: string;
+  sort?: string;
+  sortField?: string
+}
+type CPSR = {
+  products: ProductType[], total: number, currentPage: string, totalPages: number
+} | string;
+async function CollectionProduct({ collectionId, page, size, color, sort, sortField }: CPs) {
+  const data: CPSR = await collectionProducts({ collectionId, page, size, color, sort, sortField });
+  if (typeof data === 'string') return data;
+  return (
+    <>
+      <ProductList heading='' isViewAll={false} Products={data.products} />
+      <PaginationControls totalPages={data.totalPages} currentPage={page}/>
+    </>
+  )
+}
+
 export default CollectionDetails;
 
-export const dynamic = "force-dynamic";
 
