@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
- interface IHomePage extends mongoose.Document {
+export interface IHomePage extends mongoose.Document {
     seo: {
-        title: string,
-        desc: { type: String },
-        keywords: { type: [String] },
-        url: { type: String },
-        width: { type: Number },
-        height: { type: Number },
-        alt: { type: String },
+        title?: string;
+        desc?: string;
+        keywords?: [string];
+        url?: string;
+        width?: number;
+        height?: number;
+        alt?: string;
     },
     hero: {
         heading?: string;

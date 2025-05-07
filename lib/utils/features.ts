@@ -122,6 +122,20 @@ export const PASSWORD_RESET_REQUEST_TEMPLATE = ({
 `;
 };
 
+export const brands = [
+  { id: 1, src: "https://d1yjjnpx0p53s8.cloudfront.net/styles/logo-thumbnail/s3/102015/saira_shakira.png?itok=VlLNR0Im" },
+  { id: 2, src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC9gxPThsTRepB3JiNYlFfPvR5oXBvj05IAQ&s" },
+  { id: 3, src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrRRjFf56niBWtgzHcuLK1dC1iCVRNlPONiw&s" },
+  { id: 4, src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk_EcLe7FvoSBbz9l7FgMci3vIO7dOZGzkVA&s" },
+  { id: 5, src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5fOHPAmsqXUBjA9ijXhMw61M_z5rEoXuwgw&s" },
+  { id: 6, src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHCZClMNdR82a7kjOZBjnH9nuNq50hKa2kRg&s" },
+  { id: 7, src: "https://lh3.googleusercontent.com/a-/ALV-UjW6Pa05HZ7jk4bun3g3GRTyRyfc9ulggrdFCAzvGLqHe-TeBFY" },
+  { id: 8, src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWhCKfrK3dxWoaGmyrrwmaOijVv8NbKuc7WA&s" },
+  { id: 9, src: "https://zaraye.co/images/uploaded/756d7d89902ff6517250e574acf3e4b7b7ef7764-alkaramlogo21.jpeg" },
+  { id: 10, src: "https://www.junaidjamshed.com/media/logo/stores/1/new_logo.png" },
+  { id: 11, src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIo5J2RXZWsYV-njuemjGatLusjgt28AwJNg&s" },
+  { id: 11, src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTx5EfHQzJG4x0QpYL3NOKIi1aKBfDSWvSI0Q&s" },
+];
 
 export const fallbackHomeData = {
   hero: {

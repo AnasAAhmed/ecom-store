@@ -40,7 +40,7 @@ export const generateMetadata = async ({ params }: { params: { collection: strin
   };
 
   return {
-    title: `Borcelle | ${unSlugify(params.collection)} `,
+    title: `${unSlugify(params.collection)} | Borcelle`,
     description: 'This is the Collection of ' + params.collection + ' at borcelle store by anas ahmed',
     keywords: [collectionDetails.title, 'borcelle collection' + collectionDetails.title, 'https://ecom-store-anas.com'],
     robots: {
@@ -103,13 +103,13 @@ const CollectionDetails = async ({ searchParams, params }: { searchParams: any; 
         }}
       />
       <div className="pxd-3 min-h-[90vh] py-12 sm:py-5  flex flex-col items-center gap-8">
-        {collectionDetails.image && <Image
+        {/* {collectionDetails.image && <Image
           src={collectionDetails.image}
           width={1300}
           height={1000}
           alt="collection"
           className="w-full max-h-[500px] object-cover roudnded-xl"
-        />}
+        />} */}
         {/* <Banner
           heading={collectionDetails.title+' Collection'}
           text={collectionDetails.description}
@@ -120,8 +120,8 @@ const CollectionDetails = async ({ searchParams, params }: { searchParams: any; 
           link="#products"
           buttonText="Explore"
         /> */}
-        <p className="text-heading3-bold text-grey-2 capitalize">{collectionDetails.title}</p>
-        {collectionDetails.image && <p className="text-body-normal text-grey-2 text-center max-w-[900px]">{collectionDetails.description}</p>}
+        {/* <p className="text-heading3-bold text-grey-2 capitalize">{collectionDetails.title}</p>
+    <p className="text-body-normal text-grey-2 text-center max-w-[900px]">{collectionDetails.description}</p> */}
         <Sort />
         <Suspense fallback={<Loader />}>
           <CollectionProduct collectionId={collectionDetails._id} page={page} size={size} color={color} sort={sort} sortField={sortField} />

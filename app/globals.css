@@ -135,9 +135,17 @@ body,
 
 @media screen and (width<=450px) {
   .image-height{
-    height: 9rem;
+    height: 11rem;
   } 
   .image-width{
-    width: 9rem;
+    width:  11rem;
+  }
+}
+@media screen and (width<=375px) {
+  .image-height{
+    height: 8rem;
+  } 
+  .image-width{
+    width:  8rem;
   }
 }

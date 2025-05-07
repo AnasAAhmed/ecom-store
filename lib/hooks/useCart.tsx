@@ -143,6 +143,7 @@ interface RegionStore {
   currency: string;
   exchangeRate: number;
   lastFetched: number | null;
+  isHydrated: boolean;
   setCountry: (country: string) => void;
   setCurrency: (currency: string) => void;
   clearcur: () => void;
@@ -156,6 +157,7 @@ export const useRegion = create<RegionStore>()(
       currency: 'USD', // default to 'USD'
       exchangeRate: 1, // default to 1 for USD
       lastFetched: null,
+      isHydrated: false,
 
       setCountry: (country) => set({ country }),
 
@@ -195,6 +197,13 @@ export const useRegion = create<RegionStore>()(
     {
       name: "region-storage",
       storage: createJSONStorage(() => localStorage),
+      onRehydrateStorage: () => {
+        return (state) => {
+          state && state.isHydrated === false && setTimeout(() => {
+            useRegion.setState({ isHydrated: true });
+          }, 0);
+        };
+      },
     }
   )
 );

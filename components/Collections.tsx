@@ -24,7 +24,7 @@ const Collections = async ({ collections }: { collections: CollectionType[] }) =
               style={{ gridColumn: gridLayout[index].gridColumn, gridRow: gridLayout[index].gridRow }}
               className={`relative rounded-lg overflow-hidden group`}
             >
-              <Link title={'See full ' + collection.title + " Collection at Borcelle"} href={'/collections/' + collection.title + "?id=" + collection._id} className="">
+              <Link title={'See full ' + collection.title + " Collection at Borcelle"} href={'/collections/' + collection.title } className="">
                 <Image
                   loading="lazy"
                   src={collection.image}

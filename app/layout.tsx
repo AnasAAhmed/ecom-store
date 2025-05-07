@@ -92,7 +92,7 @@ export default async function RootLayout({
         <SessionProvider>
           <ToasterProvider />
           <UserFetcher />
-          <Navbar city={country} country={country} countryCode={countryCode} />
+          <Navbar country={country} countryCode={countryCode} />
           <Suspense fallback={<Loader />}>
             <div className="mt-28 sm:mt-12">
               {children}

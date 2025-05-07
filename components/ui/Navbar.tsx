@@ -11,7 +11,7 @@ import { signOut, useSession } from "next-auth/react";
 import { Session } from "@auth/core/types";
 import Modal from "./Modal";
 
-const Navbar = ({ country, city, countryCode }: { country: string, city: string, countryCode: string }) => {
+const Navbar = ({ country, countryCode }: { country: string, countryCode: string }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams.toString());

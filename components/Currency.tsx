@@ -7,11 +7,11 @@ import { countryToCurrencyMap, countryToFlagMap, currencyToSymbolMap } from '@/l
 
 const allCountries = Object.keys(countryToCurrencyMap);
 const Currency = ({ className, geoCountry, geoCountryCode }: { className: string; geoCountry?: string, geoCountryCode?: string }) => {
-  const { currency, setCurrency, country, setCountry, clearcon } = useRegion();
+  const { currency, setCurrency, country, setCountry, clearcon,isHydrated } = useRegion();
   const [modalOpen, setModalOpen] = useState(currency !== '' && country !== '');
 
   useEffect(() => {
-    if (country === '' && geoCountry) {
+    if (isHydrated && country === '' && geoCountry) {
       setCountry(geoCountry);
       const mappedCurrency = countryToCurrencyMap[geoCountry];
       if (mappedCurrency) setCurrency(mappedCurrency);

@@ -6,44 +6,53 @@ import Social from "@/components/ui/Social";
 import GroupComponent7 from "@/components/ui/Services";
 import { Suspense } from "react";
 import Loader from "@/components/ui/Loader";
-import { fallbackHomeData } from "@/lib/utils/features";
-import { connectToDB } from "@/lib/mongoDB";
-import HomePage from "@/lib/models/HomePage";
+import { brands, fallbackHomeData } from "@/lib/utils/features";
 import { getCollectionProducts, getCollections } from "@/lib/actions/collection.actions";
 import { getProducts } from "@/lib/actions/product.actions";
+import { getCachedHomePageData } from "@/lib/actions/cached";
 export const dynamic = 'force-static';
 
-const brands = [
-  { id: 1, src: "https://d1yjjnpx0p53s8.cloudfront.net/styles/logo-thumbnail/s3/102015/saira_shakira.png?itok=VlLNR0Im" },
-  { id: 2, src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC9gxPThsTRepB3JiNYlFfPvR5oXBvj05IAQ&s" },
-  { id: 3, src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrRRjFf56niBWtgzHcuLK1dC1iCVRNlPONiw&s" },
-  { id: 4, src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk_EcLe7FvoSBbz9l7FgMci3vIO7dOZGzkVA&s" },
-  { id: 5, src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5fOHPAmsqXUBjA9ijXhMw61M_z5rEoXuwgw&s" },
-  { id: 6, src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHCZClMNdR82a7kjOZBjnH9nuNq50hKa2kRg&s" },
-  { id: 7, src: "https://lh3.googleusercontent.com/a-/ALV-UjW6Pa05HZ7jk4bun3g3GRTyRyfc9ulggrdFCAzvGLqHe-TeBFY" },
-  { id: 8, src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWhCKfrK3dxWoaGmyrrwmaOijVv8NbKuc7WA&s" },
-  { id: 9, src: "https://zaraye.co/images/uploaded/756d7d89902ff6517250e574acf3e4b7b7ef7764-alkaramlogo21.jpeg" },
-  { id: 10, src: "https://www.junaidjamshed.com/media/logo/stores/1/new_logo.png" },
-  { id: 11, src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIo5J2RXZWsYV-njuemjGatLusjgt28AwJNg&s" },
-  { id: 11, src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTx5EfHQzJG4x0QpYL3NOKIi1aKBfDSWvSI0Q&s" },
-];
+
+export async function generateMetadata({ searchParams }: { searchParams: { query: string } }) {
+  const homeData = await getCachedHomePageData();
+  if (!homeData || homeData?.seo) {
+    return null;
+  }
+  return {
+    title: homeData.seo.title,
+    description: homeData.seo.desc,
+    keywords: homeData.seo.keywords,
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true
+      }
+    },
+    openGraph: {
+      title: `Search | Borcelle`,
+      description: "Search high-quality products at Borcelle.",
+      url: `${process.env.ECOM_STORE_URL}/search`,
+      images: [
+        {
+          url: homeData.seo.url,
+          width: homeData.seo.width,
+          height: homeData.seo.height,
+          alt: homeData.seo.alt,
+        },
+      ],
+      site_name: 'Borcelle Next.js by anas ahmed',
+    },
+  };
+}
+
 export default async function Home() {
 
-  async function getHomePageData(): Promise<HomePage | null> {
-    try {
-      await connectToDB();
-
-      const homePage = await HomePage.findOne({});
-      return homePage;
-    } catch (err) {
-      console.log("[homePage_GET]", err);
-      return null;
-    }
-  }
   const [collections, products, homeData] = await Promise.all([
     getCollections(),
     getProducts(),
-    getHomePageData()
+    getCachedHomePageData()
   ]);
   const homePageData = homeData ?? fallbackHomeData;
   return (
@@ -67,7 +76,7 @@ export default async function Home() {
                 <img
                   src={i.src}
                   alt={`Brand ${i.id}`}
-                  className="w-24 h-24 object-contain grayscale hover:grayscale-0 transition duration-300"
+                  className="w-16 h-16 sm:w-24 sm:h-24 object-contain grayscale hover:grayscale-0 transition duration-300"
                 />
               </div>
             ))}
@@ -89,7 +98,7 @@ export default async function Home() {
                 <img
                   src={i.src}
                   alt={`Brand ${i.id}`}
-                  className="w-24 h-24 object-contain grayscale hover:grayscale-0 transition duration-300"
+                  className="w-16 h-16 sm:w-24 sm:h-24 object-contain grayscale hover:grayscale-0 transition duration-300"
                 />
               </div>
             ))}

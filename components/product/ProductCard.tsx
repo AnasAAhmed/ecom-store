@@ -52,24 +52,22 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
     >
       <Link title={"See details of " + title} href='/product/[slug]' as={`/products/${slug}`} className="block" prefetch={false} >
         <div className="relative image-height group overflow-hidden">
-          <div className="relative rousnded-md w-full max- h-64 overflow-hidden">
+          <Image
+            src={image1}
+            fill
+            sizes="(max-width: 450px) 9rem, (max-width: 700px) 12rem, 16rem"
+            alt={product.title}
+            className={` inset-0 object-cover transition-transform hover:scale-110 duration-300 ${image2 && 'group-hover:opacity-0'}`}
+          />
+          {image2 && (
             <Image
-              src={image1}
+              src={image2}
               fill
               sizes="(max-width: 450px) 9rem, (max-width: 700px) 12rem, 16rem"
-              alt={product.title}
-              className={` inset-0 object-cover transition-transform hover:scale-110 duration-300 ${image2 && 'group-hover:opacity-0'}`}
+              alt={`${product.title} alt`}
+              className="absolute inset-0 object-cover opacity-0 hover:scale-110 transition-transform duration-300 group-hover:opacity-100"
             />
-            {image2 && (
-              <Image
-                src={image2}
-                fill
-                sizes="(max-width: 450px) 9rem, (max-width: 700px) 12rem, 16rem"
-                alt={`${product.title} alt`}
-                className="absolute inset-0 object-cover opacity-0 hover:scale-110 transition-transform duration-300 group-hover:opacity-100"
-              />
-            )}
-          </div>
+          )}
           {isSoldOut ? (
             <span className="absolute top-2 left-2 bg-red-500 text-white text-[12px] font-semibold px-2 py-1 rounded">
               Sold Out
@@ -84,7 +82,7 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
 
           {!isSoldOut && variants?.length > 0 ? (
             <span title={JSON.stringify(
-              variants.map(({ size, color }) => ({ size, color  }))
+              variants.map(({ size, color }) => ({ size, color }))
             ).replace(/[\[{"}-]/g, ' ')} className="absolute top-2 right-2 bg-gray-900 text-white p-2 rounded-full">
               <ChevronDown className="w-4 h-4" />
             </span>
@@ -122,8 +120,8 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
           <div className="mt-1 flex flex-wrap justify-between items-center space-x-1 text-small-medium text-gray-600">
             <div className="flex justify-start items-center">
 
-            <StarRatings rating={ratings} />
-            <span>({numOfReviews})</span>
+              <StarRatings rating={ratings} />
+              <span>({numOfReviews})</span>
             </div>
             {sold > 0 && (
               <p className="mtd-1 text-xs text-gray-500">Sold ({sold})</p>

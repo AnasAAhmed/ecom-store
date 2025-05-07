@@ -55,6 +55,15 @@ interface Result {
   resultCode: string
 };
 interface HomePage {
+  seo: {
+    title?: string;
+    desc?: string;
+    keywords?: [string];
+    url?: string;
+    width?: number;
+    height?: number;
+    alt?: string;
+},
   hero: {
     heading?: string;
     text?: string;
