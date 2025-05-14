@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Fragment } from "react";
 const Collections = async ({ collections }: { collections: CollectionType[] }) => {
   const gridLayout = [
     { gridColumn: "span 2 / span 2", gridRow: "span 2 / span 2", imageSize: 511, aspectRatio: "2/6" },
@@ -13,7 +12,7 @@ const Collections = async ({ collections }: { collections: CollectionType[] }) =
 
   return (
     <div id="collections" className="flex flex-col items-center gap-10 py-8 px-5 my-[4rem]">
-      <p className="text-heading2-bold sm:text-heading1-bold">Collections</p>
+        <p className="text-heading2-bold sm:text-heading1-bold">Collections</p>
       {!collections || collections.length === 0 ? (
         <p className="text-body-bold">No collections found</p>
       ) : (
@@ -24,10 +23,13 @@ const Collections = async ({ collections }: { collections: CollectionType[] }) =
               style={{ gridColumn: gridLayout[index].gridColumn, gridRow: gridLayout[index].gridRow }}
               className={`relative rounded-lg overflow-hidden group`}
             >
-              <Link title={'See full ' + collection.title + " Collection at Borcelle"} href={'/collections/' + collection.title } className="">
+              <Link title={'See full ' + collection.title + " Collection at Borcelle"} href={'/collections/' + collection.title} className="">
                 <Image
                   loading="lazy"
                   src={collection.image}
+                  unoptimized
+                  placeholder="blur"
+                  blurDataURL="/fallback-banner.png"
                   alt={collection.title! || 'gridBanner'}
                   width={gridLayout[index].imageSize}
                   height={gridLayout[index].imageSize}

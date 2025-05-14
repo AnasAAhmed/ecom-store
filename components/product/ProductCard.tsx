@@ -54,15 +54,19 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
         <div className="relative image-height group overflow-hidden">
           <Image
             src={image1}
-            fill
-            sizes="(max-width: 450px) 9rem, (max-width: 700px) 12rem, 16rem"
             alt={product.title}
-            className={` inset-0 object-cover transition-transform hover:scale-110 duration-300 ${image2 && 'group-hover:opacity-0'}`}
+            fill
+            unoptimized
+            placeholder="blur"
+            blurDataURL="/fallback.png"
+            sizes="(max-width: 450px) 9rem, (max-width: 700px) 12rem, 16rem"
+            className={`inset-0 object-cover transition-transform hover:scale-110 duration-300 ${image2 && 'group-hover:opacity-0'}`}
           />
           {image2 && (
             <Image
               src={image2}
               fill
+              unoptimized
               sizes="(max-width: 450px) 9rem, (max-width: 700px) 12rem, 16rem"
               alt={`${product.title} alt`}
               className="absolute inset-0 object-cover opacity-0 hover:scale-110 transition-transform duration-300 group-hover:opacity-100"
@@ -99,14 +103,14 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
           )}
         </div>
         <div className="py-2 px-1">
-          <h6 className="text-body-medium font-medium text-gray-900 line-clamp-2 ">
+          <h6 className="text-small-medium sm:text-body-medium font-medium text-gray-900 line-clamp-2 ">
             <abbr title={title} className="no-underline">
               {title}
             </abbr>
           </h6>
           <div className="mt-1 flex items-center justify-between">
             <div className="flex gap-2 items-center">
-              <p className="text-body-medium font-bold text-gray-900">
+              <p className="text-small-medium sm:text-body-medium font-bold text-gray-900">
                 <small>{currencyToSymbolMap[currency]}</small>  {productPrice}
               </p>
               {expense > price && (

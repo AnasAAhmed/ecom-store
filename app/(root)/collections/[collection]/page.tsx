@@ -2,9 +2,9 @@ import { collectionProducts, getCollectionDetails } from "@/lib/actions/collecti
 import { unSlugify } from "@/lib/utils/features";
 import { notFound } from "next/navigation";
 import React, { Suspense } from "react";
-import Image from "next/image";
+// import Image from "next/image";
 import ProductList from "@/components/product/ProductList";
-import Banner from "@/components/ui/Banner";
+// import Banner from "@/components/ui/Banner";
 import Loader from "@/components/ui/Loader";
 import Sort from "@/components/Sort";
 import PaginationControls from "@/components/PaginationControls";
@@ -116,6 +116,7 @@ const CollectionDetails = async ({ searchParams, params }: { searchParams: any; 
           imgUrl={collectionDetails.image}
           shade=""
           textColor="#ffff"
+          textPositionV="end"
           textPosition="end"
           link="#products"
           buttonText="Explore"

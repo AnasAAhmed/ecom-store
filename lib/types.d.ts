@@ -71,8 +71,8 @@ interface HomePage {
     shade?: string;
     textColor?: string;
     link: string;
-    textPosition?: string;
-    textPositionV?: string;
+    textPosition?: 'end'|'center'|'start';
+    textPositionV?: 'end'|'center'|'start';
     buttonText?: string;
     isVideo: boolean;
   },
@@ -84,10 +84,10 @@ interface HomePage {
       shade?: string;
       textColor?: string;
       link: string;
-      textPosition?: string;
-      textPositionV?: string;
+      textPosition?: 'end'|'center'|'start';
+      textPositionV?: 'end'|'center'|'start';
       buttonText?: string;
-      collection: string;
+      collectionId: string;
       isVideo: boolean;
     }
   ]

@@ -2,26 +2,25 @@ import { connectToDB } from "../mongoDB";
 import Product from "../models/Product";
 import Collection from "../models/Collection";
 
-export async function getCollectionProducts(title: string): Promise<ProductType[] | string> {
+export async function getCollectionProducts(collectionId: string): Promise<ProductType[] | string> {
   try {
     await connectToDB();
+    const collectionProducts = await Product.find({ collections: collectionId })
+      .sort({ createdAt: -1 })
+      .limit(6)
+      .select('-category -description -timestamps -detailDesc -searchableVariants -collections -tags -weight -dimensions');
 
-    const collectionProducts = await Collection.findOne({ title }).populate({
-      path: 'products',
-      options: { limit: 6 },
-      select: '-category -description -timestamps -detailDesc -searchableVariants -collections -tags -weight -dimensions',
-    }).select('products')
-    if (!collectionProducts) return 'Collection Not Found';
-    return JSON.parse(JSON.stringify(collectionProducts.products))
+    if (!collectionProducts) return 'Collection Products Not Found';
+    return JSON.parse(JSON.stringify(collectionProducts))
   } catch (err) {
     console.log("[products_GET]", err);
     return ((err as Error).message);
   }
 }
 export async function collectionProducts({
-  collectionId,page,size,color,sort,sortField}:
-  {collectionId:String;page:number;size?:string;color?:string;sort?:string;sortField?:string}
-): Promise<{ products: ProductType[], total: number, currentPage: string, totalPages: number } | string>  {
+  collectionId, page, size, color, sort, sortField }:
+  { collectionId: String; page: number; size?: string; color?: string; sort?: string; sortField?: string }
+): Promise<{ products: ProductType[], total: number, currentPage: string, totalPages: number } | string> {
   try {
     await connectToDB();
 
@@ -34,18 +33,18 @@ export async function collectionProducts({
     } else {
       sortOptions['createdAt'] = -1;
     }
-  
-  
+
+
     const filters: any = { collections: collectionId };
 
     if (color) filters.variantColors = color;
     if (size) filters.variantSizes = size;
-  
+
     const products = await Product.find(filters)
-      .select('-category -description -timestamps -detailDesc -searchableVariants -collections -tags -weight -dimensions') 
+      .select('-category -description -timestamps -detailDesc -searchableVariants -collections -tags -weight -dimensions')
       .skip(skip)
       .limit(limit)
-      .sort(sortOptions); 
+      .sort(sortOptions);
 
     const total = await Product.countDocuments({
       collections: collectionId,

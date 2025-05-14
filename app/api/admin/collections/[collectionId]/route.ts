@@ -7,13 +7,25 @@ import { revalidatePath } from "next/cache";
 import { decode } from "next-auth/jwt";
 import { corsHeaders } from "@/lib/cors";
 
+export function OPTIONS() {
+  return new NextResponse(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
+}
+
 export const GET = async (
   req: NextRequest,
   { params }: { params: { collectionId: string } }
 ) => {
   try {
-    const authHeader = req.headers.get("authorization");
-    const token = authHeader?.split(" ")[1];
+    const token = req.cookies.get('authjs.admin-session')?.value
+    if (!token) {
+      return new NextResponse("Token is missing", {
+        status: 401,
+        headers: corsHeaders,
+      });
+    }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
       return new NextResponse("Unauthorized", { status: 401, headers: corsHeaders });
@@ -25,13 +37,19 @@ export const GET = async (
         headers: corsHeaders,
       });
     }
+    if (!params.collectionId) {
+      return new NextResponse("Collection Id is Required", {
+        status: 400,
+        headers: corsHeaders,
+      });
+    }
     await connectToDB();
 
     const collection = await Collection.findById(params.collectionId).populate({ path: "products", model: Product });
 
     if (!collection) {
       return new NextResponse(
-        JSON.stringify({ message: "Collection not found" }),
+        JSON.stringify("Collection not found"),
         { status: 404, headers: corsHeaders }
       );
     }
@@ -48,8 +66,13 @@ export const POST = async (
   { params }: { params: { collectionId: string } }
 ) => {
   try {
-    const authHeader = req.headers.get("authorization");
-    const token = authHeader?.split(" ")[1];
+    const token = req.cookies.get('authjs.admin-session')?.value
+    if (!token) {
+      return new NextResponse("Token is missing", {
+        status: 401,
+        headers: corsHeaders,
+      });
+    }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
       return new NextResponse("Unauthorized", { status: 401, headers: corsHeaders });
@@ -96,8 +119,13 @@ export const DELETE = async (
   { params }: { params: { collectionId: string } }
 ) => {
   try {
-    const authHeader = req.headers.get("authorization");
-    const token = authHeader?.split(" ")[1];
+    const token = req.cookies.get('authjs.admin-session')?.value
+    if (!token) {
+      return new NextResponse("Token is missing", {
+        status: 401,
+        headers: corsHeaders,
+      });
+    }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
       return new NextResponse("Unauthorized", { status: 401, headers: corsHeaders });

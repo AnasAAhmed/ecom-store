@@ -7,10 +7,22 @@ import { statusValidation } from "@/lib/utils/features";
 import { decode } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
+export function OPTIONS() {
+  return new NextResponse(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
+}
+
 export const GET = async (req: NextRequest, { params }: { params: { orderId: String } }) => {
   try {
-    const authHeader = req.headers.get("authorization");
-    const token = authHeader?.split(" ")[1];
+    const token = req.cookies.get('authjs.admin-session')?.value
+    if (!token) {
+      return new NextResponse("Token is missing", {
+        status: 401,
+        headers: corsHeaders,
+      });
+    }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
       return new NextResponse("Unauthorized", { status: 401, headers: corsHeaders });
@@ -21,6 +33,9 @@ export const GET = async (req: NextRequest, { params }: { params: { orderId: Str
         status: 401,
         headers: corsHeaders,
       });
+    }
+    if (!params.orderId) {
+      return new NextResponse(JSON.stringify("Order is missing"), { status: 404, headers: corsHeaders })
     }
     await connectToDB()
 
@@ -30,13 +45,13 @@ export const GET = async (req: NextRequest, { params }: { params: { orderId: Str
     })
 
     if (!orderDetails) {
-      return new NextResponse(JSON.stringify({ message: "Order Not Found" }), { status: 404, headers: corsHeaders })
+      return new NextResponse(JSON.stringify("Order Not Found"), { status: 404, headers: corsHeaders })
     }
 
     return NextResponse.json(orderDetails, { status: 200, headers: corsHeaders })
   } catch (err) {
     console.log("[orderId_GET]", err)
-    return new NextResponse("Internal Server Error", { status: 500, headers: corsHeaders })
+    return new NextResponse("Internal Server Error: " + (err as Error).message, { status: 500, headers: corsHeaders })
   }
 }
 
@@ -44,8 +59,13 @@ export const PUT = async (req: NextRequest, { params }: { params: { orderId: Str
   try {
     const { status } = await req.json();
 
-    const authHeader = req.headers.get("authorization");
-    const token = authHeader?.split(" ")[1];
+    const token = req.cookies.get('authjs.admin-session')?.value
+    if (!token) {
+      return new NextResponse("Token is missing", {
+        status: 401,
+        headers: corsHeaders,
+      });
+    }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
       return new NextResponse("Unauthorized", { status: 401, headers: corsHeaders });
@@ -56,6 +76,9 @@ export const PUT = async (req: NextRequest, { params }: { params: { orderId: Str
         status: 401,
         headers: corsHeaders,
       });
+    }
+    if (!params.orderId) {
+      return new NextResponse(JSON.stringify("Order is missing"), { status: 404, headers: corsHeaders })
     }
     await connectToDB();
 
@@ -70,7 +93,7 @@ export const PUT = async (req: NextRequest, { params }: { params: { orderId: Str
       order.status = statusValidation(status);
       order.statusHistory.push({
         status: status,
-        changedAt: Date.now
+        changedAt: Date.now()
       });
     }
     await order.save();
@@ -87,8 +110,13 @@ export const PUT = async (req: NextRequest, { params }: { params: { orderId: Str
 
 export const DELETE = async (req: NextRequest, { params }: { params: { orderId: String } }) => {
   try {
-    const authHeader = req.headers.get("authorization");
-    const token = authHeader?.split(" ")[1];
+    const token = req.cookies.get('authjs.admin-session')?.value
+    if (!token) {
+      return new NextResponse("Token is missing", {
+        status: 401,
+        headers: corsHeaders,
+      });
+    }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
       return new NextResponse("Unauthorized", { status: 401, headers: corsHeaders });

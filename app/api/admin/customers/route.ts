@@ -1,14 +1,27 @@
 import { corsHeaders } from "@/lib/cors";
 import Customer from "@/lib/models/Customer";
 import { connectToDB } from "@/lib/mongoDB";
-import { isValidObjectId } from "mongoose";
+import { isHex24 } from "@/lib/utils/features";
+import mongoose from "mongoose";
 import { decode } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
+export function OPTIONS() {
+  return new NextResponse(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
+}
+
 export const GET = async (req: NextRequest) => {
     try {
-      const authHeader = req.headers.get("authorization");
-      const token = authHeader?.split(" ")[1];
+       const token = req.cookies.get('authjs.admin-session')?.value
+        if (!token) {
+            return new NextResponse("Token is missing", {
+                status: 401,
+                headers: corsHeaders,
+            });
+        }
       const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
       if (!decodedToken || decodedToken.role !== 'admin') {
         return new NextResponse("Unauthorized", { status: 401, headers: corsHeaders });
@@ -25,33 +38,52 @@ export const GET = async (req: NextRequest) => {
       const key = searchParams.get('key')!;
       const query = searchParams.get('query')!;
       const page = searchParams.get('page')!;
-  
+   const sort = searchParams.get('sort')!;
+    const sortField = searchParams.get('sortField')!;
+
+    const sortOptions: { [key: string]: 1 | -1 } = {};
+    if (sort && sortField) {
+      const sortOrder = sort === "asc" ? 1 : -1;
+      sortOptions[sortField] = sortOrder;
+    } else {
+      sortOptions['createdAt'] = -1;
+    }
       await connectToDB();
   
       let search: { [key: string]: any } = {};
   
       if (query) {
         if (key === 'email') search = { email: { $regex: query, $options: 'i' } };
-        if (key === '_id' && isValidObjectId(query)) search = { _id: query };
+       if (key === '_id') {
+              if (isHex24(query)) {
+                search = { _id: new mongoose.Types.ObjectId(query) };
+              } else {
+                return NextResponse.json({
+                  data: [],
+                  totalOrders: 0,
+                  totalPages: 0,
+                }, { status: 200, headers: corsHeaders });
+              }
+            }
         if (key === 'name') search = { name: { $regex: query, $options: 'i' } };
       }
-      const totalOrders = await Customer.countDocuments(search);
-      if (totalOrders < 1) {
+      const totalCustomers = await Customer.countDocuments(search).sort(sortOptions);
+      if (totalCustomers < 1) {
         return NextResponse.json({
           data: [],
-          totalOrders,
+          totalCustomers,
           totalPages: 0,
         }, { status: 200, headers: corsHeaders });
       }
-      const orders = await Customer.find(search)
-        .sort({ createdAt: 'desc' })
+      const customers = await Customer.find(search)
+        .sort(sortOptions)
         .skip(Number(page) * 10)
         .limit(10)
         .select('-reset_token -token_expires -orders -role -password')
       return NextResponse.json({
-        data: orders,
-        totalOrders,
-        totalPages: Math.ceil(totalOrders / 10),
+        data: customers,
+        totalCustomers,
+        totalPages: Math.ceil(totalCustomers / 10),
       }, { status: 200, headers: corsHeaders });
     } catch (err) {
       console.log("[admin_customers_GET] Error:", err);

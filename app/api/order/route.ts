@@ -24,10 +24,10 @@ export const POST = async (req: NextRequest) => {
     } = orderData;
 
     if (!shippingAddress || !products || !shippingRate || !totalAmount || !currency) {
-      return NextResponse.json({ message: `Please enter All Details` }, { status: 400 });
+      return NextResponse.json(`Please enter All Details` , { status: 400 });
     }
-    if (!customerInfo.id || !customerInfo.email ) {
-      return NextResponse.json({ message: 'User Details Missing/Login first' }, { status: 400 });
+    if (!customerInfo.id || !customerInfo.email) {
+      return NextResponse.json('User Details Missing/Login first', { status: 400 });
     }
 
     await stockReduce(products);
@@ -40,7 +40,9 @@ export const POST = async (req: NextRequest) => {
       shippingRate,
       customerEmail: customerInfo.email,
       currency,
-      status:'COD & Processing',
+      isPaid:false,
+      statusHistory: { status: "Payment-Successfull & Processing", changedAt: Date.now() },
+      status: 'pending',
       method: 'COD',
       exchangeRate
     });
@@ -63,6 +65,6 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json({ orderId: newOrder._id }, { status: 200 });
   } catch (error) {
     console.log("NEW_ORDER.Post", error);
-    return NextResponse.json({ message: (error as Error).message  }, { status: 500 });
+    return NextResponse.json((error as Error).message , { status: 500 });
   }
 };

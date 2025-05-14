@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import Customer from "@/lib/models/Customer";
 import { stockReduce } from "@/lib/actions/order.actions";
+import { extractNameFromEmail } from "@/lib/utils/features";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -20,9 +21,9 @@ export const POST = async (req: NextRequest) => {
       const session = event.data.object
 
       const customerInfo = {
-        clerkId: session?.client_reference_id,
-        name: session?.customer_details?.name,
-        email: session?.customer_details?.email,
+        id: session.client_reference_id,
+        email: session?.customer_email,
+        name: session.customer_details?.name || extractNameFromEmail(session?.customer_email! || ''),
         phone: session?.customer_details?.phone,
       }
 
@@ -32,6 +33,7 @@ export const POST = async (req: NextRequest) => {
         state: session?.shipping_details?.address?.state,
         postalCode: session?.shipping_details?.address?.postal_code,
         country: session?.shipping_details?.address?.country,
+        phone: customerInfo.phone
       }
 
       const retrieveSession = await stripe.checkout.sessions.retrieve(
@@ -59,21 +61,24 @@ export const POST = async (req: NextRequest) => {
       await connectToDB()
 
       const newOrder = new Order({
-        customerPhone:customerInfo.phone,
+        sessionId:session.id,
+        customerPhone: customerInfo.phone,
         customerEmail: customerInfo.email,
         products: orderItems,
         shippingAddress,
         currency: session?.currency,
         shippingRate: (session?.shipping_cost?.amount_total! / 100).toString(),
         totalAmount: totalAmountInUSD,
-        status: "Payment-Successfull & Processing",
+        statusHistory: { status: "Payment-Successfull & Processing", changedAt: Date.now() },
+        status: "pending",
         method: 'card',
+        isPaid: true,
         exchangeRate: exchangeRate,
       })
 
       await newOrder.save();
 
-      let customer = await Customer.findOne({ clerkId: customerInfo.clerkId });
+      let customer = await Customer.findOne({ _id: customerInfo.id });
 
       if (customer) {
         customer.orders.push(newOrder._id);
@@ -93,6 +98,6 @@ export const POST = async (req: NextRequest) => {
     return new NextResponse("Order created", { status: 200 })
   } catch (err) {
     console.log("[webhooks_POST]", err)
-    return new NextResponse("Failed to create the order. Contact Owner", { status: 500 })
+    return new NextResponse("Failed to create the order. Contact Owner: " + (err as Error).message, { status: 500 })
   }
 }

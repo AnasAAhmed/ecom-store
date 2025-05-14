@@ -1,3 +1,4 @@
+import FadeInOnView from "../FadeInView";
 import ProductCard from "./ProductCard";
 import Link from "next/link";
 
@@ -5,7 +6,11 @@ const ProductList = async ({ Products, heading, isViewAll = true }: { Products: 
 
   return (
     <div className="flex flex-col items-center gap-10 py-8 px-3 sm:px-5">
-      {heading && <p className="text-heading3-bold sm:text-heading2-bold capitalize">{heading}</p>}
+      {heading &&
+        <FadeInOnView delay={200} threshold={0.4} animation="animate-fadeInUp">
+          <p className="text-heading3-bold sm:text-heading2-bold capitalize">{heading}</p>
+        </FadeInOnView>}
+
       {!Products || Products.length === 0 ? (
         <p className="text-body-bold">No products found</p>
       ) : (
@@ -17,12 +22,14 @@ const ProductList = async ({ Products, heading, isViewAll = true }: { Products: 
       )}
       {Products.length > 4 && isViewAll && <div className="self-stretch flex flex-row items-start justify-center py-[0rem] px-[1.25rem]">
         <div className="w-[12.875rem] flex flex-col items-start justify-start ">
-          <Link title=" View All Products" href="/search" className="h-[1.875rem] mx-auto relative font-medium inline-block z-[1] text-heading4-bold">
-            View All Products
-          </Link>
-          <div className="self-stretch flex flex-row items-start justify-start py-[0rem] pr-[0.187rem] pl-[0.375rem]">
-            <div className="h-[0.125rem] flex-1 relative box-border z-[1] border-t-[2px] border-solid border-black" />
-          </div>
+          <FadeInOnView delay={300} threshold={0.5} animation="animate-fadeIn">
+            <Link title=" View All Products" href="/search" className="h-[1.875rem] mx-auto relative font-medium inline-block z-[1] text-heading4-bold">
+              View All Products
+            </Link>
+            <div className="self-stretch flex flex-row items-start justify-start py-[0rem] pr-[0.187rem] pl-[0.375rem]">
+              <div className="h-[0.125rem] flex-1 relative box-border z-[1] border-t-[2px] border-solid border-black" />
+            </div>
+          </FadeInOnView>
         </div>
       </div>}
     </div>

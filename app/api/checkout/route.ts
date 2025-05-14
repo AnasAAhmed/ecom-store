@@ -3,12 +3,12 @@ import { stripe } from "@/lib/stripe";
 
 
 export async function OPTIONS(data: any,) {
-  const corsHeaders = {
+  const storeCorsHeaders = {
     "Access-Control-Allow-Origin": `${process.env.ECOM_STORE_URL}`,
     "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
   };
-  return NextResponse.json(data, { headers: corsHeaders });
+  return NextResponse.json(data, { headers: storeCorsHeaders });
 }
 
 

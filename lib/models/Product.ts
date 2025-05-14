@@ -56,8 +56,8 @@ const ProductSchema = new mongoose.Schema({
   variantColors: [String],
   variantSizes: [String],
   sold: { type: Number, default: 0 },
-  price: { type: Number, min: 3 },
-  expense: { type: Number, min: 3 },
+  price: { type: Number, min: 5 },
+  expense: { type: Number, min: 0 },
 
 }, { toJSON: { getters: true }, timestamps: true });
 
@@ -89,7 +89,11 @@ ProductSchema.pre("save", function (next) {
 });
 
 ProductSchema.index({ title: 'text', tags: 'text' });
-ProductSchema.index({ slug: 1, category: 1, variantColors: 1, variantSizes: 1 });
+ProductSchema.index({ slug: 1, });
+ProductSchema.index({ category: 1 });
+ProductSchema.index({ variantSizes: 1 });
+ProductSchema.index({ variantColors: 1 });
+
 
 
 const Product = mongoose.models.Product || mongoose.model("Product", ProductSchema);

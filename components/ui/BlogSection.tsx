@@ -2,6 +2,7 @@
 import { Calendar, Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import FadeInOnView from "../FadeInView";
 
 const BlogSection = () => {
   return (
@@ -11,9 +12,9 @@ const BlogSection = () => {
         <p className="text-gray-500">Find a bright idea to suit your taste with our great selection</p>
       </div>
       <div className="w-full flex flex-wrap items-start justify-center gap-8">
-        <GroupComponent3 blogCardImage="/blog1.png" />
-        <GroupComponent3 blogCardImage="/blog2.png" />
-        <GroupComponent3 blogCardImage="/blog3.png" />
+        <GroupComponent3 blogCardImage="/blog1.png" index={0.1} />
+        <GroupComponent3 blogCardImage="/blog2.png" index={0.4} />
+        <GroupComponent3 blogCardImage="/blog3.png" index={0.6} />
       </div>
       <div className="flex flex-col items-center">
         <Link title="Veiw all blogs" href="/blog" className="text-lg font-medium">View All Posts</Link>
@@ -25,33 +26,36 @@ const BlogSection = () => {
 
 export type GroupComponent3Type = {
   blogCardImage: string;
+  index: number;
 };
 
-const GroupComponent3 = ({ blogCardImage }: GroupComponent3Type) => {
+const GroupComponent3 = ({ blogCardImage, index }: GroupComponent3Type) => {
   return (
-    <div className="flex flex-col items-start justify-start gap-3 sm:gap-8  max-w-full text-left text-lg text-black font-poppins">
-      <Image
-        className="self-stretch h-96 relative rounded-md max-w-full object-cover"
-        alt="Blog"
-        width={400}
-        height={222}
-        src={blogCardImage}
-      />
-      <div className="self-stretch flex flex-col items-start justify-start p-4 box-border max-w-full">
-        <div className="text-xl">Going all-in with millennial design</div>
-        <Link title={"Read more on our blog page "+blogCardImage.slice(4,6)} href='/blog' className="text-2xl font-medium" >Read More</Link>
-        <div className="flex items-center justify-between w-full mt-4">
-          <div className="flex items-center gap-2">
-            <Clock />
-            <span className="font-light">5 min</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Calendar />
-            <span className="font-light">12<sup>th</sup> Oct 2022</span>
+    <FadeInOnView delay={300} threshold={0.3+index} animation="animate-fadeIn">
+      <div className="flex flex-col items-start justify-start gap-3 sm:gap-8  max-w-full text-left text-lg text-black font-poppins">
+        <Image
+          className="self-stretch h-96 relative rounded-md max-w-full object-cover"
+          alt="Blog"
+          width={400}
+          height={222}
+          src={blogCardImage}
+        />
+        <div className="self-stretch flex flex-col items-start justify-start p-4 box-border max-w-full">
+          <div className="text-xl">Going all-in with millennial design</div>
+          <Link title={"Read more on our blog page " + blogCardImage.slice(4, 6)} href='/blog' className="text-2xl font-medium" >Read More</Link>
+          <div className="flex items-center justify-between w-full mt-4">
+            <div className="flex items-center gap-2">
+              <Clock />
+              <span className="font-light">5 min</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Calendar />
+              <span className="font-light">12<sup>th</sup> Oct 2022</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </FadeInOnView>
   );
 };
 

@@ -143,9 +143,9 @@ body,
 }
 @media screen and (width<=375px) {
   .image-height{
-    height: 8rem;
+    height: 9.3rem;
   } 
   .image-width{
-    width:  8rem;
+    width:  9.3rem;
   }
 }

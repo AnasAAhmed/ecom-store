@@ -18,14 +18,14 @@ export const PUT = async (req: NextRequest, { params }: { params: { orderId: Str
 
     if (order.status.startsWith("Canceled")) {
       return NextResponse.json(
-        { message: "Order is already canceled" },
+        "Order is already canceled" ,
         { status: 409 } // Conflict
       );
     }
 
     if (timeDifference >= 2) {
       return NextResponse.json(
-        { message: "Cancelling order is only allowed within 2 hours after it's placed" },
+        "Cancelling order is only allowed within 2 hours after it's placed" ,
         { status: 403 } // Forbidden
       );
     }
@@ -39,7 +39,7 @@ export const PUT = async (req: NextRequest, { params }: { params: { orderId: Str
     revalidatePath('/orders')
     return NextResponse.json("Order Canceled Successfully", { status: 200 })
   } catch (error) {
-    return NextResponse.json({ message: (error as Error).message }, { status: 500 });
+    return NextResponse.json((error as Error).message , { status: 500 });
 
   }
 };

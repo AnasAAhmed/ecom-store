@@ -23,7 +23,7 @@ const roboto = Roboto({
 
 export const metadata: Metadata =
 {
-  title: ` Borcelle`,
+  title: `Borcelle store`,
   description: "Shop high-quality products at Borcelle professinaol spa website in nextjs mongodb Tcs Courier api. By Anas Ahmed Gituhb:https://github.com/AnasAAhmed",
   keywords: ['Borcelle', 'Anas Ahmed', 'Ecommerce', "professional ecommerce site in nextjs", 'mongodb', 'SPA Ecommerce', 'TCS courier APIs'],
   robots: {
@@ -35,7 +35,7 @@ export const metadata: Metadata =
     }
   },
   openGraph: {
-    title: `Borcelle`,
+    title: `Borcelle store`,
     description: "Shop high-quality products at Borcelle professinaol spa website in nextjs mongodb Tcs Courier api. By Anas Ahmed Gituhb:https://github.com/AnasAAhmed",
     url: `${process.env.ECOM_STORE_URL}`,
     images: [

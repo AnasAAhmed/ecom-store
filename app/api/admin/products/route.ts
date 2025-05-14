@@ -5,14 +5,26 @@ import Product from "@/lib/models/Product";
 import Collection from "@/lib/models/Collection";
 import { decode } from "next-auth/jwt";
 import { corsHeaders } from "@/lib/cors";
-import { estimateDimensions, estimateWeight, slugify } from "@/lib/utils/features";
+import { estimateDimensions, estimateWeight, isHex24 } from "@/lib/utils/features";
 import { revalidatePath } from "next/cache";
-import { isValidObjectId } from "mongoose";
+import mongoose from "mongoose";
+
+export function OPTIONS() {
+  return new NextResponse(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
+}
 
 export const POST = async (req: NextRequest) => {
   try {
-    const authHeader = req.headers.get("authorization");
-    const token = authHeader?.split(" ")[1];
+    const token = req.cookies.get('authjs.admin-session')?.value
+    if (!token) {
+      return new NextResponse("Token is missing", {
+        status: 401,
+        headers: corsHeaders,
+      });
+    }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
       return new NextResponse("Unauthorized", { status: 401, headers: corsHeaders });
@@ -32,15 +44,16 @@ export const POST = async (req: NextRequest) => {
       collections,
       tags,
       variants,
+      detailDesc,
       dimensions,
       stock,
       weight,
       price,
       expense,
     } = await req.json();
-    
-    
-    
+
+
+
     if (
       !title ||
       !description ||
@@ -52,13 +65,14 @@ export const POST = async (req: NextRequest) => {
         status: 400,
       });
     }
-    
+
     await connectToDB();
 
     const newProduct = new Product({
       title,
       description,
       media,
+      detailDesc,
       weight: weight || estimateWeight(title || category),
       category,
       dimensions: dimensions || estimateDimensions(title || category),
@@ -90,8 +104,13 @@ export const POST = async (req: NextRequest) => {
 };
 export const GET = async (req: NextRequest) => {
   try {
-    const authHeader = req.headers.get("authorization");
-    const token = authHeader?.split(" ")[1];
+    const token = req.cookies.get('authjs.admin-session')?.value
+    if (!token) {
+      return new NextResponse("Token is missing", {
+        status: 401,
+        headers: corsHeaders,
+      });
+    }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
       return new NextResponse("Unauthorized", { status: 401, headers: corsHeaders });
@@ -108,17 +127,36 @@ export const GET = async (req: NextRequest) => {
     const key = searchParams.get('key')!;
     const query = searchParams.get('query')!;
     const page = searchParams.get('page')!;
+    const sort = searchParams.get('sort')!;
+    const sortField = searchParams.get('sortField')!;
 
+    const sortOptions: { [key: string]: 1 | -1 } = {};
+    if (sort && sortField) {
+      const sortOrder = sort === "asc" ? 1 : -1;
+      sortOptions[sortField] = sortOrder;
+    } else {
+      sortOptions['createdAt'] = -1;
+    }
     await connectToDB();
 
     let search: { [key: string]: any } = {};
 
     if (query) {
       if (key === 'title') search = { $text: { '$search': 'white' } };
-      if (key === '_id' && isValidObjectId(query)) search = { _id: query };
+      if (key === '_id') {
+        if (isHex24(query)) {
+          search = { _id: new mongoose.Types.ObjectId(query) };
+        } else {
+          return NextResponse.json({
+            data: [],
+            totalOrders: 0,
+            totalPages: 0,
+          }, { status: 200, headers: corsHeaders });
+        }
+      }
       if (key === 'category') search = { category: { $regex: query, $options: 'i' } };
     }
-    const totalProducts = await Product.countDocuments(search);
+    const totalProducts = await Product.countDocuments(search).sort(sortOptions);
     if (totalProducts < 1) {
       return NextResponse.json({
         data: [],
@@ -127,11 +165,11 @@ export const GET = async (req: NextRequest) => {
       }, { status: 200, headers: corsHeaders });
     }
     const products = await Product.find(search)
-      .sort({ createdAt: 'desc' })
+      .sort(sortOptions)
       .skip(Number(page) * 10)
       .limit(10)
-      .populate({ path: 'collections', model: Collection })
-      .select("-media -ratings -numOfReviews -description -variants -weight -dimensions");
+      .populate({ path: 'collections', model: Collection, select: '_id title' })
+      .select("-createdAt -updatedAt -__v -media -ratings -variantColors -variantSizes -searchableVariants -detailDesc -numOfReviews -description -variants -weight -dimensions");
 
     return NextResponse.json({
       data: products,

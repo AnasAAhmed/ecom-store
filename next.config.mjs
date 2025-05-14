@@ -11,6 +11,10 @@ const nextConfig = {
       {
         hostname: "ui-avatars.com",
       },
+      {
+        protocol: 'https',
+        hostname: '**.ufs.sh', 
+      },
     ],
 
   },

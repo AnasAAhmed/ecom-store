@@ -32,7 +32,7 @@ export interface IHomePage extends mongoose.Document {
             textPosition?: string;
             textPositionV?: string;
             buttonText?: string;
-            collection: string;
+            collectionId: string;
             isVideo: boolean;
         }
     ]
@@ -71,7 +71,7 @@ const homePageSchema = new mongoose.Schema({
             textPositionV: { type: String },
             link: { type: String, required: true },
             buttonText: { type: String },
-            collectionName: { type: String },
+            collectionId: { type: String, required: true },
             isVideo: { type: Boolean, default: false }
         }
     ]

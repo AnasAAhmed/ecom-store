@@ -99,6 +99,20 @@ const config: Config = {
         "grey-1": "#F7F7F7",
         "grey-2": "#8A8A8A",
       },
+      keyframes: {
+				fadeInUp: {
+					'0%': { opacity: '0', transform: 'translateY(20px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' },
+				},
+				fadeIn: {
+					'0%': { opacity: '0', transform: 'translateY(10px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' },
+				},
+			},
+			animation: {
+				fadeInUp: 'fadeInUp 0.3s ease-out forwards',
+				fadeIn: 'fadeIn 0.7s ease-out forwards',
+			},
     },
   },
   plugins: [require("tailwind-scrollbar-hide")],

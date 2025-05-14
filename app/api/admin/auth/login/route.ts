@@ -1,14 +1,22 @@
-import { signIn } from "@/auth";
+
 import { getUser } from "@/lib/actions/user.actions";
+import { corsHeaders } from "@/lib/cors";
 import { ResultCode } from "@/lib/utils/features";
 import { compare } from "bcryptjs";
 import { encode } from "next-auth/jwt";
 import { headers } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { UAParser } from "ua-parser-js";
 import { z } from "zod";
 
-export async function POST(req: Request) {
+export function OPTIONS() {
+    return new NextResponse(null, {
+        status: 204,
+        headers: corsHeaders,
+    });
+}
+
+export async function POST(req: NextRequest) {
     const body = await req.json();
     const { email, password } = body;
     try {
@@ -49,21 +57,21 @@ export async function POST(req: Request) {
             parsedCredentials.error.issues.map((i, _) => (
                 messages += `${_ > 0 ? ' & ' : ''}` + i.message
             ))
-            return NextResponse.json({ type: 'error', resultCode: messages, token: null });
+            return NextResponse.json({ type: 'error', resultCode: messages }, { status: 401, headers: corsHeaders });
 
         }
         const user: User | null = await getUser({ email: parsedCredentials.data.email, provider: 'credentials', browser, city, country, ip, userAgent, os, device });
         if (!user) {
-            return NextResponse.json({ type: 'error', resultCode: ResultCode.InvalidCredentials, token: null });
+            return NextResponse.json({ type: 'error', resultCode: ResultCode.InvalidCredentials }, { status: 401, headers: corsHeaders });
 
         }
         if (user.role !== 'admin') {
-            return NextResponse.json({ type: 'error', resultCode: 'Access Denied for non-admin', token: null });
+            return NextResponse.json({ type: 'error', resultCode: 'Access Denied for non-admin' }, { status: 401, headers: corsHeaders });
 
         }
         const isMatched = await compare(parsedCredentials.data.password, user.password!);
         if (!isMatched) {
-            return NextResponse.json({ type: 'error', resultCode: ResultCode.InvalidCredentials, token: null });
+            return NextResponse.json({ type: 'error', resultCode: ResultCode.InvalidCredentials }, { status: 401, headers: corsHeaders });
 
         }
         const token = await encode({
@@ -78,14 +86,22 @@ export async function POST(req: Request) {
             },
             secret: process.env.AUTH_SECRET!,
             salt: process.env.ADMIN_SALT!
-        })
+        });
+        const response = NextResponse.json({ type: "succes", resultCode: 'Login successful' }, { status: 200, headers: corsHeaders });
 
-        return NextResponse.json({ type: 'success', resultCode: ResultCode.UserLoggedIn, token });
-
-
+        response.cookies.set({
+            name: 'authjs.admin-session',
+            value: token,
+            httpOnly: true,
+            secure: true,
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 60 * 60 * 24 * 7,
+        });
+        console.log(response);
+        
+        return response;
     } catch (error) {
-
-        return NextResponse.json({ type: 'error', resultCode: 'Login: ' + (error as Error).message, token: null });
-
+        return NextResponse.json({ type: 'error', resultCode: 'Login: ' + (error as Error).message }, { status: 500, headers: corsHeaders });
     }
 }

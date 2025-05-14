@@ -1,5 +1,7 @@
 'use client'
+import Image from "next/image";
 import Link from "next/link";
+import FadeInOnView from "../FadeInView";
 
 type BannerProps = {
   text?: string;
@@ -11,14 +13,15 @@ type BannerProps = {
   link: string;
   buttonText?: string;
   scrollDown?: boolean;
-  textPosition?: string;
   textPositionV?: string;
+  textPosition?: string;
 };
-
+type rr='center' | 'end' | 'start';
 const Banner = ({ imgUrl, videoUrl, text, heading, textColor, shade, link, buttonText, scrollDown, textPositionV = 'center', textPosition = 'center' }: BannerProps) => {
+
   return (
     <Link title={buttonText || 'Shop Now'} href={link} className="pyd-6 md:mt-0 x-6">
-      <div className="relative w-full h-[200px] sm:h-[450px] md:h-[600px] roudnded-xl overflow-hidden">
+      <div className="relative w-full h-[230px] sm:h-[470px] md:h-[660px] roudnded-xl overflow-hidden">
 
         {videoUrl ? (
           <video
@@ -31,12 +34,19 @@ const Banner = ({ imgUrl, videoUrl, text, heading, textColor, shade, link, butto
             playsInline
           />
         ) : (
-          <div
-            className="absolute inset-0 w-full h-full bg-center"
-            style={{ backgroundImage: `url(${imgUrl})`, backgroundSize: 'cover' }}
+          <Image
+            src={imgUrl!}
+            alt={heading || 'Banner image'}
+            fill
+            unoptimized
+            placeholder="blur"
+            blurDataURL="/fallback-banner.png"
+            sizes="(max-width: 450px) 9rem, (max-width: 700px) 12rem, 16rem"
+            className={`absolute inset-0 w-full h-full object-cover`}
           />
         )}
-
+        {/* placeholder="blur"
+                  blurDataURL="/fallback-banner.png" */}
         {shade && (
           <div
             className="absolute inset-0 opacity-60"
@@ -45,15 +55,19 @@ const Banner = ({ imgUrl, videoUrl, text, heading, textColor, shade, link, butto
         )}
 
         <div
-          className="relative z-10 flex flex-col h-full py-4 sm:py-12 text-center px-6 md:px-12 lg:px-24"
-          style={{ color: textColor, justifyContent: textPosition, alignItems: textPositionV }}
+          className="relative z-10 flex flex-col h-full py-4 sm:py-12 text-scenter px-6 md:px-12 lg:px-24"
+          style={{ textAlign: (textPosition as rr), color: textColor, justifyContent: textPosition, alignItems: textPositionV }}
         >
-          <h1 className="capitalize text-heading2-bold sm:text-heading1-bold underline font-extrabold mb-6 leading-tight">
-            {heading}
-          </h1>
-          <p className="capitalize text-heading4-bold sm:text-heading3-bold mb-10 max-sm:hidden">
-            {text}
-          </p>
+          <FadeInOnView animation="animate-fadeInUp" delay={100} >
+            <h1 className="capitalize text-heading2-bold sm:text-heading1-bold underline font-extrabold mb-6 leading-tight">
+              {heading}
+            </h1>
+          </FadeInOnView>
+          <FadeInOnView animation="animate-fadeIn" delay={300}>
+            <p className="capitalize text-heading4-bold sm:text-heading3-bold mb-10 max-sm:hidden">
+              {text}
+            </p>
+          </FadeInOnView>
 
           {scrollDown && (
             <button
@@ -62,11 +76,11 @@ const Banner = ({ imgUrl, videoUrl, text, heading, textColor, shade, link, butto
             >
               {buttonText || 'Learn More'}
             </button>
-          ) }
+          )}
         </div>
 
-    </div>
-      </Link>
+      </div>
+    </Link>
   );
 };
 
