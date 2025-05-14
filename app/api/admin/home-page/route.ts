@@ -2,6 +2,7 @@ import { corsHeaders } from "@/lib/cors";
 import HomePage from "@/lib/models/HomePage";
 import { connectToDB } from "@/lib/mongoDB";
 import { decode } from "next-auth/jwt";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 
@@ -60,7 +61,7 @@ export const POST = async (req: NextRequest) => {
         }
         const now = Math.floor(Date.now() / 1000);
         if (decodedToken.exp && decodedToken.exp < now) {
-            return  NextResponse.json("Session expired. Please log in again.", {
+            return NextResponse.json("Session expired. Please log in again.", {
                 status: 401,
                 headers: corsHeaders,
             });
@@ -73,10 +74,10 @@ export const POST = async (req: NextRequest) => {
 
 
         if (!hero?.imgUrl || !hero?.link) {
-            return  NextResponse.json("Hero section missing required fields", { status: 400,headers:corsHeaders });
+            return NextResponse.json("Hero section missing required fields", { status: 400, headers: corsHeaders });
         }
         if (!Array.isArray(collections) || collections.length === 0) {
-            return  NextResponse.json("At least one collection is required", { status: 400 ,headers:corsHeaders});
+            return NextResponse.json("At least one collection is required", { status: 400, headers: corsHeaders });
         }
 
         await connectToDB()
@@ -92,10 +93,10 @@ export const POST = async (req: NextRequest) => {
         } else {
             result = await HomePage.create({ seo, hero, collections })
         }
-
+        revalidatePath('/')
         return NextResponse.json(result, { status: 200, headers: corsHeaders })
     } catch (err) {
         console.log("[home-page_POST&PUT]", err)
-        return  NextResponse.json((err as Error).message, { status: 500, headers: corsHeaders })
+        return NextResponse.json((err as Error).message, { status: 500, headers: corsHeaders })
     }
 }

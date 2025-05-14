@@ -2,6 +2,7 @@ import { corsHeaders } from "@/lib/cors";
 import HomePage from "@/lib/models/HomePage";
 import { connectToDB } from "@/lib/mongoDB";
 import { decode } from "next-auth/jwt";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export function OPTIONS() {
@@ -35,6 +36,7 @@ export const DELETE = async (req: NextRequest, { params }: { params: { id: Strin
         await connectToDB()
 
         await HomePage.findByIdAndDelete(params.id);
+        revalidatePath('/')
 
         return NextResponse.json('Successfully deleted home page data', { status: 200, headers: corsHeaders })
     } catch (err) {
