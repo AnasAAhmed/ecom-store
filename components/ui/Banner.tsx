@@ -42,7 +42,7 @@ const Banner = ({ imgUrl, videoUrl, text, heading, textColor, shade, link, butto
             placeholder="blur"
             blurDataURL="/fallback-banner.png"
             sizes="(max-width: 450px) 9rem, (max-width: 700px) 12rem, 16rem"
-            className={`absolute`}
+            className={`absolute transition-opacity`}
           />
         )}
         {shade && (

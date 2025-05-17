@@ -13,12 +13,12 @@ export async function POST(request: NextRequest) {
     const { rating, comment, email, name, userId, photo } = body;
 
     if (!productId || !userId || !email || !name || !comment || !rating) {
-      return NextResponse.json({ error: "All fields are required" }, { status: 400 });
+      return NextResponse.json({ message: "All fields are required" }, { status: 400 });
     }
 
     const product = await Product.findById(productId);
     if (!product) {
-      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+      return NextResponse.json({ message: "Product not found" }, { status: 404 });
     }
 
     const isReviewed = await Review.findOne({ userId, productId: product._id });
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: "Review submitted successfully" });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ message: (error as Error).message + " Internal Server Error" }, { status: 500 });
   }
 };
 
@@ -62,12 +62,12 @@ export async function DELETE(request: NextRequest) {
 
     const review = await Review.findOneAndDelete({ _id: reviewId, userId });
     if (!review) {
-      return NextResponse.json({ error: "Review not found" }, { status: 404 });
+      return NextResponse.json({ message: "Review not found" }, { status: 404 });
     }
 
     const product = await Product.findById(productId);
     if (!product) {
-      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+      return NextResponse.json({ message: "Product not found" }, { status: 404 });
     }
 
     product.numOfReviews -= 1;
@@ -84,6 +84,6 @@ export async function DELETE(request: NextRequest) {
     });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
   }
 }

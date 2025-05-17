@@ -9,17 +9,7 @@ import ProductList from "@/components/product/ProductList";
 import { getCachedProductDetails } from "@/lib/actions/cached";
 import Breadcrumb from "@/components/BreadCrumb";
 import { unSlugify } from "@/lib/utils/features";
-import Product from "@/lib/models/Product";
-import { connectToDB } from "@/lib/mongoDB";
 
-export async function generateStaticParams() {
-  await connectToDB();
-  const product = await Product.find({}).select('slug');
-
-  return product.map((i) => ({
-    slug: i.slug,
-  }))
-}
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const product = await getCachedProductDetails(params.slug);
@@ -125,7 +115,10 @@ export default async function ProductPage({ params, searchParams }: { params: { 
 
         <ProductInfo productInfo={product} />
       </section>
-      {product.detailDesc && <div dangerouslySetInnerHTML={{ __html: product.detailDesc }} />}
+      <details className="w-full flex justify-center items-center flex-col">
+        <summary className="cursor-pointer">Detail description</summary>
+        {product.detailDesc && <div dangerouslySetInnerHTML={{ __html: product.detailDesc }} />}
+      </details>
       <hr />
       <Suspense fallback={<div className="flex flex-wrap justify-center gap-5">
         {Array.from({ length: 4 }).map((_, i) => (
@@ -135,7 +128,7 @@ export default async function ProductPage({ params, searchParams }: { params: { 
         <RelatedProducts category={product.category} collections={product.collections} productId={product._id} />
       </Suspense>
 
-      <hr />
+      
 
       <div className="space-y-5 px-5">
         <h2 className="text-2xl font-bold">Buyer Reviews</h2>
@@ -154,10 +147,13 @@ async function RelatedProducts({ category, collections, productId }: { category:
   if (!relatedProducts.length) return null;
 
   return (
+   <>
     <div className="space-y-5">
       <h2 className="text-2xl font-bold px-5">Related Products</h2>
       <ProductList Products={relatedProducts} />
     </div>
+    <hr />
+   </>
   );
 }
 
@@ -171,7 +167,7 @@ async function ProductReviewsSection({ numOfReviews, productId, page }: { numOfR
         productId={productId}
         numOfReviews={numOfReviews}
       />
-      <PaginationControls isScrollToTop={false} totalPages={numOfReviews / 6} currentPage={page} />
+      <PaginationControls isScrollToTop={false} totalPages={Math.ceil(numOfReviews / 6)} currentPage={page} />
 
     </section>
   );

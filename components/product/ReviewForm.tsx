@@ -19,8 +19,8 @@ type ReviewFormProps = {
 
 const ReviewForm = ({ isEditing, productId, user, oldRating, oldComment }: ReviewFormProps) => {
     const router = useRouter();
-    const [rating, setRating] = useState(oldRating || 0);
-    const [comment, setComment] = useState(oldComment || "");
+    const [rating, setRating] = useState(oldRating);
+    const [comment, setComment] = useState(oldComment);
     const [modalOpen, setModalOpen] = useState(false);
     const [isCreatingReview, setIsCreatingReview] = useState(false);
 
@@ -31,6 +31,8 @@ const ReviewForm = ({ isEditing, productId, user, oldRating, oldComment }: Revie
     const handleCreateReview = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsCreatingReview(true);
+        toast.loading('Submitting Review...')
+
         const reviewData = {
             rating,
             photo: user.image,
@@ -52,15 +54,17 @@ const ReviewForm = ({ isEditing, productId, user, oldRating, oldComment }: Revie
             const data = await res.json();
 
             if (res.ok) {
+                toast.dismiss();
                 toast.success('Review submitted successfully');
                 router.refresh();
                 setModalOpen(false);
             } else {
-                toast.error(data.message || 'Error submitting review');
+                throw new Error('Error creating review: '+data.message);
             }
         } catch (error) {
             console.error('Error creating review:', error);
-            toast.error(`Error submitting review ${error}`);
+            toast.dismiss();
+            toast.error((error as Error).message);
         } finally {
             setIsCreatingReview(false);
         }
