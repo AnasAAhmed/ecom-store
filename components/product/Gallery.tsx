@@ -12,8 +12,8 @@ const Gallery = ({ productMedia }: { productMedia: string[] }) => {
         // unoptimized
         src={mainImage}
         loading="lazy"
-        // placeholder="blur"
-        // blurDataURL="/fallback-banner.png"
+        placeholder="blur"
+        blurDataURL="/fallback-banner.png"
         alt={'product'}
         width={500}
         height={500}
@@ -23,7 +23,7 @@ const Gallery = ({ productMedia }: { productMedia: string[] }) => {
         {productMedia.map((image, index) => (
           <Image
             key={index}
-            unoptimized
+            // unoptimized
             loading="lazy"
             src={image}
             height={200}
