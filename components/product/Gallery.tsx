@@ -9,11 +9,11 @@ const Gallery = ({ productMedia }: { productMedia: string[] }) => {
     <div className="flex flex-col gap-3 ">
       {/* <ImageZoom src={mainImage} alt={"product"} /> */}
       <Image
-        unoptimized
+        // unoptimized
         src={mainImage}
         loading="lazy"
-        placeholder="blur"
-        blurDataURL="/fallback-banner.png"
+        // placeholder="blur"
+        // blurDataURL="/fallback-banner.png"
         alt={'product'}
         width={500}
         height={500}

@@ -12,9 +12,9 @@ const Breadcrumb = () => {
     const lastSegment = segments[segments.length - 1]; // last part like "something"
 
     return (
-        <nav className="px-4 pt-8 text-[15px] font-medium">
+        <nav className="px-4 pt-6 text-[15px] font-medium">
             <div className="max-w-screen-lg mx-lauto">
-                <div className="flex flex-wrap items-center space-x-2">
+                <div className="flex flex-wrap max-sm:hidden  items-center space-x-2">
                     {breadcrumbs.map((segment, index) => {
                         const path = '/' + breadcrumbs.slice(1, index + 1).join('/');
                         const label = segment === '' ? 'Home' : decodeURIComponent(segment);

@@ -12,8 +12,8 @@ import { getProducts } from "@/lib/actions/product.actions";
 import { getCachedHomePageData } from "@/lib/actions/cached";
 import Image from "next/image";
 import FadeInOnView from "@/components/FadeInView";
-export const dynamic = 'force-static';
 
+export const dynamic = 'force-static';
 
 export async function generateMetadata() {
   const homeData = await getCachedHomePageData();
@@ -56,7 +56,7 @@ export default async function Home() {
     getProducts(),
     getCachedHomePageData()
   ]);
-  const homePageData =  fallbackHomeData;
+  const homePageData = homeData?? fallbackHomeData;
   return (
     <>
 

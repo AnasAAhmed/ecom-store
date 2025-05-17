@@ -115,10 +115,10 @@ export default async function ProductPage({ params, searchParams }: { params: { 
 
         <ProductInfo productInfo={product} />
       </section>
-      <details className="w-full flex justify-center items-center flex-col">
+      {product.detailDesc && <details className="w-full flex justify-center items-center flex-col">
         <summary className="cursor-pointer">Detail description</summary>
-        {product.detailDesc && <div dangerouslySetInnerHTML={{ __html: product.detailDesc }} />}
-      </details>
+        <div dangerouslySetInnerHTML={{ __html: product.detailDesc }} />
+      </details>}
       <hr />
       <Suspense fallback={<div className="flex flex-wrap justify-center gap-5">
         {Array.from({ length: 4 }).map((_, i) => (
