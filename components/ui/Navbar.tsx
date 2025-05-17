@@ -11,7 +11,7 @@ import { signOut, useSession } from "next-auth/react";
 import { Session } from "@auth/core/types";
 import Modal from "./Modal";
 
-const Navbar = ({ country, countryCode }: { country: string, countryCode: string }) => {
+const Navbar = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams.toString());
@@ -56,8 +56,8 @@ const Navbar = ({ country, countryCode }: { country: string, countryCode: string
   const toggleModal = () => setIsOpen(!isOpen);
   const text = [
     { id: 1, text: "Free Shipping around the world over $120  " },
-    {  id: 2, text:"Easter Summer sale 50% off "},
-    {  id: 3, text:"Free Shipping  all over Pakistan over Rs 2000 "},
+    { id: 2, text: "Easter Summer sale 50% off " },
+    { id: 3, text: "Free Shipping  all over Pakistan over Rs 2000 " },
   ];
   return (
     <>
@@ -65,7 +65,7 @@ const Navbar = ({ country, countryCode }: { country: string, countryCode: string
         <div className="relative w-full">
           <div className="flex gap-24 animate-marquee2 w-max">
             {[...text, ...text].map((i, _) => (
-              <div key={`${i.id}-${_+i.id}`} id={`${i.id}-${_+i.id}`} className="flex items-center justify-center min-w-[120px]">
+              <div key={`${i.id}-${_ + i.id}`} id={`${i.id}-${_ + i.id}`} className="flex items-center justify-center min-w-[120px]">
                 <p>&nbsp;{i.text}&nbsp;•</p>
               </div>
             ))}
@@ -98,7 +98,7 @@ const Navbar = ({ country, countryCode }: { country: string, countryCode: string
       <nav className={`${scrolled ? 'top-0 fixed shadow-md bg-white' : 'top-13 sm:top-[85px] absolute bg-transparent'} z-30 w-full bg-white shadow-md`}>
         <div className="flex justify-between items-center p-2">
           <Link title="home" aria-label="go to home" href="/">
-            <Image src="/logo.png" alt=" borcelle logo" width={130} height={130} />
+            <Image src="/logo.png" alt=" borcelle logo" width={130} height={34} className="h-[35px]" />
           </Link>
 
           {/* Desktop search bar */}
@@ -141,7 +141,7 @@ const Navbar = ({ country, countryCode }: { country: string, countryCode: string
           </div>
 
           <div className="flex items-center gap-2">
-            <Currency geoCountry={country} className="none" geoCountryCode={countryCode} />
+            <Currency className="none" />
             <Link title="Go to Cart" aria-label={'Go to cart'} href="/cart" className="hidden md:flex items-center gap-1 border px-1 py-1 rounded-lg hover:bg-black hover:text-white">
               <ShoppingCart />
               <span>({cart.cartItems.length})</span>
@@ -222,7 +222,7 @@ const User = ({ session }: { session: Session | null }) => {
               alt="avatar"
               width={32}
               height={32}
-              className="w-8 h-8 mt-2 rounded-full object-cover"
+              className="w-8 h-8 mt-1 rounded-full object-cover"
             />
           </button>
 

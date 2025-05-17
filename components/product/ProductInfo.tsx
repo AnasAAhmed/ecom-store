@@ -39,6 +39,7 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
 
     return (
         <div className="max-w-1/2 sm:w-[500px] flex flex-col gap-4">
+            
             <div className="flex justify-between items-start">
                 <h4 className="text-heading4-bold sm:text-heading3-bold">{productInfo.title}</h4>
 

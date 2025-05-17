@@ -1,7 +1,7 @@
 import GroupComponent7 from "@/components/ui/Services";
 import type { Metadata } from 'next';
 import Banner from "@/components/ui/Banner";
-import { Mail } from "lucide-react";
+import { Clock, Locate, Mail, Phone } from "lucide-react";
 
 export const metadata: Metadata = {
     title: "Borcelle | Contact",
@@ -15,7 +15,7 @@ const Contact = () => {
                 <Banner
                     heading="Contact"
                     text="24/7 Service available."
-                    imgUrl={'https://www.shutterstock.com/image-photo/contact-us-telephone-envelope-letter-600nw-2369194627.jpg'}
+                    imgUrl={'/contact.webp'}
                     shade=""
                     textColor="gray-800"
                     link="/search"
@@ -94,11 +94,8 @@ const ContactContainer = () => {
     return (
         <div className="w-full lg:w-1/2 flex flex-col gap-6 p-8 rounded shadow-md bg-white">
             <div className="flex items-center gap-4">
-                <img
-                    src="https://figma-to-code-ecom-design.vercel.app/vector1.svg"
-                    alt="Address icon"
-                    className="w-8 h-8"
-                />
+               
+                <Locate className="w-8 h-8"/>
                 <div>
                     <h3 className="text-lg font-medium">Address</h3>
                     <p className="text-gray-600">
@@ -107,11 +104,7 @@ const ContactContainer = () => {
                 </div>
             </div>
             <div className="flex items-center gap-4">
-                <img
-                    src="https://figma-to-code-ecom-design.vercel.app/bxsphone.svg"
-                    alt="Phone icon"
-                    className="w-8 h-8"
-                />
+                <Phone className="w-8 h-8"/>
                 <div>
                     <h3 className="text-lg font-medium">Phone</h3>
                     <p className="text-gray-600">Mobile: +(84) 546-6789</p>
@@ -126,11 +119,7 @@ const ContactContainer = () => {
                 </div>
             </div>
             <div className="flex items-center gap-4">
-                <img
-                    src="https://figma-to-code-ecom-design.vercel.app/biclockfill.svg"
-                    alt="Clock icon"
-                    className="w-8 h-8"
-                />
+               <Clock className="w-8 h-8"/>
                 <div>
                     <h3 className="text-lg font-medium">Working Time</h3>
                     <p className="text-gray-600">Monday-Friday: 9:00 - 22:00</p>

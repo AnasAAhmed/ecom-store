@@ -53,5 +53,5 @@ export const calculateTimeDifference = (reviewDate: number) => {
     }
 
     const monthDifference = Math.floor(weekDifference / 4);
-    return `${monthDifference} mth ago`;
+    return `${monthDifference} month ago`;
 }

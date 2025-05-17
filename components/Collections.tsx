@@ -1,52 +1,88 @@
+'use client';
+
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-const Collections = async ({ collections }: { collections: CollectionType[] }) => {
-  const gridLayout = [
-    { gridColumn: "span 2 / span 2", gridRow: "span 2 / span 2", imageSize: 511, aspectRatio: "2/6" },
-    { gridColumn: "span 1 / span 1", gridRow: "span 1 / span 1", imageSize: 511, aspectRatio: "9/16" },
-    { gridColumn: "span 1 / span 1", gridRow: "span 2 / span 2", imageSize: 511, aspectRatio: "1/1" },
-    { gridColumn: "span 1 / span 1", gridRow: "span 1 / span 1", imageSize: 511, aspectRatio: "1/1" },
-    { gridColumn: "span 1 / span 1", gridRow: "span1 / span 1", imageSize: 511, aspectRatio: "1/1" },
-  ];
+import { useRef } from "react";
 
+const Collections = ({ collections }: { collections: CollectionType[] }) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({
+        left: direction === 'left' ? -300 : 300,
+        behavior: 'smooth',
+      });
+    }
+  };
 
   return (
-    <div id="collections" className="flex flex-col items-center gap-10 py-8 px-5 my-[4rem]">
-        <p className="text-heading2-bold sm:text-heading1-bold">Collections</p>
+    <div id="collections" className="flex flex-col items-center gap-10 py-8 px-5 my-[4rem] overflow-hidden relative">
+      <p className="text-heading2-bold sm:text-heading1-bold">Collections</p>
+
       {!collections || collections.length === 0 ? (
         <p className="text-body-bold">No collections found</p>
       ) : (
-        <div className="grid gap-4 px-4 sm:px-14 grid-cols-2 sca md:grid-cols-3 lg:grid-cols-4">
-          {collections.map((collection, index) => (
-            <article
-              key={collection._id || collection.title}
-              style={{ gridColumn: gridLayout[index].gridColumn, gridRow: gridLayout[index].gridRow }}
-              className={`relative rounded-lg overflow-hidden group`}
-            >
-              <Link title={'See full ' + collection.title + " Collection at Borcelle"} href={'/collections/' + collection.title} className="">
-                <Image
-                  loading="lazy"
-                  src={collection.image}
-                  unoptimized
-                  placeholder="blur"
-                  blurDataURL="/fallback-banner.png"
-                  alt={collection.title! || 'gridBanner'}
-                  width={gridLayout[index].imageSize}
-                  height={gridLayout[index].imageSize}
-                  className={` relative duration-300 rounded-lg bg-cover bottom-0 object-cover w-full ${index < 1 ? 'group-hover:scale-125 scale-110' : 'group-hover:scale-110'} `}
-                  aria-hidden="true"
-                />
-                <div className="cursor-pointer absolute bottom-0 p-2 sm:p-4 z-10">
-                  <button
-                    className="group-howver:translate-x-2 duration-300 rounded-md mt-4 py-1 px-2 sm:px-4 inline-flex items-center text-[10px] sm:text-[14px] font-semibold bg-white "
-                    title={`Shop at ${collection.title} collection now`}
-                  >
-                    <span className="capitalize">{collection.title}</span>
-                  </button>
-                </div>
-              </Link>
-            </article>
-          ))}
+        <div className="relative w-full">
+          <button
+            aria-label="Scroll Left"
+            onClick={() => scroll('left')}
+            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white p-2 shadow rounded-full hover:bg-gray-100"
+          >
+            <ChevronLeft />
+          </button>
+
+          <div
+            ref={scrollRef}
+            className="flex gap-4 overflow-x-auto no-scrollbar px-4 sm:px-14 snap-x snap-mandatory scroll-smooth"
+          >
+            {collections.map((collection, index) => (
+              <div
+                key={collection._id || collection.title}
+                className="relative snap-start shrink-0 rounded-lg overflow-hidden group"
+                style={{
+                  width: 'min(300px, 80vw)',
+                  aspectRatio: '16/11',
+                  flex: '0 0 auto',
+                }}
+              >
+                <Link
+                  prefetch={false}
+                  title={`See full ${collection.title} Collection at Borcelle`}
+                  href={`/collections/${collection.title}`}
+                >
+                  <Image
+                    loading="lazy"
+                    src={collection.image}
+                    unoptimized
+                    placeholder="blur"
+                    blurDataURL="/fallback-banner.png"
+                    alt={collection.title || 'collection image'}
+                    fill
+                    className="object-cover w-full h-full duration-300 group-hover:scale-110 transition-transform"
+                    sizes="(max-width: 768px) 80vw, 300px"
+                  />
+                  <div className="absolute bottom-0 p-2 sm:p-4 z-10 bg-white/80 backdrop-blur-sm rounded-md">
+                    <button
+                      className="text-[12px] sm:text-[14px] font-semibold capitalize"
+                      title={`Shop at ${collection.title} collection now`}
+                    >
+                      {collection.title}
+                    </button>
+                  </div>
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          <button
+            aria-label="Scroll Right"
+            onClick={() => scroll('right')}
+            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white p-2 shadow rounded-full hover:bg-gray-100"
+          >
+            <ChevronRight />
+          </button>
         </div>
       )}
     </div>

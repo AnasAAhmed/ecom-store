@@ -9,6 +9,7 @@ import Loader from "@/components/ui/Loader";
 import Sort from "@/components/Sort";
 import PaginationControls from "@/components/PaginationControls";
 import { getCachedCollectionDetails } from "@/lib/actions/cached";
+import Breadcrumb from "@/components/BreadCrumb";
 
 export const generateMetadata = async ({ params }: { params: { collection: string } }) => {
   const collectionDetails = await getCachedCollectionDetails(params.collection);
@@ -102,7 +103,7 @@ const CollectionDetails = async ({ searchParams, params }: { searchParams: any; 
           }),
         }}
       />
-      <div className="pxd-3 min-h-[90vh] py-12 sm:py-5  flex flex-col items-center gap-8">
+      <div className="sm:px-3 min-h-[90vh] pys-12 sm:py-5  flex flex-col items-center gap-8">
         {/* {collectionDetails.image && <Image
           src={collectionDetails.image}
           width={1300}
@@ -123,6 +124,8 @@ const CollectionDetails = async ({ searchParams, params }: { searchParams: any; 
         /> */}
         {/* <p className="text-heading3-bold text-grey-2 capitalize">{collectionDetails.title}</p>
     <p className="text-body-normal text-grey-2 text-center max-w-[900px]">{collectionDetails.description}</p> */}
+              <Breadcrumb/>
+    
         <Sort />
         <Suspense fallback={<Loader />}>
           <CollectionProduct collectionId={collectionDetails._id} page={page} size={size} color={color} sort={sort} sortField={sortField} />

@@ -12,9 +12,9 @@ const BlogSection = () => {
         <p className="text-gray-500">Find a bright idea to suit your taste with our great selection</p>
       </div>
       <div className="w-full flex flex-wrap items-start justify-center gap-8">
-        <GroupComponent3 blogCardImage="/blog1.png" index={0.1} />
-        <GroupComponent3 blogCardImage="/blog2.png" index={0.4} />
-        <GroupComponent3 blogCardImage="/blog3.png" index={0.6} />
+        <GroupComponent3 key={1} blogCardImage="/blog1.png" index={0.1} />
+        <GroupComponent3 key={2} blogCardImage="/blog2.png" index={0.2} />
+        <GroupComponent3 key={3} blogCardImage="/blog3.png" index={0.4} />
       </div>
       <div className="flex flex-col items-center">
         <Link title="Veiw all blogs" href="/blog" className="text-lg font-medium">View All Posts</Link>

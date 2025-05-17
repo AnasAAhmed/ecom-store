@@ -159,8 +159,8 @@ export const fallbackHomeData = {
       textColor: '',
       link: '/collections/summer',
       buttonText: '',
-      textPosition:'center',
-      textPositionV:'center',
+      textPosition: 'center',
+      textPositionV: 'center',
       collectionId: '682203b1b50a422585dca64d',
       isVideo: false,
     },
@@ -172,8 +172,8 @@ export const fallbackHomeData = {
       textColor: '',
       link: '/collections/men',
       buttonText: '',
-     textPosition:'center',
-      textPositionV:'center',
+      textPosition: 'center',
+      textPositionV: 'center',
       collectionId: '6810d2ed8ea9e382250af8c2',
       isVideo: true,
     }
@@ -192,17 +192,17 @@ export function estimateWeight(categoryOrTitle: string): number {
   return 0.5;
 }
 
-export  function isHex24(str: string) {
-      return /^[a-fA-F0-9]{24}$/.test(str);
-    }
+export function isHex24(str: string) {
+  return /^[a-fA-F0-9]{24}$/.test(str);
+}
 
 export function statusValidation(status: string): string {
   const input = status.toLowerCase();
 
-  if (input.includes("pending")|| input.includes("processing")) return "pending";
-  if (input.includes("shipped") ) return "shipped";
+  if (input.includes("pending") || input.includes("processing")) return "pending";
+  if (input.includes("shipped")) return "shipped";
   if (input.includes("delivered")) return "delivered";
-  if (input.includes("canceled") ) return "canceled";
+  if (input.includes("canceled")) return "canceled";
 
   return 'shipped';
 }
@@ -234,6 +234,8 @@ export function estimateDimensions(categoryOrTitle: string): Dimensions {
   if (input.includes("accessory") || input.includes("cap") || input.includes("belt")) {
     return { length: 20, width: 15, height: 3 };
   }
-
+  if (input.includes("3 piece") || input.includes("3pcs") || input.includes("suit")) {
+    return { length: 35, width: 25, height: 6 }; // Example dimensions for clothing
+  }
   return { length: 30, width: 20, height: 5 };
 }

@@ -53,7 +53,6 @@ export const POST = async (req: NextRequest) => {
     } = await req.json();
 
 
-
     if (
       !title ||
       !description ||

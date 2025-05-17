@@ -7,19 +7,18 @@ import { getProductReviews, getRelatedProduct } from "@/lib/actions/product.acti
 import ProductReviews from "@/components/product/ProductReviews";
 import ProductList from "@/components/product/ProductList";
 import { getCachedProductDetails } from "@/lib/actions/cached";
+import Breadcrumb from "@/components/BreadCrumb";
+import { unSlugify } from "@/lib/utils/features";
+import Product from "@/lib/models/Product";
+import { connectToDB } from "@/lib/mongoDB";
 
-function RelatedProductsLoadingSkeleton() {
-  return (
-    <div className="flex flex-wrap justify-center gap-5">
-      {Array.from({ length: 4 }).map((_, i) => (
-        <div key={i} className="h-[22rem] w-64 bg-gray-200 animate-pulse" />
-      ))}
-    </div>
-  );
-}
+export async function generateStaticParams() {
+  await connectToDB();
+  const product = await Product.find({}).select('slug');
 
-function ProductReviewsLoadingSkeleton() {
-  return <div className="h-40 bg-gray-200 animate-pulse" />;
+  return product.map((i) => ({
+    slug: i.slug,
+  }))
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
@@ -53,7 +52,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 
   return {
-    title: `${product.title} | Borcelle`,
+    title: `${unSlugify(product.title)} | Borcelle`,
     description: product.description || "Shop high-quality products at Borcelle.",
     keywords: product.tags?.join(', ') ?? '',
     robots: {
@@ -65,7 +64,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       }
     },
     openGraph: {
-      title: `${product.title} | Borcelle`,
+      title: `${unSlugify(product.title)} | Borcelle`,
       description: product.description || "Shop high-quality products at Borcelle.",
       url: `${process.env.ECOM_STORE_URL}/products/${params.slug}`,
       images: [
@@ -86,7 +85,7 @@ export default async function ProductPage({ params, searchParams }: { params: { 
   if (!product) return notFound();
 
   return (
-    <main className="mx-auto max-w-7xl space-y-10 py-5">
+    <main className="mx-auto max-w-7xl space-y-5 py-s5">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -119,14 +118,20 @@ export default async function ProductPage({ params, searchParams }: { params: { 
           }),
         }}
       />
+      <Breadcrumb />
+
       <section className="flex px-5 justify-center items-start gap-16 max-lg:flex-col max-lg:items-center">
         <Gallery productMedia={product.media} />
-        
+
         <ProductInfo productInfo={product} />
       </section>
-
+      {product.detailDesc && <div dangerouslySetInnerHTML={{ __html: product.detailDesc }} />}
       <hr />
-      <Suspense fallback={<RelatedProductsLoadingSkeleton />}>
+      <Suspense fallback={<div className="flex flex-wrap justify-center gap-5">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="h-[22rem] w-64 bg-gray-200 animate-pulse" />
+        ))}
+      </div>}>
         <RelatedProducts category={product.category} collections={product.collections} productId={product._id} />
       </Suspense>
 
@@ -134,7 +139,7 @@ export default async function ProductPage({ params, searchParams }: { params: { 
 
       <div className="space-y-5 px-5">
         <h2 className="text-2xl font-bold">Buyer Reviews</h2>
-        <Suspense fallback={<ProductReviewsLoadingSkeleton />}>
+        <Suspense fallback={<div className="h-40 bg-gray-200 animate-pulse" />}>
           <ProductReviewsSection numOfReviews={product.numOfReviews} productId={product._id} page={Number(searchParams.page) || 1} />
         </Suspense>
       </div>
@@ -166,7 +171,7 @@ async function ProductReviewsSection({ numOfReviews, productId, page }: { numOfR
         productId={productId}
         numOfReviews={numOfReviews}
       />
-      <PaginationControls isScrollToTop={false} totalPages={numOfReviews / 4} currentPage={page} />
+      <PaginationControls isScrollToTop={false} totalPages={numOfReviews / 6} currentPage={page} />
 
     </section>
   );

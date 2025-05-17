@@ -6,17 +6,43 @@ import { countryToCurrencyMap, countryToFlagMap, currencyToSymbolMap } from '@/l
 
 
 const allCountries = Object.keys(countryToCurrencyMap);
-const Currency = ({ className, geoCountry, geoCountryCode }: { className: string; geoCountry?: string, geoCountryCode?: string }) => {
-  const { currency, setCurrency, country, setCountry, clearcon,isHydrated } = useRegion();
+const Currency = ({ className, ip = '36.255.42.109' }: { className: string; ip?: string }) => {
+  const { currency, setCurrency, country, setCountry, clearcon, isHydrated } = useRegion();
   const [modalOpen, setModalOpen] = useState(currency !== '' && country !== '');
+  const [geoCountry, setGeoCountry] = useState('');
+  const [geoCountryCode, setGeoCountryCode] = useState('');
+
 
   useEffect(() => {
-    if (isHydrated && country === '' && geoCountry) {
-      setCountry(geoCountry);
-      const mappedCurrency = countryToCurrencyMap[geoCountry];
-      if (mappedCurrency) setCurrency(mappedCurrency);
-    }
-  }, [geoCountry, setCountry, setCurrency, country]);
+    const fetchCountry = async () => {
+
+      // if (process.env.NODE_ENV === 'production') {
+        try {
+          const geoRes = await fetch(`http://ip-api.com/json/`);
+          const geoData = await geoRes.json();
+          setGeoCountry(geoData.country);
+          setGeoCountryCode(geoData.countryCode);
+          console.log(geoData.country, geoData.city);
+        } catch (error) {
+          console.error('Failed to fetch geo data', error);
+        }
+      // }
+
+      // Fallback if country is still empty
+      const finalCountry = country || geoCountry;
+
+      if (isHydrated && finalCountry) {
+        setCountry(finalCountry);
+        const mappedCurrency = countryToCurrencyMap[finalCountry];
+        if (mappedCurrency) {
+          setCurrency(mappedCurrency);
+        }
+      }
+    };
+
+    fetchCountry();
+  }, [geoCountry, country,setCountry, setCurrency, isHydrated]);
+
 
   const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCurrency(e.target.value);

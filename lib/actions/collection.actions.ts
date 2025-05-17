@@ -65,7 +65,7 @@ export async function collectionProducts({
 export async function getCollections() {
   try {
 
-    const collections = await Collection.find().sort({ createdAt: "asc" }).select("_id image title").limit(4);
+    const collections = await Collection.find().sort({ createdAt: "asc" }).select("_id image title").limit(8);
 
     return JSON.parse(JSON.stringify(collections))
 

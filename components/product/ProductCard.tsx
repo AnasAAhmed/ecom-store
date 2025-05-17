@@ -56,7 +56,7 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
             src={image1}
             alt={product.title}
             fill
-            unoptimized
+            // unoptimized
             placeholder="blur"
             blurDataURL="/fallback.png"
             sizes="(max-width: 450px) 9rem, (max-width: 700px) 12rem, 16rem"

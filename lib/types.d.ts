@@ -9,6 +9,7 @@ type ProductType = {
   _id: string;
   title: string;
   description: string;
+  detailDesc?: string;
   media: string[];
   category: string;
   slug: string;

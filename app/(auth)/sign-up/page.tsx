@@ -1,8 +1,9 @@
 import { signIn } from '@/auth'
 import * as React from "react"
-import Link from 'next/link'
 import SignupForm from '@/components/auth/signup-form'
 import AuthLink from '@/components/AuthLink'
+import Loader from '@/components/ui/Loader'
+import { Loader2 } from 'lucide-react'
 
 
 
@@ -28,12 +29,17 @@ export default async function LoginPage() {
             </button>
           </form>
           <div className="text-md text-zinc-400 flex justify-center">or</div>
-          <SignupForm />
+          <React.Suspense fallback={<Loader />}>
+            <SignupForm />
+          </React.Suspense>
         </div>
       </div>
-      <AuthLink url='login' title='No account yet? Go to login page'>
-        Already have an account? <span className="underline text-body-medium">Login</span>
-      </AuthLink>
+      <React.Suspense fallback={<Loader2 className='animate-spin h-7 w-7'/>}>
+        <AuthLink url='login' title='No account yet? Go to login page'>
+          Already have an account? <span className="underline text-body-medium">Login</span>
+        </AuthLink>
+      </React.Suspense>
+
     </div>
   )
 }

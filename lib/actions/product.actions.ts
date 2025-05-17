@@ -150,7 +150,7 @@ export async function getProductReviews(productId: string, page: number) {
   try {
     const skip = (page - 1) * 4;
     await connectToDB();
-    const reviews = await Review.find({ productId }).limit(4).skip(skip);
+    const reviews = await Review.find({ productId }).limit(6).skip(skip);
 
 
     return JSON.parse(JSON.stringify(reviews))

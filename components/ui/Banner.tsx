@@ -20,7 +20,7 @@ type rr='center' | 'end' | 'start';
 const Banner = ({ imgUrl, videoUrl, text, heading, textColor, shade, link, buttonText, scrollDown, textPositionV = 'center', textPosition = 'center' }: BannerProps) => {
 
   return (
-    <Link title={buttonText || 'Shop Now'} href={link} className="pyd-6 md:mt-0 x-6">
+    <Link title={buttonText || 'Shop Now'} href={link} >
       <div className="relative w-full h-[230px] sm:h-[470px] md:h-[660px] roudnded-xl overflow-hidden">
 
         {videoUrl ? (
@@ -29,7 +29,7 @@ const Banner = ({ imgUrl, videoUrl, text, heading, textColor, shade, link, butto
             src={videoUrl}
             autoPlay
             loop
-            poster='/banner2.avif'
+            poster='/fallback-banner.png'
             muted
             playsInline
           />
@@ -42,11 +42,9 @@ const Banner = ({ imgUrl, videoUrl, text, heading, textColor, shade, link, butto
             placeholder="blur"
             blurDataURL="/fallback-banner.png"
             sizes="(max-width: 450px) 9rem, (max-width: 700px) 12rem, 16rem"
-            className={`absolute inset-0 w-full h-full object-cover`}
+            className={`absolute`}
           />
         )}
-        {/* placeholder="blur"
-                  blurDataURL="/fallback-banner.png" */}
         {shade && (
           <div
             className="absolute inset-0 opacity-60"

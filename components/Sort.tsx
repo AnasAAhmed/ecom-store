@@ -66,7 +66,7 @@ const Sort = ({ isCollectionPage = false }: { isCollectionPage?: boolean }) => {
     return (
         <div className='flex gap-3 flex-wrap items-center'>
             <select
-                className="h-10 px-3 sm:my-4 mr-2 bg-gray-100 rounded-lg"
+                className="h-10 px-3 sm:mb-4 mr-2 bg-gray-100 rounded-lg"
                 // value={`${sortField}|${sort}`}
                 onChange={handleSortChange}
             >
