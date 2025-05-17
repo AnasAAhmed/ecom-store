@@ -189,6 +189,7 @@ type OrderType = {
   };
   _id: string;
   customerEmail: string;
+  customerPhone: string;
   products: [OrderItemType]
   shippingRate: string;
   status: string;

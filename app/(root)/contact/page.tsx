@@ -2,6 +2,7 @@ import GroupComponent7 from "@/components/ui/Services";
 import type { Metadata } from 'next';
 import Banner from "@/components/ui/Banner";
 import { Clock, Locate, Mail, Phone } from "lucide-react";
+import FadeInOnView from "@/components/FadeInView";
 
 export const metadata: Metadata = {
     title: "Borcelle | Contact",
@@ -23,12 +24,18 @@ const Contact = () => {
                     scrollDown={true}
                 />
                 <div className="flex flex-col items-center py-16 px-4">
+                    <FadeInOnView>
+
                     <h1 className="text-heading2-bold">Get In Touch With Us</h1>
+                    </FadeInOnView>
+                    <FadeInOnView delay={300} animation="animate-fadeIn" threshold={0.7}>
                     <p className="text-center text-gray-500 mt-4 mb-8 max-w-xl">
                         For more information about our products & services, please feel free
                         to drop us an email. Our staff is always here to help you out. Do not
                         hesitate!
                     </p>
+                    </FadeInOnView>
+
                     <div className="flex flex-col md:flex-row w-full max-w-6xl gap-8">
                         <ContactContainer />
                         <form id="form" className="flex flex-col gap-6 w-full lg:w-1/2 bg-white p-8 rounded shadow-md">

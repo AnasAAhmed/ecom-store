@@ -9,6 +9,7 @@ import ProductList from "@/components/product/ProductList";
 import { getCachedProductDetails } from "@/lib/actions/cached";
 import Breadcrumb from "@/components/BreadCrumb";
 import { unSlugify } from "@/lib/utils/features";
+import { ChevronDown } from "lucide-react";
 
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
@@ -75,7 +76,7 @@ export default async function ProductPage({ params, searchParams }: { params: { 
   if (!product) return notFound();
 
   return (
-    <main className="mx-auto max-w-7xl space-y-5 py-s5">
+    <main className="mx-auto max-w-7xl space-y-3 py-s5">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -115,11 +116,22 @@ export default async function ProductPage({ params, searchParams }: { params: { 
 
         <ProductInfo productInfo={product} />
       </section>
-      {product.detailDesc && <details className="w-full flex justify-center items-center flex-col">
-        <summary className="cursor-pointer">Detail description</summary>
-        <div dangerouslySetInnerHTML={{ __html: product.detailDesc }} />
-      </details>}
-      <hr />
+      {product.detailDesc && (
+        <details className="w-full max-wd-2xl border-y border-gray-200 rounded overflow-hidden transition-all duration-300 open:shadow-md">
+           <summary className="px-4 py-3 text-start text-base font-medium cursor-pointer select-none relative hover:bg-gray-50 transition-colors">
+            Product Detail
+            <span className="absolute right-4 top-1/2 transform -translate-y-1/2 transition-transform duration-300 group-open:rotate-180">
+              <ChevronDown />
+            </span>
+          </summary> 
+           <div
+            className="px-4 py-3 text-sm text-gray-700 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: product.detailDesc }}
+          /> 
+        </details>
+      )}
+
+      {/* <hr /> */}
       <Suspense fallback={<div className="flex flex-wrap justify-center gap-5">
         {Array.from({ length: 4 }).map((_, i) => (
           <div key={i} className="h-[22rem] w-64 bg-gray-200 animate-pulse" />
@@ -127,9 +139,6 @@ export default async function ProductPage({ params, searchParams }: { params: { 
       </div>}>
         <RelatedProducts category={product.category} collections={product.collections} productId={product._id} />
       </Suspense>
-
-      
-
       <div className="space-y-5 px-5">
         <h2 className="text-2xl font-bold">Buyer Reviews</h2>
         <Suspense fallback={<div className="h-40 bg-gray-200 animate-pulse" />}>
@@ -147,13 +156,13 @@ async function RelatedProducts({ category, collections, productId }: { category:
   if (!relatedProducts.length) return null;
 
   return (
-   <>
-    <div className="space-y-5">
-      <h2 className="text-2xl font-bold px-5">Related Products</h2>
-      <ProductList Products={relatedProducts} />
-    </div>
-    <hr />
-   </>
+    <>
+      <div className="space-y-5">
+        <h2 className="text-2xl font-bold px-5">Related Products</h2>
+        <ProductList Products={relatedProducts} />
+      </div>
+      <hr />
+    </>
   );
 }
 

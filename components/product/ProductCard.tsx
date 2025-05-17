@@ -7,6 +7,7 @@ import HeartFavorite from "./HeartFavorite";
 import StarRatings from "./StarRatings";
 import useCart, { useRegion } from "@/lib/hooks/useCart";
 import { currencyToSymbolMap } from "@/lib/utils/features.csr";
+import FadeInOnView from "../FadeInView";
 
 interface ProductCardProps {
   product: ProductType;
@@ -46,10 +47,8 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
   };
 
   return (
-    <div
-      className={`relative bg-white image-width roundsed-t-lg shadosw-md overflow-hidden  ${isSoldOut ? "opacity-70" : ""
-        }`}
-    >
+    <FadeInOnView animation="animate-fadeInUp" className={`relative bg-white image-width roundsed-t-lg shadosw-md overflow-hidden  ${isSoldOut ? "opacity-70" : ""
+      }`}>
       <Link title={"See details of " + title} href='/product/[slug]' as={`/products/${slug}`} className="block" prefetch={false} >
         <div className="relative image-height group overflow-hidden">
           <Image
@@ -57,15 +56,17 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
             alt={product.title}
             fill
             // unoptimized
+            loading="lazy"
             placeholder="blur"
             blurDataURL="/fallback.png"
             sizes="(max-width: 450px) 9rem, (max-width: 700px) 12rem, 16rem"
-            className={`inset-0 object-cover transition-transform hover:scale-110 duration-300 ${image2 && 'group-hover:opacity-0'}`}
+            className={`inset-0 object-cover transition-opacity duration-300 ${image2 && 'group-hover:opacity-0'}`}
           />
           {image2 && (
             <Image
               src={image2}
               fill
+            loading="lazy"
               unoptimized
               sizes="(max-width: 450px) 9rem, (max-width: 700px) 12rem, 16rem"
               alt={`${product.title} alt`}
@@ -133,7 +134,7 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
           </div>
         </div>
       </Link>
-    </div>
+    </FadeInOnView>
   );
 };
 

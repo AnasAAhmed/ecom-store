@@ -9,7 +9,7 @@ type FadeInOnViewProps = {
     className?: string;
 };
 
-const FadeInOnView = ({ animation, children, delay = 0, threshold = 0.2, className = '' }: FadeInOnViewProps) => {
+const FadeInOnView = ({ animation = 'animate-fadeInUp', children, delay = 0, threshold = 0.2, className = '' }: FadeInOnViewProps) => {
     const ref = useRef<HTMLDivElement | null>(null);
     const [isVisible, setIsVisible] = useState(false);
 
@@ -32,7 +32,8 @@ const FadeInOnView = ({ animation, children, delay = 0, threshold = 0.2, classNa
     return (
         <div
             ref={ref}
-            className={`transition-opacity duration-700 ${isVisible ? `opacity-100 ${animation} delay-[${delay}ms]` : 'opacity-0'} ${className}`}
+            className={`transition-opacity ${isVisible ? `opacity-100 ${animation} duration-700` : 'opacity-0'} ${className}`}
+            style={{transitionDelay:`${delay}ms`}}
         >
             {children}
         </div>

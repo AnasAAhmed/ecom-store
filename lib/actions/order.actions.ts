@@ -38,7 +38,7 @@ export const stockReduce = async (products: OrderProductCOD[]) => {
   await connectToDB();
   for (let i = 0; i < products.length; i++) {
     const order = products[i];
-    const product = await Product.findById(order.product).select('_id stock variants');
+    const product = await Product.findById(order.product).select('_id stock variants sold');
     if (!product) throw new Error("Product Not Found");
 
     // Reduce the general product stock

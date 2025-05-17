@@ -103,7 +103,7 @@ const CollectionDetails = async ({ searchParams, params }: { searchParams: any; 
           }),
         }}
       />
-      <div className="sm:px-3 min-h-[90vh] pys-12 sm:py-5  flex flex-col items-center gap-8">
+      <div className="sm:px-3 min-h-[90vh] pys-12 sm:py-5  flex flex-col items-center gap-2">
         {/* {collectionDetails.image && <Image
           src={collectionDetails.image}
           width={1300}

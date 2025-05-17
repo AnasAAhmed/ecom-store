@@ -30,6 +30,10 @@ const useCart = create(
         const isExisting = currentItems.find(
           (cartItem) => cartItem.item._id === item._id
         );
+        if (!isExisting && currentItems.length >= 10) {
+    toast.error("Cart limit reached (max 10 items)");
+    return;
+  }
         let newCartItems = currentItems;
         if (isExisting) {
           newCartItems = currentItems.filter(
@@ -192,7 +196,7 @@ export const useRegion = create<RegionStore>()(
       },
 
       clearcur: () => set({ currency: 'USD', exchangeRate: 1 }), // reset to default USD
-      clearcon: () => set({ country: '' }),
+      clearcon: () => set({ country: '',currency: 'USD', exchangeRate: 1 }),
     }),
     {
       name: "region-storage",

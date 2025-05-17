@@ -48,7 +48,7 @@ const SearchPage = async ({ searchParams }: { searchParams: any }) => {
 
   return (
     <div className='sm:px-10 px-3 py-8 '>
-      {query && <p className='text-heading3-bold my-10'>Search results for {query} <Link className='underline text-small-medium text-blue-500' title='Clear filters' href={'/search'}>Clear &times;</Link></p>}
+      {query && <p className='text-small-medium md:text-body-medium lg:text-heading3-bold my-10'>Search results for {query} <Link className='underline text-small-medium text-blue-500' title='Clear filters' href={'/search'}>Clear &times;</Link></p>}
       <Sort />
       <div className='min-h-[80vh]'>
 

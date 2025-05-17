@@ -97,12 +97,19 @@ body,
   animation: marquee2 15s linear infinite;
 }
 
+summary {
+  list-style: none; /* Removes the arrow in Firefox */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* Removes the arrow in Chrome, Edge, Safari */
+}
 
 .animate-modal {
   animation: upScale 0.2s ease-out forwards;
 }
 .animate-menu {
-  animation: rightScale 0.2s ease-out forwards;
+  animation: upScale 0.2s ease-out forwards;
 }
 .product-grid {
   display: flex;

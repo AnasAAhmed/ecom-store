@@ -7,6 +7,20 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    screens: {
+			'xsm': '375px',
+			// => @media (min-width: 480px) { ... }
+
+			'sm': '640px',
+			// => @media (min-width: 640px) { ... }
+
+			'md': '786px',
+			// => @media (min-width: 786px) { ... }
+
+			'lg': '1024px',
+			// => @media (min-width: 1024px) { ... }
+
+		},
     fontSize: {
       "heading1-bold": [
         "50px",
@@ -94,6 +108,7 @@ const config: Config = {
       ],
     },
     extend: {
+      
       colors: {
         "red-1": "#FF0000",
         "grey-1": "#F7F7F7",
@@ -105,12 +120,12 @@ const config: Config = {
 					'100%': { opacity: '1', transform: 'translateY(0)' },
 				},
 				fadeIn: {
-					'0%': { opacity: '0', transform: 'translateY(10px)' },
-					'100%': { opacity: '1', transform: 'translateY(0)' },
+					'0%': { opacity: '0'},
+					'100%': { opacity: '1' },
 				},
 			},
 			animation: {
-				fadeInUp: 'fadeInUp 0.3s ease-out forwards',
+				fadeInUp: 'fadeInUp 0.4s ease-out forwards',
 				fadeIn: 'fadeIn 0.7s ease-out forwards',
 			},
     },

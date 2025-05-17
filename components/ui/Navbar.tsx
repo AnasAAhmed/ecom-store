@@ -19,7 +19,8 @@ const Navbar = () => {
   const { data: session } = useSession();
   const cart = useCart();
 
-  const [query, setQuery] = useState("");
+
+  const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [scrolled, setScrolled] = useState(false);
@@ -31,7 +32,10 @@ const Navbar = () => {
     router.push(`/search?query=${query}`);
   };
 
-
+  const f = params.get('query') || ''
+  useEffect(() => {
+    setQuery(f)
+  }, [f]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -72,7 +76,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      <nav className="py-2 px-4 hidden sm:flex justify-between text-sm sm:text-base font-medium text-gray-800 bg-gradient-to-r from-white via-gray-50 to-white border-y border-gray-200">
+      <nav className="py-2 px-4 hidden lg:flex justify-between text-sm sm:text-base font-medium text-gray-800 bg-gradient-to-r from-white via-gray-50 to-white border-y border-gray-200">
 
         <h1 className="text-red-600 font-bold px-4">🔥 50% Off Summer Sale</h1>
 
@@ -95,7 +99,7 @@ const Navbar = () => {
         </h1>
       </nav>
 
-      <nav className={`${scrolled ? 'top-0 fixed shadow-md bg-white' : 'top-13 sm:top-[85px] absolute bg-transparent'} z-30 w-full bg-white shadow-md`}>
+      <nav className={`${scrolled ? 'top-0 fixed shadow-md bg-white' : 'top-13 lg:top-[85px] absolute bg-transparent'} z-30 w-full bg-white shadow-md`}>
         <div className="flex justify-between items-center p-2">
           <Link title="home" aria-label="go to home" href="/">
             <Image src="/logo.png" alt=" borcelle logo" width={130} height={34} className="h-[35px]" />

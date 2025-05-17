@@ -66,50 +66,61 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ productReviews, product
       <div className="md:mx-12 mt-12 max-sm:border-1 ">
         {reviews && reviews.length > 0 ? (
           <>
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {reviews.map((review, index) => (
-                <li key={index} className="border rounded-lg pb-4 mb-4 py-3 px-2">
-                  <div className="flex flex-row justify-between items-center">
-                    <div className="flex flex-row items-center gap-3">
-                      <span>
-                        <img src={review.photo} alt="customer" className="rounded-full h-8 w-8" />
-                      </span>
-                      <p>
-                        <strong>{review.name}</strong>
-                      </p>
-                      <span className="text-md">
-                        <StarRatings rating={review.rating} />
-                      </span>
-                    </div>
-                    {review.userId === session?.user?.id && (
-                      <div className="flex flex-row items-center">
-                        <button
-                          onClick={() => handleDeleteReview(review._id)}
-                          className="px-1 text-[0.7rem] sm:text-sm py-1 rounded-md"
-                        >
-                          {isDeletingReview ? <Loader2 className="animate-spin" /> : <Trash2 />}
-                        </button>
-                        <ReviewForm
-                          isEditing={true}
-                          oldComment={review.comment}
-                          oldRating={review.rating}
-                          productId={productId}
-                          user={session?.user}
-                        />
-                      </div>
-                    )}
-                  </div>
+           <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  {reviews.map((review, index) => (
+    <li
+      key={index}
+      className="border rounded-lg p-4 flex flex-col justify-between bg-white shadow-sm"
+    >
+      <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+        <div className="flex items-center gap-3">
+          <img
+            src={review.photo}
+            alt="customer"
+            className="rounded-full h-10 w-10 object-cover"
+          />
+          <div className="flex flex-col">
+            <strong className="text-sm">{review.name}</strong>
+            <span className="text-sm">
+              <StarRatings rating={review.rating} />
+            </span>
+          </div>
+        </div>
 
-                  <div className="mt-4 text-sm text-gray-700 whitespace-pre-line">
-                    {review.comment}
-                  </div>
+        {review.userId === session?.user?.id && (
+          <div className="flex items-center gap-2 flex-wrap">
+            <button
+              onClick={() => handleDeleteReview(review._id)}
+              className="px-2 py-1 text-sm bg-red-100 hover:bg-red-200 text-red-600 rounded-md"
+            >
+              {isDeletingReview ? (
+                <Loader2 className="animate-spin h-4 w-4" />
+              ) : (
+                <Trash2 className="h-4 w-4" />
+              )}
+            </button>
+            <ReviewForm
+              isEditing={true}
+              oldComment={review.comment}
+              oldRating={review.rating}
+              productId={productId}
+              user={session?.user}
+            />
+          </div>
+        )}
+      </div>
 
-                  <div className="mt-4 text-xs text-gray-500 text-right">
-                    {calculateTimeDifference(review.createdAt)}
-                  </div>
-                </li>
-              ))}
-            </ul>
+      <div className="mt-4 text-sm text-gray-800 whitespace-pre-line">
+        {review.comment}
+      </div>
+
+      <div className="mt-2 text-xs text-gray-500 text-right">
+        {calculateTimeDifference(review.createdAt)}
+      </div>
+    </li>
+  ))}
+</ul>
+
 
           </>
         ) : (

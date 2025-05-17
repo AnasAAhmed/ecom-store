@@ -17,15 +17,15 @@ const Currency = ({ className, ip = '36.255.42.109' }: { className: string; ip?:
     const fetchCountry = async () => {
 
       // if (process.env.NODE_ENV === 'production') {
-        try {
-          const geoRes = await fetch(`http://ip-api.com/json/`);
-          const geoData = await geoRes.json();
-          setGeoCountry(geoData.country);
-          setGeoCountryCode(geoData.countryCode);
-          console.log(geoData.country, geoData.city);
-        } catch (error) {
-          console.error('Failed to fetch geo data', error);
-        }
+        // try {
+        //   const geoRes = await fetch(`http://ip-api.com/json/`);
+        //   const geoData = await geoRes.json();
+        //   setGeoCountry(geoData.country);
+        //   setGeoCountryCode(geoData.countryCode);
+        //   console.log(geoData.country, geoData.city);
+        // } catch (error) {
+        //   console.error('Failed to fetch geo data', error);
+        // }
       // }
 
       // Fallback if country is still empty

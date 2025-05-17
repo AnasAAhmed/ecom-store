@@ -83,6 +83,9 @@ const CancelOrder = ({ order }: OrderManageProps) => {
                 Customer's Email: {order.customerEmail}
               </p>
               <p className="text-base-bold">
+                Customer's Phone No: {order.customerPhone}
+              </p>
+              <p className="text-base-bold">
                 Shipping address: <span className="text-base-medium leading-8">{order.shippingAddress.street}, {order.shippingAddress.city}, {order.shippingAddress.state}, {order.shippingAddress.postalCode}, {order.shippingAddress.country}, phone:{order.shippingAddress.phone || "null"}</span>
               </p>
               <p className="text-base-bold">

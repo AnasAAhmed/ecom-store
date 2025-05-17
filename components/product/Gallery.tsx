@@ -9,16 +9,14 @@ const Gallery = ({ productMedia }: { productMedia: string[] }) => {
     <div className="flex flex-col gap-3 ">
       {/* <ImageZoom src={mainImage} alt={"product"} /> */}
       <Image
-        // unoptimized
+        unoptimized={mainImage !== productMedia[0]}
         src={mainImage}
-        loading="lazy"
         placeholder="blur"
         blurDataURL="/fallback-banner.png"
         alt={'product'}
         width={500}
         height={500}
-        className="rounded-lg md:h-[500px] object-cover transition-opacity" />
-
+        className="rounded-lg h-[270px] xsm:h-[380px] sm:h-[420px] md:h-[450px] object-cover duration-300 transition-opacity" />
       <div className="flex gap-2 overflow-auto tailwind-scrollbar-hide">
         {productMedia.map((image, index) => (
           <Image
@@ -31,8 +29,8 @@ const Gallery = ({ productMedia }: { productMedia: string[] }) => {
             placeholder="blur"
             blurDataURL="/fallback-banner.png"
             alt="product"
-            className = {`w-20 h-20 rounded-lg object-cover cursor-pointer ${mainImage === image ? "border-2 border-black" : ""}`}
-        onClick={() => setMainImage(image)}
+            className={`w-20 h-20 rounded-lg object-cover cursor-pointer ${mainImage === image ? "border-2 border-black" : ""}`}
+            onClick={() => setMainImage(image)}
           />
         ))}
       </div>

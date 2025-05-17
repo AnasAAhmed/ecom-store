@@ -2,7 +2,6 @@ import Product from "../models/Product"
 import { connectToDB } from "../mongoDB"
 import Review from "../models/Review"
 import Wishlist from "../models/Wishlist"
-import HomePage from "../models/HomePage"
 import { isValidObjectId } from "mongoose"
 
 
