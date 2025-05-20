@@ -59,7 +59,7 @@ const ReviewForm = ({ isEditing, productId, user, oldRating, oldComment }: Revie
                 router.refresh();
                 setModalOpen(false);
             } else {
-                throw new Error('Error creating review: '+data.message);
+                throw new Error('Error creating review: ' + data.message);
             }
         } catch (error) {
             console.error('Error creating review:', error);
@@ -82,18 +82,21 @@ const ReviewForm = ({ isEditing, productId, user, oldRating, oldComment }: Revie
                     </button>
                 ) : (
                     <button onClick={openModal} className="bg-blue-500 text-white px-2 py-1 rounded-full mb-1">
-                        Submit Review
+                        Add Review for demo purposes
                     </button>
                 )}
             </div>
             {/* {modalOpen && ( */}
             <Modal isOpen={modalOpen} onClose={closeModal} overLay={true}>
-                <div className="bg-white w-full animate-modal p-8 rounded-md">
+                <div className="bg-white mx-auto w-full sm:w-[40%] animate-modal p-4 rounded-md">
 
-                    <div className="flex flex-row justify-between mb-6 items-center">
-                        <h2 className="text-xl font-semibold">Submit Review</h2>
-                        <button onClick={closeModal} className="text-2xl rounded-md">
-                            <X />
+                    <div className="flex flex-row justify-between gap-3 items-start mb-6">
+                        <div className="flex flex-col items-start">
+                            <h2 className="text-[15px] font-medium sm:text-heading4-bold">Submit Review</h2>
+                            <p className=" text-[10px] sm:text-small-medium">In production enviroment this button/form will be removed, and only customers who bought this product can review this product.</p>
+                        </div>
+                        <button onClick={closeModal} className="rounded-md">
+                            <X size={'1rem'}/>
                         </button>
                     </div>
                     <form className="space-y-4" onSubmit={handleCreateReview}>
@@ -123,7 +126,7 @@ const ReviewForm = ({ isEditing, productId, user, oldRating, oldComment }: Revie
                             />
                         </div>
                         <button title="Click here to submit review" type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md" disabled={isCreatingReview}>
-                            {isCreatingReview ? <Loader2 className='animate-spin text-heading3-bold mx-3' /> : "Submit"}
+                            {isCreatingReview ? <Loader2 className='animate-spin text-heading3-bold mx-3' /> : "Add Review"}
                         </button>
                     </form>
                 </div>

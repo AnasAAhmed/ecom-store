@@ -4,7 +4,7 @@ import ProductList from '@/components/product/ProductList';
 import BlogSection from "@/components/ui/BlogSection";
 import Social from "@/components/ui/Social";
 import GroupComponent7 from "@/components/ui/Services";
-import { Suspense } from "react";
+import { Fragment, Suspense } from "react";
 import Loader from "@/components/ui/Loader";
 import { brands, fallbackHomeData } from "@/lib/utils/features";
 import { getCollectionProducts, getCollections } from "@/lib/actions/collection.actions";
@@ -58,8 +58,7 @@ export default async function Home() {
   ]);
   const homePageData = homeData?? fallbackHomeData;
   return (
-    <>
-
+    <Fragment>
       <Banner
         heading={homePageData.hero.heading!}
         text={homePageData.hero.text!}
@@ -90,7 +89,7 @@ export default async function Home() {
       <ProductList heading="Latest Products" Products={products} />
       {homePageData.collections.map((i, _) => (
 
-        <>
+        <Fragment key={_}>
           <Banner
             heading={i.heading}
             text={i.text}
@@ -106,7 +105,7 @@ export default async function Home() {
           <Suspense fallback={<Loader />}>
             <CollectionProduct collectionId={i.collectionId} />
           </Suspense>
-        </>
+        </Fragment>
       ))}
 
       <BlogSection />
@@ -191,7 +190,7 @@ export default async function Home() {
         securePaymentHeight="unset"
         securePaymentDisplay="unset"
       />
-    </>
+    </Fragment>
   );
 };
 

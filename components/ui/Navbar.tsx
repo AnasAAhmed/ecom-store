@@ -3,7 +3,7 @@
 import useCart, { useWhishListUserStore } from "@/lib/hooks/useCart";
 import { CircleUserRound, Menu, Search, ShoppingCart } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import SmartLink from "@/components/SmartLink";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import Currency from "../Currency";
@@ -65,7 +65,7 @@ const Navbar = () => {
   ];
   return (
     <>
-      <div className="overflow-hidden text-white py-2 bg-black border-b border-gray-300">
+      <div className="print:hidden overflow-hidden text-white py-2 bg-black border-b border-gray-300">
         <div className="relative w-full">
           <div className="flex gap-24 animate-marquee2 w-max">
             {[...text, ...text].map((i, _) => (
@@ -76,13 +76,13 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      <nav className="py-2 px-4 hidden lg:flex justify-between text-sm sm:text-base font-medium text-gray-800 bg-gradient-to-r from-white via-gray-50 to-white border-y border-gray-200">
+      <nav className="print:hidden py-2 px-4 hidden lg:flex justify-between text-sm sm:text-base font-medium text-gray-800 bg-gradient-to-r from-white via-gray-50 to-white border-y border-gray-200">
 
         <h1 className="text-red-600 font-bold px-4">🔥 50% Off Summer Sale</h1>
 
         <div className="flex gap-6 items-center">
           {['men', 'women', 'kids', 'footwear', 'accessories'].map((item) => (
-            <Link
+            <SmartLink
               title={`${item} collection`}
               key={item}
               prefetch={false}
@@ -91,7 +91,7 @@ const Navbar = () => {
               className="hover:text-black text-gray-600 transition-colors duration-200 border-b-2 border-transparent hover:border-black"
             >
               {item.charAt(0).toUpperCase() + item.slice(1)}
-            </Link>
+            </SmartLink>
           ))}
         </div>
         <h1 className="text-blue-600 px-4 max-md:hidden">
@@ -99,11 +99,11 @@ const Navbar = () => {
         </h1>
       </nav>
 
-      <nav className={`${scrolled ? 'top-0 fixed shadow-md bg-white' : 'top-13 lg:top-[85px] absolute bg-transparent'} z-30 w-full bg-white shadow-md`}>
+      <nav className={`${scrolled ? 'top-0 fixed shadow-md bg-white' : 'top-13 lg:top-[85px] absolute bg-transparent'} print:hidden z-30 w-full bg-white shadow-md`}>
         <div className="flex justify-between items-center p-2">
-          <Link title="home" aria-label="go to home" href="/">
+          <SmartLink title="home" aria-label="go to home" href="/">
             <Image src="/logo.png" alt=" borcelle logo" width={130} height={34} className="h-[35px]" />
-          </Link>
+          </SmartLink>
 
           {/* Desktop search bar */}
           <form onSubmit={(e) => handleSearch(e)} className="hidden sm:flex items-center gap-3 border rounded-lg px-3 py-1">
@@ -130,7 +130,7 @@ const Navbar = () => {
           <div className="hidden lg:flex gap-4">
             {["/", "/search", "/contact", "/wishlist", "/orders"].map(
               (path, idx) => (
-                <Link
+                <SmartLink
                   title={"Go to " + ["Home", "Shop", "Contact", "Wishlist", "Orders"][idx]}
                   key={idx}
                   href={path}
@@ -139,17 +139,17 @@ const Navbar = () => {
                   className={`hover:text-blue-500 ${pathname === path && "text-blue-500"}`}
                 >
                   {["Home", "Shop", "Contact", "Wishlist", "Orders"][idx]}
-                </Link>
+                </SmartLink>
               )
             )}
           </div>
 
           <div className="flex items-center gap-2">
             <Currency className="none" />
-            <Link title="Go to Cart" aria-label={'Go to cart'} href="/cart" className="hidden md:flex items-center gap-1 border px-1 py-1 rounded-lg hover:bg-black hover:text-white">
+            <SmartLink title="Go to Cart" aria-label={'Go to cart'} href="/cart" className="hidden md:flex items-center gap-1 border px-1 py-1 rounded-lg hover:bg-black hover:text-white">
               <ShoppingCart />
               <span>({cart.cartItems.length})</span>
-            </Link>
+            </SmartLink>
             <User session={session} />
             <button title="mobile hamburger menu" aria-label="mobile hamburger menu" id="Mob-menu" onClick={toggleModal} onBlur={() => setTimeout(() => setIsOpen(false), 70)}>
               <Menu className="lg:hidden cursor-pointer" size={'1.7rem'} />
@@ -185,7 +185,7 @@ const Navbar = () => {
           <ul className="flex flex-col p-4 gap-3 bg-white animate-menu rounded-lg border">
 
             {["/", "/search", "/contact", "/blog", "/wishlist", "/orders"].map((name, idx) => (
-              <Link
+              <SmartLink
                 key={idx}
                 href={name}
                 aria-label={name}
@@ -194,12 +194,12 @@ const Navbar = () => {
               >
                 {["Home", "Shop", "Contact", "Blog", "Wishlist", "Orders"][idx]}
 
-              </Link>
+              </SmartLink>
             ))}
-            <Link title="Go to cart" aria-label={'go to cart'} href="/cart" className="flex items-center gap-2 border rounded-lg px-2 py-1 hover:bg-black hover:text-white" >
+            <SmartLink title="Go to cart" aria-label={'go to cart'} href="/cart" className="flex items-center gap-2 border rounded-lg px-2 py-1 hover:bg-black hover:text-white" >
               <ShoppingCart />
               <span>({cart.cartItems.length})</span>
-            </Link>
+            </SmartLink>
           </ul>
         </div>}
       </nav>
@@ -226,12 +226,12 @@ const User = ({ session }: { session: Session | null }) => {
               alt="avatar"
               width={32}
               height={32}
-              className="w-8 h-8 mt-1 rounded-full object-cover"
+              className="w-8 h-8 mt-2 rounded-full object-cover"
             />
           </button>
 
           <Modal isOpen={open} onClose={closeModal} overLay>
-            <div className="animate-modal bg-white shadow-xl rounded-lg border border-gray-200 p-4 w-full max-w-md">
+            <div className="animate-modal mx-auto bg-white shadow-xl rounded-lg border border-gray-200 p-4 w-full sm:w-[50%] maxs-w-md">
               <div className="flex justify-between items-center mb-4">
                 <h4 className="text-heading4-bold font-semibold text-gray-800">Account Details</h4>
                 <button
@@ -280,13 +280,13 @@ const User = ({ session }: { session: Session | null }) => {
           </Modal>
         </>
       ) : (
-        <Link
+        <SmartLink
           title="Login"
           prefetch={false}
           href={`/login?redirect_url=${encodeURIComponent(pathname)}`}
         >
-          <CircleUserRound className="w-8 h-8 text-gray-700 hover:text-black transition-colors cursor-pointer" />
-        </Link>
+          <CircleUserRound className="w-8 h-8 my-2 text-gray-700 hover:text-black transition-colors cursor-pointer" />
+        </SmartLink>
       )}
     </div>
   )

@@ -8,7 +8,7 @@ export async function getCollectionProducts(collectionId: string): Promise<Produ
     const collectionProducts = await Product.find({ collections: collectionId })
       .sort({ createdAt: -1 })
       .limit(6)
-      .select('-category -description -timestamps -detailDesc -searchableVariants -collections -tags -weight -dimensions');
+      .select("title numOfReviews ratings stock sold price expense media _id");
 
     if (!collectionProducts) return 'Collection Products Not Found';
     return JSON.parse(JSON.stringify(collectionProducts))
@@ -41,7 +41,7 @@ export async function collectionProducts({
     if (size) filters.variantSizes = size;
 
     const products = await Product.find(filters)
-      .select('-category -description -timestamps -detailDesc -searchableVariants -collections -tags -weight -dimensions')
+      .select("title numOfReviews ratings stock sold price expense media _id")
       .skip(skip)
       .limit(limit)
       .sort(sortOptions);
@@ -82,7 +82,7 @@ export async function getCollectionDetails(title: string) {
     const collection = await Collection.findOne({ title }).populate({
       path: 'products',
       options: { limit: 2 },
-      select: '-category -description -timestamps -detailDesc -searchableVariants -collections -tags -weight -dimensions',
+      select: "title numOfReviews stock ratings sold price expense media _id",
     });
 
     if (!collection) {

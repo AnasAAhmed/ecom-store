@@ -1,6 +1,6 @@
 'use client'
 import Image from "next/image";
-import Link from "next/link";
+import SmartLink from "@/components/SmartLink";
 import FadeInOnView from "../FadeInView";
 
 type BannerProps = {
@@ -20,7 +20,7 @@ type rr='center' | 'end' | 'start';
 const Banner = ({ imgUrl, videoUrl, text, heading, textColor, shade, link, buttonText, scrollDown, textPositionV = 'center', textPosition = 'center' }: BannerProps) => {
 
   return (
-    <Link title={buttonText || 'Shop Now'} href={link} >
+    <SmartLink title={buttonText || 'Shop Now'} href={link} >
       <div className="relative w-full h-[230px] sm:h-[470px] md:h-[660px] roudnded-xl overflow-hidden">
 
         {videoUrl ? (
@@ -78,7 +78,7 @@ const Banner = ({ imgUrl, videoUrl, text, heading, textColor, shade, link, butto
         </div>
 
       </div>
-    </Link>
+    </SmartLink>
   );
 };
 

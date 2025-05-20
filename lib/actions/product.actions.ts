@@ -11,8 +11,7 @@ export async function getAllProducts() {
   try {
     await connectToDB();
 
-    const products = await Product.find()
-      .select("slug media category tags");
+    const products = await Product.find().select("slug media category tags");
 
     return JSON.parse(JSON.stringify(products))
   } catch (err) {
@@ -62,7 +61,7 @@ export async function getSearchProducts(query: string, sort: string, sortField: 
     const totalPages = Math.ceil(totalProducts / limit);
 
     const searchedProducts = await Product.find(filters)
-      .select('-category -description -timestamps')
+      .select("title numOfReviews stock ratings sold price expense media _id")
       .skip(skip)
       .limit(limit)
       .sort(sortOptions);
@@ -84,7 +83,7 @@ export async function getProducts() {
 
     const products = await Product.find()
       .sort({ createdAt: "desc", updatedAt: 'desc' })
-      .select("-category -description -timestamps -detailDesc -searchableVariants -collections -tags -weight -dimensions")
+      .select("title numOfReviews stock ratings sold price expense media _id")
       .limit(8);
 
     return JSON.parse(JSON.stringify(products))
@@ -100,7 +99,7 @@ export async function getBestSellingProducts() {
 
     const products = await Product.find()
       .sort({ sold: -1, ratings: -1, createdAt: "desc" })
-      .select("-category -description -timestamps -detailDesc -searchableVariants -collections -tags -weight -dimensions")
+      .select("title numOfReviews stock ratings sold price expense media _id")
       .limit(4);
 
     return JSON.parse(JSON.stringify(products));
@@ -113,7 +112,7 @@ export async function getBestSellingProducts() {
 export async function getProductDetails(slug: string) {
   try {
     await connectToDB();
-    const product = await Product.findOne({ slug });
+    const product = await Product.findOne({ slug }).select('-__v -createdAt -updatedAt');
     if (!product) {
       return null;
     };
@@ -134,7 +133,8 @@ export async function getRelatedProduct(productId: string, category: string, col
         { collections: { $in: collections } }
       ],
       _id: { $ne: productId }
-    }).select("-category -description -timestamps -detailDesc -searchableVariants -collections -tags -weight -dimensions");
+    }).select("title numOfReviews stock ratings sold price expense media _id");
+
     return JSON.parse(JSON.stringify(relatedProducts))
 
   } catch (err) {

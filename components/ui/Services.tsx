@@ -1,6 +1,6 @@
 import { ArrowLeftRight, Truck } from "lucide-react";
 import type { NextPage } from "next";
-import Link from "next/link";
+import SmartLink from "@/components/SmartLink";
 import { useMemo, type CSSProperties } from "react";
 import { FaCcStripe, } from "react-icons/fa";
 import FadeInOnView from "../FadeInView";
@@ -95,12 +95,12 @@ const GroupComponent7: NextPage<GroupComponent7Type> = ({
       <FadeInOnView animation="animate-fadeInUp"  delay={600} threshold={0.8}>
 
         <div className="w-full hover:scale-105 duration-300 pb-3 sm:w-[23.5rem] flex flex-col items-center justify-center max-w-full text-center">
-          <Link title="See more on Stripe.com" target="blank" href={'https://stripe.com'}
+          <SmartLink title="See more on Stripe.com" target="blank" href={'https://stripe.com'}
             className="h-[3rem] relative text-inherit font-medium font-inherit inline-block z-[1] mq450:text-[1.188rem] mq800:text-[1.625rem]"
-            style={securePaymentStyle}
+         
           >
             <FaCcStripe />
-          </Link>
+          </SmartLink>
           <h1
             className="h-[3rem] relative text-inherit font-medium font-inherit inline-block z-[1] mq450:text-[1.188rem] mq800:text-[1.625rem]"
             style={securePaymentStyle}

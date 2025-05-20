@@ -1,6 +1,6 @@
 import FadeInOnView from "../FadeInView";
 import ProductCard from "./ProductCard";
-import Link from "next/link";
+import SmartLink from "@/components/SmartLink";
 
 const ProductList = async ({ Products, heading, isViewAll = true }: { Products: ProductType[], heading?: string; isViewAll?: boolean }) => {
 
@@ -22,9 +22,9 @@ const ProductList = async ({ Products, heading, isViewAll = true }: { Products: 
       {Products.length > 4 && isViewAll && <div className="self-stretch flex flex-row items-start justify-center py-[0rem] px-[1.25rem]">
         <div className="w-[12.875rem] flex flex-col items-start justify-start ">
           <FadeInOnView delay={300} threshold={0.5} animation="animate-fadeIn">
-            <Link prefetch={false} title=" View All Products" href="/search" className="h-[1.875rem] mx-auto relative font-medium inline-block z-[1] text-heading4-bold">
+            <SmartLink prefetch={false} title=" View All Products" href="/search" className="h-[1.875rem] mx-auto relative font-medium inline-block z-[1] text-heading4-bold">
               View All Products
-            </Link>
+            </SmartLink>
             <div className="self-stretch flex flex-row items-start justify-start py-[0rem] pr-[0.187rem] pl-[0.375rem]">
               <div className="h-[0.125rem] flex-1 relative box-border z-[1] border-t-[2px] border-solid border-black" />
             </div>

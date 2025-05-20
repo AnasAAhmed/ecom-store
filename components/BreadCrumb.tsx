@@ -1,5 +1,5 @@
 'use client'
-import Link from "next/link";
+import SmartLink from "@/components/SmartLink";
 import { usePathname } from "next/navigation";
 
 
@@ -23,9 +23,9 @@ const Breadcrumb = () => {
                             <span key={index} className="flex items-center space-x-1">
                                 {index > 0 && <span className="mx-1 text-gray-400">/</span>}
                                 {index !== 1 ?
-                                    <Link href={path} className="text-gray-600 capitalize">
+                                    <SmartLink href={path} className="text-gray-600 capitalize">
                                         {label}
-                                    </Link> : <span className="text-gray-600 capitalize">
+                                    </SmartLink> : <span className="text-gray-600 capitalize">
                                         {label}
                                     </span>}
                             </span>
@@ -36,12 +36,12 @@ const Breadcrumb = () => {
                     {lastSegment && (
                         <span className="flex max-w-d truncate text-ellipsis items-center space-x-1">
                             {segments.length > 0 && <span>/</span>}
-                            <Link
+                            <SmartLink
                                 href={`${pathname}`}
                                 className="text-black font-medium capitalize"
                             >
                                 {decodeURIComponent(lastSegment)}
-                            </Link>
+                            </SmartLink>
                         </span>
                     )}
                 </div>

@@ -32,7 +32,7 @@ const WishlistPage: FC = async () => {
     <div className="py-5 min-h-[90vh]">
       <p className="px-7 sm:px-10 text-heading3-bold my-10">Your Wishlist</p>
       <div className="flex flex-wrap justify-center gap-16">
-        <ProductList isViewAll={false} heading="Our Top Selling Products" Products={wishlist.wishlist} />
+        <ProductList isViewAll={false} Products={wishlist.wishlist} />
 
       </div>
     </div>

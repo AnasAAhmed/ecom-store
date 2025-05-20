@@ -2,7 +2,7 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import SmartLink from "@/components/SmartLink";
 import { useRef } from "react";
 
 const Collections = ({ collections }: { collections: CollectionType[] }) => {
@@ -47,7 +47,7 @@ const Collections = ({ collections }: { collections: CollectionType[] }) => {
                   flex: '0 0 auto',
                 }}
               >
-                <Link
+                <SmartLink
                   prefetch={false}
                   title={`See full ${collection.title} Collection at Borcelle`}
                   href={`/collections/${collection.title}`}
@@ -71,7 +71,7 @@ const Collections = ({ collections }: { collections: CollectionType[] }) => {
                       {collection.title}
                     </button>
                   </div>
-                </Link>
+                </SmartLink>
               </div>
             ))}
           </div>

@@ -1,15 +1,15 @@
 import Image from "next/image";
-import Link from "next/link";
+import SmartLink from "@/components/SmartLink";
 
 const Footer = () => {
   return (
-    <footer className="w-full px-4 py-10 bg-white border-t border-gray-200 md:px-20">
+    <footer className="print:hidden w-full px-4 py-10 bg-white border-t border-gray-200 md:px-20">
       <div className="grid gap-10 md:grid-cols-3">
         {/* Logo & Address */}
         <div>
-          <Link href="/" title="Home" className="block mb-4">
+          <SmartLink href="/" title="Home" className="block mb-4">
             <Image src="/logo.png" alt="logo" width={130} height={100} />
-          </Link>
+          </SmartLink>
           <p className="text-sm text-gray-600 leading-relaxed">
             400 University Drive Suite 200 <br />
             Coral Gables, FL 33134 USA
@@ -30,15 +30,15 @@ const Footer = () => {
           </a>
         </div>
 
-        {/* Navigation Links */}
+        {/* Navigation SmartLinks */}
         <div>
-          <h4 className="mb-4 text-lg font-semibold text-black">Quick Links</h4>
+          <h4 className="mb-4 text-lg font-semibold text-black">Quick SmartLinks</h4>
           <ul className="space-y-2 text-sm font-medium text-gray-700">
-            <li><Link href="/" className="hover:text-black">Home</Link></li>
-            <li><Link href="/search" className="hover:text-black">Shop</Link></li>
-            <li><Link href="/contact" className="hover:text-black">About</Link></li>
-            <li><Link href="/blog" className="hover:text-black">Blog</Link></li>
-            <li><Link href="/contact" className="hover:text-black">Contact</Link></li>
+            <li><SmartLink href="/" className="hover:text-black">Home</SmartLink></li>
+            <li><SmartLink href="/search" className="hover:text-black">Shop</SmartLink></li>
+            <li><SmartLink href="/contact" className="hover:text-black">About</SmartLink></li>
+            <li><SmartLink href="/blog" className="hover:text-black">Blog</SmartLink></li>
+            <li><SmartLink href="/contact" className="hover:text-black">Contact</SmartLink></li>
           </ul>
         </div>
 
@@ -62,9 +62,9 @@ const Footer = () => {
           </form>
           <div className="mt-6 space-y-2 text-sm text-gray-700">
             <p><strong>Payment Options:</strong> COD / Online</p>
-            <p><Link href="/contact" className="hover:text-black">Returns</Link></p>
-            <p><Link href="/contact" className="hover:text-black">Privacy Policies</Link></p>
-            <p><Link href="/contact" className="hover:text-black">Help</Link></p>
+            <p><SmartLink href="/contact" className="hover:text-black">Returns</SmartLink></p>
+            <p><SmartLink href="/contact" className="hover:text-black">Privacy Policies</SmartLink></p>
+            <p><SmartLink href="/contact" className="hover:text-black">Help</SmartLink></p>
           </div>
         </div>
       </div>

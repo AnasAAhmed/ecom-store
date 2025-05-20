@@ -4,12 +4,11 @@ import { ArrowLeftIcon, LoaderIcon } from 'lucide-react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import useCart, { useRegion } from '@/lib/hooks/useCart';
-import Link from 'next/link';
+import SmartLink from "@/components/SmartLink";
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useSession } from 'next-auth/react';
 
 const shippingSchema = z.object({
     street: z.string().min(15, "Street address must be at least 15 characters"),
@@ -95,9 +94,9 @@ const ShippingForm = ({ user }: { user: { id: string, email: string, image: stri
 
     return (
         <div className="px-4 py-8 sm:px-24">
-            <Link title='back to cart' aria-label='back to cart' href="/cart" className="back-btn">
+            <SmartLink title='back to cart' aria-label='back to cart' href="/cart" className="back-btn">
                 <ArrowLeftIcon />
-            </Link>
+            </SmartLink>
             <form onSubmit={handleSubmit(submitHandler)}>
                 <h1 className="text-2xl font-semibold mb-8 text-center">Shipping Address</h1>
 

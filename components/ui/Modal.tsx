@@ -49,8 +49,8 @@ const Modal = ({ isOpen, onClose, children,overLay}:ModalProps) => {
 
   return (
     <div className={`fixed inset-0 flex items-center justify-center ${overLay&&"bg-gray-800"} bg-opacity-50 z-50`}onClick={onClose}>
-      <FocusLock>
-        <div id="modal" tabIndex={-1} {...focusWithinProps} onClick={e=>e.stopPropagation()}>
+      <FocusLock className='w-full'>
+        <div className='w-full' id="modal" tabIndex={-1} {...focusWithinProps} onClick={e=>e.stopPropagation()}>
           {children}
         </div>
       </FocusLock>

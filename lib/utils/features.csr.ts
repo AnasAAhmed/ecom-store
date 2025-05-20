@@ -40,3 +40,19 @@ export const currencyToSymbolMap: Record<string, string> = {
   'CAD': 'C$',
   'AUD': 'A$'
 };
+export const slugifyCsr = (title: string) => {
+  return title
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "");
+};
+
+
+export const unSlugifyCsr = (slug: string) => {
+  return slug
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+};

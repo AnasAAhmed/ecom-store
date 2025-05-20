@@ -6,19 +6,10 @@ import { Loader2, LoaderIcon, MinusCircle, PlusCircle, Trash, XCircleIcon } from
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import toast from 'react-hot-toast';
-import Link from 'next/link';
+import SmartLink from "@/components/SmartLink";
 import { useSession } from 'next-auth/react'
-import { currencyToSymbolMap } from '@/lib/utils/features.csr';
+import { currencyToSymbolMap, slugifyCsr } from '@/lib/utils/features.csr';
 
-const slugify = (title: string) => {
-  return title
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/[^\w-]+/g, "");
-};
 
 const Cart = () => {
   const router = useRouter();
@@ -80,6 +71,7 @@ const Cart = () => {
         else {
           if (currency !== "PKR" && currency !== "USD") return toast.error(" Only USD or PKR are allowed for Online payment for now becasue this site is Demo.");
           setLoading(true)
+          toast.loading('Setting up checkout form');
           const res = await fetch(`/api/checkout`, {
             method: "POST",
             headers: {
@@ -93,6 +85,7 @@ const Cart = () => {
             window.location.href = data.url;
             console.log(data);
           } else {
+            toast.dismiss();
             toast.error(`HTTP error! Status: ${res.statusText}`)
             console.error(`HTTP error! Status: ${res.status}`);
           }
@@ -100,6 +93,7 @@ const Cart = () => {
         }
       } catch (err) {
         setLoading(false)
+        toast.dismiss();
         toast.error(`[checkout_POST] ${err}`)
         console.error("[checkout_POST]", err);
       }
@@ -145,12 +139,12 @@ const Cart = () => {
                       alt="product"
                     />
                     <div className="flex flex-col gap-3 ml-4">
-                      <Link title={'See details of product ' + cartItem.item.title} href={`products/${slugify(cartItem.item.title)}`} className="text-body-bold line-clamp-2 max-w-[32rem]">{cartItem.item.title}</Link>
+                      <SmartLink title={'See details of product ' + cartItem.item.title} href={`products/${slugifyCsr(cartItem.item.title)}`} className="text-body-bold line-clamp-2 max-w-[32rem]">{cartItem.item.title}</SmartLink>
 
                       <p className="text-small-medium">
-                        {cartItem.color &&'color: '+cartItem.color}
+                        {cartItem.color && 'color: ' + cartItem.color}
                         {cartItem.color && cartItem.size && '/'}
-                        {cartItem.size &&'size: '+ cartItem.size}</p>
+                        {cartItem.size && 'size: ' + cartItem.size}</p>
 
                       {cartItem.item.stock < 5 && <p className="text-small-medium">{`only ${cartItem.item.stock} left`}</p>}
                     </div>

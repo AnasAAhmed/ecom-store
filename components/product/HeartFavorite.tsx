@@ -25,6 +25,7 @@ const HeartFavorite = ({ productId, updateSignedInUser }: HeartFavoriteProps) =>
   }, [userWishlist, productId]);
 
   const handleLike = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation();
     e.preventDefault();
     try {
       if (!userWishlist) {

@@ -1,7 +1,7 @@
 'use client'
 import { Calendar, Clock } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import SmartLink from "@/components/SmartLink";
 import FadeInOnView from "../FadeInView";
 
 const BlogSection = () => {
@@ -17,7 +17,7 @@ const BlogSection = () => {
         <GroupComponent3 key={3} blogCardImage="/blog3.png" index={0.4} />
       </div>
       <div className="flex flex-col items-center">
-        <Link title="Veiw all blogs" href="/blog" className="text-lg font-medium">View All Posts</Link>
+        <SmartLink title="Veiw all blogs" href="/blog" className="text-lg font-medium">View All Posts</SmartLink>
         <div className="border-t-2 border-black w-16 mt-2"></div>
       </div>
     </section>
@@ -42,7 +42,7 @@ const GroupComponent3 = ({ blogCardImage, index }: GroupComponent3Type) => {
         />
         <div className="self-stretch flex flex-col items-start justify-start p-4 box-border max-w-full">
           <div className="text-xl">Going all-in with millennial design</div>
-          <Link title={"Read more on our blog page " + blogCardImage.slice(4, 6)} href='/blog' className="text-2xl font-medium" >Read More</Link>
+          <SmartLink title={"Read more on our blog page " + blogCardImage.slice(4, 6)} href='/blog' className="text-2xl font-medium" >Read More</SmartLink>
           <div className="flex items-center justify-between w-full mt-4">
             <div className="flex items-center gap-2">
               <Clock />

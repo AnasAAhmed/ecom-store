@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import SmartLink from "@/components/SmartLink";
 import { useSearchParams } from 'next/navigation';
 
 export default function ErrorUi() {
@@ -25,9 +25,9 @@ export default function ErrorUi() {
             <p className="text-2xl sm:text-3xl mb-4  dark:text-gray-200">{errorMessage}</p>
             <p className="text-2xl sm:text-3xl mb-4  dark:text-gray-200">{message}</p>
             <div className='flex items-center gap-3'>
-                <Link title='Go back to home page' href={'/'} className='p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md'>Go back to the homepage</Link>
-                <Link title='Login' href={'/login'} className='p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md'>Login</Link>
-                <Link title='Sign-up' href={'/sign-up'} className='p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md'>Sign-up</Link>
+                <SmartLink title='Go back to home page' href={'/'} className='p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md'>Go back to the homepage</SmartLink>
+                <SmartLink title='Login' href={'/login'} className='p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md'>Login</SmartLink>
+                <SmartLink title='Sign-up' href={'/sign-up'} className='p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md'>Sign-up</SmartLink>
             </div>
         </div>
     );

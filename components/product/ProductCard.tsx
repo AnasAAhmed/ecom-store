@@ -1,12 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import SmartLink from "@/components/SmartLink";
 import { ChevronDown, ShoppingCart } from "lucide-react";
 import HeartFavorite from "./HeartFavorite";
 import StarRatings from "./StarRatings";
 import useCart, { useRegion } from "@/lib/hooks/useCart";
-import { currencyToSymbolMap } from "@/lib/utils/features.csr";
+import { currencyToSymbolMap, slugifyCsr } from "@/lib/utils/features.csr";
 import FadeInOnView from "../FadeInView";
 
 interface ProductCardProps {
@@ -18,38 +18,35 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
   const image1 = product.media[0];
   const image2 = product.media[1] ? product.media[1] : null;
   const { currency, exchangeRate } = useRegion();
-  const cart = useCart();
+  // const cart = useCart();
   const {
     _id,
-    slug,
     title,
     price,
     expense,
-    media,
     stock,
     ratings,
     numOfReviews,
     sold,
-    variants,
   } = product;
 
   const productPrice = (price * exchangeRate).toFixed();
   const productExpense = (expense * exchangeRate).toFixed();
   const isSoldOut = stock < 1;
 
-  const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  // const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
+  //   e.preventDefault();
 
-    cart.addItem({
-      item: { _id, title, media, price, expense, stock },
-      quantity: 1,
-    });
-  };
+  //   cart.addItem({
+  //     item: { _id, title, media, price, expense, stock },
+  //     quantity: 1,
+  //   });
+  // };
 
   return (
     <FadeInOnView animation="animate-fadeInUp" className={`relative bg-white image-width roundsed-t-lg shadosw-md overflow-hidden  ${isSoldOut ? "opacity-70" : ""
       }`}>
-      <Link title={"See details of " + title} href='/product/[slug]' as={`/products/${slug}`} className="block" prefetch={false} >
+      <SmartLink title={"See details of " + title} href='/product/[slug]' as={`/products/${slugifyCsr(title)}`} className="block" prefetch={false} >
         <div className="relative image-height group overflow-hidden">
           <Image
             src={image1}
@@ -66,7 +63,7 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
             <Image
               src={image2}
               fill
-            loading="lazy"
+              loading="lazy"
               unoptimized
               sizes="(max-width: 450px) 9rem, (max-width: 700px) 12rem, 16rem"
               alt={`${product.title} alt`}
@@ -85,7 +82,7 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
             )
           )}
 
-          {!isSoldOut && variants?.length > 0 ? (
+          {/* {!isSoldOut && variants?.length > 0 ? (
             <span title={JSON.stringify(
               variants.map(({ size, color }) => ({ size, color }))
             ).replace(/[\[{"}-]/g, ' ')} className="absolute top-2 right-2 bg-gray-900 text-white p-2 rounded-full">
@@ -101,7 +98,7 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
             >
               <ShoppingCart className="w-4 h-4" />
             </button>
-          )}
+          )} */}
         </div>
         <div className="py-2 px-1">
           <h6 className="text-small-medium sm:text-body-medium font-medium text-gray-900 line-clamp-2 ">
@@ -133,7 +130,7 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
             )}
           </div>
         </div>
-      </Link>
+      </SmartLink>
     </FadeInOnView>
   );
 };

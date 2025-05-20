@@ -17,7 +17,12 @@ export async function getOrders(customerEmail: string, page: number) {
     const totalPages = Math.ceil(totalOrders / limit);
     const orders = await Order.find({
       customerEmail
-    }).populate({ path: "products.product", model: Product }).sort({ createdAt: 'desc' }).limit(limit).skip(skip);
+    })
+    .populate({ path: "products.product", model: Product ,options: { limit: 2 },select:'-_id title price media' })
+    .select('-customerPhone -customerEmail -shippingAddress -statusHistory -sessionId')
+    .sort({ createdAt: 'desc' })
+    .limit(limit)
+    .skip(skip) ;
 
     return JSON.parse(JSON.stringify({
       orders,
@@ -32,6 +37,22 @@ export async function getOrders(customerEmail: string, page: number) {
   };
 };
 
+export async function getSingleOrder(orderId: string) {
+  try {
+    await connectToDB();
+
+    const order = await Order.findById(orderId)
+    .populate({ path: "products.product", model: Product,select:'-_id title media price' })
+    .select("-__v -updatedAt");
+
+    return JSON.parse(JSON.stringify(order))
+
+  } catch (err) {
+    console.log("[single_order_GET", err);
+    throw new Error('Internal Server Error ' + (err as Error).message)
+
+  };
+};
 
 //for COD form & stripe webhook
 export const stockReduce = async (products: OrderProductCOD[]) => {

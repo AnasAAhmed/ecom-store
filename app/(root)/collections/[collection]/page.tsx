@@ -1,10 +1,8 @@
-import { collectionProducts, getCollectionDetails } from "@/lib/actions/collection.actions";
+import { collectionProducts } from "@/lib/actions/collection.actions";
 import { unSlugify } from "@/lib/utils/features";
 import { notFound } from "next/navigation";
 import React, { Suspense } from "react";
-// import Image from "next/image";
 import ProductList from "@/components/product/ProductList";
-// import Banner from "@/components/ui/Banner";
 import Loader from "@/components/ui/Loader";
 import Sort from "@/components/Sort";
 import PaginationControls from "@/components/PaginationControls";

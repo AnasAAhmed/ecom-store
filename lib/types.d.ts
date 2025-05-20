@@ -64,7 +64,7 @@ interface HomePage {
     width?: number;
     height?: number;
     alt?: string;
-},
+  },
   hero: {
     heading?: string;
     text?: string;
@@ -72,8 +72,8 @@ interface HomePage {
     shade?: string;
     textColor?: string;
     link: string;
-    textPosition?: 'end'|'center'|'start';
-    textPositionV?: 'end'|'center'|'start';
+    textPosition?: 'end' | 'center' | 'start';
+    textPositionV?: 'end' | 'center' | 'start';
     buttonText?: string;
     isVideo: boolean;
   },
@@ -85,8 +85,8 @@ interface HomePage {
       shade?: string;
       textColor?: string;
       link: string;
-      textPosition?: 'end'|'center'|'start';
-      textPositionV?: 'end'|'center'|'start';
+      textPosition?: 'end' | 'center' | 'start';
+      textPositionV?: 'end' | 'center' | 'start';
       buttonText?: string;
       collectionId: string;
       isVideo: boolean;
@@ -188,11 +188,17 @@ type OrderType = {
     country: string
   };
   _id: string;
+  isPaid:boolean;
   customerEmail: string;
   customerPhone: string;
   products: [OrderItemType]
   shippingRate: string;
   status: string;
+  statusHistory: {
+    status: string;
+    changedAt: Date;
+    _id: string;
+  }[];
   method: string;
   exchangeRate: number;
   currency: string;

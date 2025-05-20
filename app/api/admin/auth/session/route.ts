@@ -73,6 +73,9 @@ export async function POST(req: NextRequest) {
         res.cookies.set("authjs.admin-session", "", {
             path: "/",
             maxAge: 0,
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
         });
 
         return res;

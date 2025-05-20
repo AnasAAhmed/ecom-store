@@ -2,7 +2,7 @@ import { corsHeaders } from "@/lib/cors";
 import Collection from "@/lib/models/Collection";
 import Product from "@/lib/models/Product";
 import { connectToDB } from "@/lib/mongoDB";
-import { estimateDimensions, estimateWeight, slugify } from "@/lib/utils/features";
+import { estimateDimensions, estimateWeight } from "@/lib/utils/features";
 import { decode } from "next-auth/jwt";
 import { revalidatePath } from "next/cache";
 

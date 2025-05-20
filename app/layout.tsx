@@ -11,6 +11,7 @@ import { Roboto } from 'next/font/google'
 import { SessionProvider } from "next-auth/react";
 import { headers } from "next/headers";
 import dynamic from "next/dynamic";
+import ProgressBar from "@/components/ProgressBar";
 
 const IsOnline = dynamic(() => import("@/components/IsOnline"), {
   ssr: false,
@@ -80,6 +81,7 @@ export default async function RootLayout({
           <ToasterProvider />
           <UserFetcher />
           <Suspense fallback={<Loader />}>
+          <ProgressBar/>
             <Navbar />
             <div className="mt-20 sm:mt-12">
               {children}
