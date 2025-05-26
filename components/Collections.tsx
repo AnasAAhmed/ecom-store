@@ -55,7 +55,7 @@ const Collections = ({ collections }: { collections: CollectionType[] }) => {
                   <Image
                     loading="lazy"
                     src={collection.image}
-                    unoptimized
+                    // unoptimized
                     placeholder="blur"
                     blurDataURL="/fallback-banner.png"
                     alt={collection.title || 'collection image'}

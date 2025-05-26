@@ -3,20 +3,18 @@ import * as React from "react"
 import SignupForm from '@/components/auth/signup-form'
 import AuthLink from '@/components/AuthLink'
 import Loader from '@/components/ui/Loader'
-import { Loader2 } from 'lucide-react'
-
 
 
 export default async function LoginPage() {
   return (
-    <div className="flex flex-col mt-28 sm:mt-20 h-screen items-center">
+    <div className="flex flex-col mt-28 sm:mt-32 h-screen items-center">
 
       <div className="sm:w-[400px]">
         <div className='pb-0'>
           <h1 className='text-heading3-base'>Sign-up</h1>
           <p className='text-body-medium mt-4 text-gray-500'>Sign-up with your account to continue.</p>
         </div>
-        <div>
+        <div className='flex flex-col justify-center'>
           <form
             action={async () => {
               "use server"
@@ -29,12 +27,12 @@ export default async function LoginPage() {
             </button>
           </form>
           <div className="text-md text-zinc-400 flex justify-center">or</div>
-          <React.Suspense fallback={<Loader />}>
+          <React.Suspense fallback={<Loader height={30}/>}>
             <SignupForm />
           </React.Suspense>
         </div>
       </div>
-      <React.Suspense fallback={<Loader2 className='animate-spin h-7 w-7'/>}>
+      <React.Suspense fallback={<Loader height={30}/>}>
         <AuthLink url='login' title='No account yet? Go to login page'>
           Already have an account? <span className="underline text-body-medium">Login</span>
         </AuthLink>

@@ -15,6 +15,7 @@ const Gallery = ({ productMedia }: { productMedia: string[] }) => {
         blurDataURL="/fallback-banner.png"
         alt={'product'}
         width={500}
+        loading="eager"
         height={500}
         className="rounded-lg h-[270px] xsm:h-[380px] sm:h-[420px] md:h-[450px] object-cover duration-300 transition-opacity" />
       <div className="flex gap-2 overflow-auto tailwind-scrollbar-hide">

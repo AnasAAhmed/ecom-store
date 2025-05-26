@@ -22,9 +22,9 @@ export function ForgetPassForm({ btnText }: { btnText: string }) {
       })
 
     if (parsedCredentials.error) {
-     parsedCredentials.error.issues.map((i,_)=>(
-             toast.error(i.message)
-           ))
+      parsedCredentials.error.issues.map((i, _) => (
+        toast.error(i.message)
+      ))
     } else {
       try {
         const response = await fetch('/api/auth/reset-mail', {
@@ -64,9 +64,12 @@ export function ForgetPassForm({ btnText }: { btnText: string }) {
         <button title="Click  here for forget Password" onClick={openModal} type="button" className="px-0 text-small-medium text-zinc-500">{btnText}</button>
       </div>
       <Modal isOpen={modalOpen} onClose={closeModal} overLay={true}>
-        <div className="bg-white animate-modal p-5 rounded-md">
+        <div className="bg-white w-full sm:w-[40%] mx-auto animate-modal p-5 rounded-md">
           <div className="flex flex-col space-y-1.5 text-center sm:text-left">
-            <h1 className="text-heading3-base text-gray-900">Forget password?</h1>
+            <div className="flex items-center justify-between">
+              <h1 className="text-heading3-base text-gray-900">Forget password?</h1>
+              <button title="Close modal" onClick={closeModal} type="button" className="px-0 text-heading3-bold text-zinc-500">&times;</button>
+            </div>
             <div className="text-sm text-gray-600">
               We will send you the email for password reset.
               {process.env.NODE_ENV === 'production' && <div className="bg-yellow-200 flex px-3 gap-3 items-center mt-4 py-1 w-full rounded-md">
