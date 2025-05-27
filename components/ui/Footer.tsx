@@ -35,7 +35,7 @@ const Footer = () => {
           <h4 className="mb-4 text-lg font-semibold text-black">Quick SmartLinks</h4>
           <ul className="space-y-2 text-sm font-medium text-gray-700">
             <li><SmartLink href="/" className="hover:text-black">Home</SmartLink></li>
-            <li><SmartLink href="/search" className="hover:text-black">Shop</SmartLink></li>
+            <li><SmartLink href="/search" prefetch={false} className="hover:text-black">Shop</SmartLink></li>
             <li><SmartLink href="/contact" className="hover:text-black">About</SmartLink></li>
             <li><SmartLink href="/blog" className="hover:text-black">Blog</SmartLink></li>
             <li><SmartLink href="/contact" className="hover:text-black">Contact</SmartLink></li>

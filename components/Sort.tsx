@@ -1,14 +1,18 @@
 'use client'
+import { useProgressStore } from '@/lib/hooks/useProgressBar';
 import { useRouter } from 'next/navigation';
 import React from 'react'
 
 const Sort = ({ isCollectionPage = false }: { isCollectionPage?: boolean }) => {
     const router = useRouter();
+      const start = useProgressStore((state) => state.start);
+    
     // const searchParams = new URLSearchParams(window.location.search);
     // searchParams.set('page', newPage.toString());
     // const newUrl = `?${searchParams.toString()}`;
     // router.push(newUrl, { scroll: isScrollToTop });
     const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        start();
         const searchParams = new URLSearchParams(window.location.search);
         const [field, order] = e.target.value.split("|");
         if (!field || !order) {
@@ -25,6 +29,8 @@ const Sort = ({ isCollectionPage = false }: { isCollectionPage?: boolean }) => {
     };
 
     const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        start();
+
         const searchParams = new URLSearchParams(window.location.search);
         const category = e.target.value;
         if (category === '') {
@@ -38,6 +44,8 @@ const Sort = ({ isCollectionPage = false }: { isCollectionPage?: boolean }) => {
         }
     };
     const handleSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        start();
+
         const searchParams = new URLSearchParams(window.location.search);
         const size = e.target.value;
         if (size === '') {
@@ -51,6 +59,8 @@ const Sort = ({ isCollectionPage = false }: { isCollectionPage?: boolean }) => {
         }
     };
     const handleColorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        start();
+
         const searchParams = new URLSearchParams(window.location.search);
         const color = e.target.value;
         if (color === '') {

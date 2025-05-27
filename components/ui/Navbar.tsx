@@ -10,6 +10,7 @@ import Currency from "../Currency";
 import { signOut, useSession } from "next-auth/react";
 import { Session } from "@auth/core/types";
 import Modal from "./Modal";
+import { useProgressStore } from "@/lib/hooks/useProgressBar";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -24,9 +25,11 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [scrolled, setScrolled] = useState(false);
+  const start = useProgressStore((state) => state.start);
 
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    start();
     const page = params.get("page");
     if (page) params.delete("page");
     router.push(`/search?query=${query}`);
@@ -146,7 +149,7 @@ const Navbar = () => {
 
           <div className="flex items-center gap-2">
             <Currency className="none" />
-            <SmartLink title="Go to Cart" aria-label={'Go to cart'} href="/cart" className="hidden md:flex items-center gap-1 border px-1 py-1 rounded-lg hover:bg-black hover:text-white">
+            <SmartLink title="Go to Cart" prefetch={false} aria-label={'Go to cart'} href="/cart" className="hidden md:flex items-center gap-1 border px-1 py-1 rounded-lg hover:bg-black hover:text-white">
               <ShoppingCart />
               <span>({cart.cartItems.length})</span>
             </SmartLink>
@@ -196,7 +199,7 @@ const Navbar = () => {
 
               </SmartLink>
             ))}
-            <SmartLink title="Go to cart" aria-label={'go to cart'} href="/cart" className="flex items-center gap-2 border rounded-lg px-2 py-1 hover:bg-black hover:text-white" >
+            <SmartLink title="Go to cart"  prefetch={false} aria-label={'go to cart'} href="/cart" className="flex items-center gap-2 border rounded-lg px-2 py-1 hover:bg-black hover:text-white" >
               <ShoppingCart />
               <span>({cart.cartItems.length})</span>
             </SmartLink>

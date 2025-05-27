@@ -1,21 +1,22 @@
 'use client';
 import { useWhishListUserStore } from '@/lib/hooks/useCart';
 import { useSession } from 'next-auth/react';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 const UserFetcher = (
     // {userId}:{userId:string}
 ) => {
-    const { data: session,status } = useSession();
+    const { data: session, status } = useSession();
 
     const { userWishlist, setUserWishlist, resetUserWishlist } = useWhishListUserStore();
-
+    const hasFetched = useRef(false);
     useEffect(() => {
+        if (session === undefined || !session?.user?.id || userWishlist || hasFetched.current) return;
+
         const fetchUserData = async () => {
             try {
-                const res = await fetch('/api/wishlist?userId='+session?.user?.id, {
-                    method: "GET",
-                });
+                hasFetched.current = true;
+                const res = await fetch('/api/wishlist?userId=' + session?.user?.id);
                 const data = await res.json();
                 setUserWishlist(data);
             } catch (err) {
@@ -24,10 +25,8 @@ const UserFetcher = (
             }
         };
 
-        if (session?.user?.id && !userWishlist) {
-            fetchUserData();
-        }
-    }, [session?.user?.id, userWishlist, setUserWishlist, resetUserWishlist,status,session]);
+        fetchUserData();
+    }, [session?.user?.id]);
 
     return null;
 };

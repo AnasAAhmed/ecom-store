@@ -1,4 +1,5 @@
 'use client';
+import { useProgressStore } from '@/lib/hooks/useProgressBar';
 import { useRouter } from 'next/navigation';
 
 interface PaginationControlsProps {
@@ -9,8 +10,10 @@ interface PaginationControlsProps {
 
 const PaginationControls: React.FC<PaginationControlsProps> = ({ currentPage, totalPages, isScrollToTop = true }) => {
   const router = useRouter();
+  const start = useProgressStore((state) => state.start);
 
   const handlePageChange = (newPage: number) => {
+    start();
     const searchParams = new URLSearchParams(window.location.search);
     searchParams.set('page', newPage.toString());
     const newUrl = `?${searchParams.toString()}`;
