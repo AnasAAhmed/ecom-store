@@ -37,7 +37,7 @@ const Cart = () => {
     if (isCOD === "NULL") return (setMessage(true), setTimeout(() => { setMessage(false) }, 2000));
     if (isCOD === "COD") {
       if (!session) {
-        return toast((t) => (
+        return toast((t:any) => (
           <span>
             Please Sign-in first <b> it will help us to track your orders </b>
             <button title='Dismiss toast' className='bg-black text-white hover:opacity-45 py-1 px-2 mx-3 rounded-md' onClick={() => toast.dismiss(t.id)}>
@@ -56,7 +56,7 @@ const Cart = () => {
     if (isCOD !== "COD") {
       try {
         if (!session) {
-          return toast((t) => (
+          return toast((t:any) => (
             <span>
               Please Sign-in first <b> it will help us to track your orders </b>
               <button title='Dismiss toast' className='bg-black text-white hover:opacity-75 py-1 px-2 mx-3 rounded-md' onClick={() => toast.dismiss(t.id)}>

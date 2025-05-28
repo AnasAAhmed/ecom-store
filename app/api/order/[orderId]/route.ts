@@ -1,5 +1,6 @@
 import Order from "@/lib/models/Order";
 import { connectToDB } from "@/lib/mongoDB";
+import { statusValidation } from "@/lib/utils/features";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -19,14 +20,14 @@ export const PUT = async (req: NextRequest, props: { params: Promise<{ orderId: 
 
     if (order.status.startsWith("Canceled")) {
       return NextResponse.json(
-        "Order is already canceled" ,
+        "Order is already canceled",
         { status: 409 } // Conflict
       );
     }
 
     if (timeDifference >= 2) {
       return NextResponse.json(
-        "Cancelling order is only allowed within 2 hours after it's placed" ,
+        "Cancelling order is only allowed within 2 hours after it's placed",
         { status: 403 } // Forbidden
       );
     }
@@ -34,13 +35,17 @@ export const PUT = async (req: NextRequest, props: { params: Promise<{ orderId: 
     const { status } = await req.json();
 
     if (order.status) {
-      order.status = status;
+      order.status = statusValidation(status);
+      order.statusHistory.push({
+        status: status,
+        changedAt: Date.now()
+      });
     }
     await order.save();
     revalidatePath('/orders')
     return NextResponse.json("Order Canceled Successfully", { status: 200 })
   } catch (error) {
-    return NextResponse.json((error as Error).message , { status: 500 });
+    return NextResponse.json((error as Error).message, { status: 500 });
 
   }
 };
