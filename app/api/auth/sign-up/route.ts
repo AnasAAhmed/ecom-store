@@ -23,10 +23,10 @@ export async function POST(req: Request) {
             });
 
         if (parsedCredentials.success) {
-            const ip = headers().get('x-forwarded-for') || '36.255.42.109';
+            const ip = (await headers()).get('x-forwarded-for') || '36.255.42.109';
             const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
             const geoData = await geoRes.json();
-            const userAgent = headers().get('user-agent') || '';
+            const userAgent = (await headers()).get('user-agent') || '';
             const parser = new UAParser(userAgent);
             const resultAgent = parser.getResult();
 

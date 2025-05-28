@@ -9,7 +9,8 @@ import PaginationControls from "@/components/PaginationControls";
 import { getCachedCollectionDetails } from "@/lib/actions/cached";
 import Breadcrumb from "@/components/BreadCrumb";
 
-export const generateMetadata = async ({ params }: { params: { collection: string } }) => {
+export const generateMetadata = async (props: { params: Promise<{ collection: string }> }) => {
+  const params = await props.params;
   const collectionDetails = await getCachedCollectionDetails(params.collection);
   if (!collectionDetails) return {
     title: `Collection Not Found 404 | Borcelle`,
@@ -68,7 +69,11 @@ export const generateMetadata = async ({ params }: { params: { collection: strin
 };
 // params: { collection: string }
 
-const CollectionDetails = async ({ searchParams, params }: { searchParams: any; params: { collection: string } }) => {
+const CollectionDetails = async (
+  props: { searchParams: Promise<any>; params: Promise<{ collection: string }> }
+) => {
+  const params = await props.params;
+  const searchParams = await props.searchParams;
   const sort = (searchParams?.order as string) || '';
   const color = (searchParams?.color as string) || '';
   const size = (searchParams?.size as string) || '';

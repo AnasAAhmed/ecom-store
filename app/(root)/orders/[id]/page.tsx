@@ -3,7 +3,8 @@ import CancelOrder from "@/components/CancelOrder";
 import { getSingleOrder } from "@/lib/actions/order.actions"
 import { redirect } from 'next/navigation'
 
-export const generateMetadata = async ({ params }: { params: { id: string } }) => {
+export const generateMetadata = async (props: { params: Promise<{ id: string }> }) => {
+    const params = await props.params;
     return {
         title: `Order details of #${params.id.slice(0, 8)}... | Borcelle`,
         description: 'Your Order details of #' + params.id.slice(0, 8) + '... at borcelle store by anas ahmed',
@@ -18,11 +19,12 @@ export const generateMetadata = async ({ params }: { params: { id: string } }) =
     };
 };
 
-const SIngleOrder = async ({ params }: { params: { id: string } }) => {
+const SIngleOrder = async (props: { params: Promise<{ id: string }> }) => {
+    const params = await props.params;
     const session = (await auth()) as Session
     if (!session || !params.id) {
         return redirect('/login');
-    };
+    }
     const order = await getSingleOrder(params.id);
 
     return (

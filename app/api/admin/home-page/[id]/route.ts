@@ -12,7 +12,8 @@ export function OPTIONS() {
     });
 }
 
-export const DELETE = async (req: NextRequest, { params }: { params: { id: String } }) => {
+export const DELETE = async (req: NextRequest, props: { params: Promise<{ id: String }> }) => {
+    const params = await props.params;
     try {
         const token = req.cookies.get('authjs.admin-session')?.value
         if (!token) {

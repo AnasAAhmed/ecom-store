@@ -14,7 +14,8 @@ export function OPTIONS() {
   });
 }
 
-export const GET = async (req: NextRequest, { params }: { params: { orderId: String } }) => {
+export const GET = async (req: NextRequest, props: { params: Promise<{ orderId: String }> }) => {
+  const params = await props.params;
   try {
     const token = req.cookies.get('authjs.admin-session')?.value
     if (!token) {
@@ -55,7 +56,8 @@ export const GET = async (req: NextRequest, { params }: { params: { orderId: Str
   }
 }
 
-export const PUT = async (req: NextRequest, { params }: { params: { orderId: String } }) => {
+export const PUT = async (req: NextRequest, props: { params: Promise<{ orderId: String }> }) => {
+  const params = await props.params;
   try {
     const { status } = await req.json();
 
@@ -108,7 +110,8 @@ export const PUT = async (req: NextRequest, { params }: { params: { orderId: Str
   }
 };
 
-export const DELETE = async (req: NextRequest, { params }: { params: { orderId: String } }) => {
+export const DELETE = async (req: NextRequest, props: { params: Promise<{ orderId: String }> }) => {
+  const params = await props.params;
   try {
     const token = req.cookies.get('authjs.admin-session')?.value
     if (!token) {
@@ -142,6 +145,5 @@ export const DELETE = async (req: NextRequest, { params }: { params: { orderId: 
       return new NextResponse('An unknown error occurred', { status: 500, headers: corsHeaders });
     }
   }
-
 };
 export const dynamic = "force-dynamic";

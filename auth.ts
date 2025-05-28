@@ -5,7 +5,7 @@ import { extractNameFromEmail } from './lib/utils/features';
 import { connectToDB } from './lib/mongoDB';
 import Customer from './lib/models/Customer';
 import { getUser } from './lib/actions/user.actions';
-import { headers } from 'next/headers';
+import { headers, type UnsafeUnwrappedHeaders } from 'next/headers';
 import fetch from 'node-fetch';
 import { UAParser } from 'ua-parser-js';
 
@@ -46,10 +46,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (account?.provider === 'google') {
         try {
 
-          const ip = headers().get('x-forwarded-for') || '36.255.42.109';
+          const ip = (headers() as unknown as UnsafeUnwrappedHeaders).get('x-forwarded-for') || '36.255.42.109';
           const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
           const geoData = await geoRes.json();
-          const userAgent = headers().get('user-agent') || '';
+          const userAgent = (headers() as unknown as UnsafeUnwrappedHeaders).get('user-agent') || '';
           const parser = new UAParser(userAgent);
           const result = parser.getResult();
           let country = "oooo";

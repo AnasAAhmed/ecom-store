@@ -9,13 +9,10 @@ import Loader from "@/components/ui/Loader";
 import UserFetcher from "@/components/UserFetch";
 import { Roboto } from 'next/font/google'
 import { SessionProvider } from "next-auth/react";
-import { headers } from "next/headers";
 import dynamic from "next/dynamic";
 import ProgressBar from "@/components/ProgressBar";
+import IsOnline from "@/components/IsOnline";
 
-const IsOnline = dynamic(() => import("@/components/IsOnline"), {
-  ssr: false,
-});
 const roboto = Roboto({
   weight: ['500'],
   subsets: ['latin'],
@@ -86,8 +83,8 @@ export default async function RootLayout({
             <div className="mt-20 sm:mt-12">
               {children}
             </div>
-          </Suspense>
           <IsOnline />
+          </Suspense>
           <Footer />
         </SessionProvider>
       </body>

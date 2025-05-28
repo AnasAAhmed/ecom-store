@@ -14,10 +14,8 @@ export function OPTIONS() {
   });
 }
 
-export const GET = async (
-  req: NextRequest,
-  { params }: { params: { collectionId: string } }
-) => {
+export const GET = async (req: NextRequest, props: { params: Promise<{ collectionId: string }> }) => {
+  const params = await props.params;
   try {
     const token = req.cookies.get('authjs.admin-session')?.value
     if (!token) {
@@ -61,10 +59,8 @@ export const GET = async (
   }
 };
 
-export const POST = async (
-  req: NextRequest,
-  { params }: { params: { collectionId: string } }
-) => {
+export const POST = async (req: NextRequest, props: { params: Promise<{ collectionId: string }> }) => {
+  const params = await props.params;
   try {
     const token = req.cookies.get('authjs.admin-session')?.value
     if (!token) {
@@ -114,10 +110,8 @@ export const POST = async (
   }
 };
 
-export const DELETE = async (
-  req: NextRequest,
-  { params }: { params: { collectionId: string } }
-) => {
+export const DELETE = async (req: NextRequest, props: { params: Promise<{ collectionId: string }> }) => {
+  const params = await props.params;
   try {
     const token = req.cookies.get('authjs.admin-session')?.value
     if (!token) {

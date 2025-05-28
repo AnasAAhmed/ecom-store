@@ -5,7 +5,8 @@ import Sort from '@/components/Sort';
 import Link from 'next/link';
 
 
-export async function generateMetadata({ searchParams }: { searchParams: { query: string } }) {
+export async function generateMetadata(props: { searchParams: Promise<{ query: string }> }) {
+  const searchParams = await props.searchParams;
   return {
     title: `Search ${searchParams.query?'results for '+searchParams.query:''} | Borcelle`,
     description: "Search high-quality products at Borcelle.",
@@ -36,7 +37,8 @@ export async function generateMetadata({ searchParams }: { searchParams: { query
 }
 
 
-const SearchPage = async ({ searchParams }: { searchParams: any }) => {
+const SearchPage = async (props: { searchParams: Promise<any> }) => {
+  const searchParams = await props.searchParams;
   const query = (searchParams?.query as string) || '';
   const color = (searchParams?.color as string) || '';
   const size = (searchParams?.size as string) || '';

@@ -12,12 +12,13 @@ export const metadata: Metadata = {
   description: "Track your orders here",
 };
 
-const Orders = async ({ searchParams }: { searchParams: any }) => {
+const Orders = async (props: { searchParams: Promise<any> }) => {
+  const searchParams = await props.searchParams;
   const page = Number(searchParams?.page) || 1;
   const session = (await auth()) as Session
   if (!session) {
     return redirect('/login');
-  };
+  }
   const data = await getOrders(session?.user?.email!, page);
   function getStatusColor(status: string): string {
     const lowerStatus = status.toLowerCase();

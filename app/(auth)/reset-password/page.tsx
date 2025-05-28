@@ -9,7 +9,8 @@ import * as React from "react"
 
 
 
-export default async function ResetPassPage({ searchParams }: { searchParams: { token: string, id: string } }) {
+export default async function ResetPassPage(props: { searchParams: Promise<{ token: string, id: string }> }) {
+    const searchParams = await props.searchParams;
     const session = (await auth()) as Session
 
     if (session || !searchParams.token || !searchParams.id) {

@@ -3,7 +3,8 @@ import { connectToDB } from "@/lib/mongoDB";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
-export const PUT = async (req: NextRequest, { params }: { params: { orderId: String } }) => {
+export const PUT = async (req: NextRequest, props: { params: Promise<{ orderId: String }> }) => {
+  const params = await props.params;
   try {
     await connectToDB();
 

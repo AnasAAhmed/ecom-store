@@ -15,10 +15,8 @@ export function OPTIONS() {
   });
 }
 
-export const POST = async (
-  req: NextRequest,
-  { params }: { params: { productId: string } }
-) => {
+export const POST = async (req: NextRequest, props: { params: Promise<{ productId: string }> }) => {
+  const params = await props.params;
   try {
     const token = req.cookies.get('authjs.admin-session')?.value
     if (!token) {
@@ -116,10 +114,8 @@ export const POST = async (
   }
 };
 
-export const DELETE = async (
-  req: NextRequest,
-  { params }: { params: { productId: string } }
-) => {
+export const DELETE = async (req: NextRequest, props: { params: Promise<{ productId: string }> }) => {
+  const params = await props.params;
   try {
     const token = req.cookies.get('authjs.admin-session')?.value
     if (!token) {
@@ -170,10 +166,8 @@ export const DELETE = async (
     return new NextResponse("Internal error", { status: 500, headers: corsHeaders });
   }
 };
-export const GET = async (
-  req: NextRequest,
-  { params }: { params: { productId: string } }
-) => {
+export const GET = async (req: NextRequest, props: { params: Promise<{ productId: string }> }) => {
+  const params = await props.params;
   try {
     const token = req.cookies.get('authjs.admin-session')?.value
     if (!token) {

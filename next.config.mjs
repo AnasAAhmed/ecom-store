@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    staleTimes: {
+      dynamic: 75,
+    },
+  },
   images: {
     remotePatterns: [
       {
@@ -13,7 +18,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: '**.ufs.sh', 
+        hostname: '**.ufs.sh',
       },
     ],
 
