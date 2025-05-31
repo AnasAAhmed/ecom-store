@@ -46,7 +46,7 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
   return (
     <FadeInOnView animation="animate-fadeInUp" className={`relative bg-white image-width roundsed-t-lg shadosw-md overflow-hidden  ${isSoldOut ? "opacity-70" : ""
       }`}>
-      <SmartLink title={"See details of " + title} href='/product/[slug]' as={`/products/${slugifyCsr(title)}`} className="block" prefetch={false} >
+      <SmartLink title={"See details of " + title} href={`/products/${slugifyCsr(title)}`} className="block" prefetch={false} >
         <div className="relative image-height group overflow-hidden">
           <Image
             src={image1}

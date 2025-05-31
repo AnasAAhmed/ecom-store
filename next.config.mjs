@@ -3,6 +3,7 @@ const nextConfig = {
   experimental: {
     staleTimes: {
       dynamic: 75,
+      static:30,
     },
   },
   images: {
