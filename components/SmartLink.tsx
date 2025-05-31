@@ -24,24 +24,16 @@ export default function SmartLink({ target, title = '', children, ...props }: Sm
         }
     };
     return (
-        <a
-            href={(props.href as string)}
+        <Link
+            {...props}
+            onClick={(e) => {
+                handleClick(e);
+                props.onClick?.(e);
+            }}
             title={title}
             target={target}
-        > 
-        {children}
-
-        </a>
-        // <a
-        //     {...props}
-        //     onClick={(e) => {
-        //         handleClick(e);
-        //         props.onClick?.(e);
-        //     }}
-        //     title={title}
-        //     target={target}
-        // >
-        //     {children}
-        // </a>
+        >
+            {children}
+        </Link>
     );
 }
