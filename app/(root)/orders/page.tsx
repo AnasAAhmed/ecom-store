@@ -16,8 +16,9 @@ const Orders = async (props: { searchParams: Promise<any> }) => {
   const searchParams = await props.searchParams;
   const page = Number(searchParams?.page) || 1;
   const session = (await auth()) as Session
-  if (!session) {
-    return redirect('/login');
+ if (!session||!session.user.id) {
+    redirect('/login');
+    return 
   }
   const data = await getOrders(session?.user?.email!, page);
   function getStatusColor(status: string): string {

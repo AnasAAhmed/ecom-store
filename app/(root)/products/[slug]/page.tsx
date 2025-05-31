@@ -15,6 +15,7 @@ import { ChevronDown } from "lucide-react";
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
   const product = await getCachedProductDetails(params.slug);
+console.log('prefetch is fetching data please stop it ......');
 
   if (!product) return {
     title: "Product 404 Not Found | Borcelle",
@@ -73,9 +74,12 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
 }
 
 export default async function ProductPage(
+  
   props: { params: Promise<{ slug: string }>, searchParams: Promise<{ page: string }> }
 ) {
   const searchParams = await props.searchParams;
+console.log('prefetch is fetching data please stop it ......');
+
   const params = await props.params;
   const product: ProductType = await getCachedProductDetails(params.slug);
   if (!product) return notFound();

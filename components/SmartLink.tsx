@@ -4,7 +4,7 @@ import { useProgressStore } from '@/lib/hooks/useProgressBar';
 import Link from 'next/link';
 import type { LinkProps } from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 
 type SmartLinkProps = LinkProps & {
     children: ReactNode;
@@ -16,8 +16,10 @@ type SmartLinkProps = LinkProps & {
 export default function SmartLink({ target, title = '', children, ...props }: SmartLinkProps) {
     const start = useProgressStore((state) => state.start);
     const pathname = usePathname()
-    const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        props.onClick?.(e);
+    const [isPrefetch, setIsPrefetch] = useState(false);
+    // const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    //     props.onClick?.(e);
+    const handleClick = () => {
         const href = (props.href as string).split('?')[0]
         if (href !== pathname) {
             start();
@@ -26,10 +28,11 @@ export default function SmartLink({ target, title = '', children, ...props }: Sm
     return (
         <Link
             {...props}
-            onClick={(e) => {
-                handleClick(e);
-                props.onClick?.(e);
+            onNavigate={() => {
+                handleClick();
             }}
+            prefetch={isPrefetch}
+            onMouseEnter={() => setIsPrefetch(true)}
             title={title}
             target={target}
         >

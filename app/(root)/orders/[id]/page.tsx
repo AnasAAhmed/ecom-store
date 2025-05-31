@@ -22,9 +22,10 @@ export const generateMetadata = async (props: { params: Promise<{ id: string }> 
 const SIngleOrder = async (props: { params: Promise<{ id: string }> }) => {
     const params = await props.params;
     const session = (await auth()) as Session
-    if (!session || !params.id) {
-        return redirect('/login');
-    }
+   if (!session||!session.user.id) {
+    redirect('/login');
+    return 
+  }
     const order = await getSingleOrder(params.id);
 
     return (

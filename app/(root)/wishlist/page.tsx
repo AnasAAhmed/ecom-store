@@ -13,8 +13,9 @@ export const metadata: Metadata = {
 const WishlistPage: FC = async () => {
   const session = (await auth()) as Session
 
-  if (!session) {
-    return redirect('/login');
+  if (!session||!session.user.id) {
+    redirect('/login');
+    return 
   }
   const wishlist = await getWishList(session.user.id);
 
