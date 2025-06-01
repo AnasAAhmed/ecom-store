@@ -32,7 +32,7 @@ export default async function LoginPage() {
           </React.Suspense>
         </div>
       </div>
-      <React.Suspense fallback={<Loader height={30}/>}>
+      <React.Suspense fallback={'Loading...'}>
         <AuthLink url='login' title='No account yet? Go to login page'>
           Already have an account? <span className="underline text-body-medium">Login</span>
         </AuthLink>

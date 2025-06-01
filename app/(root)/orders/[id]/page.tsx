@@ -1,7 +1,6 @@
 import { auth } from "@/auth";
 import CancelOrder from "@/components/CancelOrder";
 import { getSingleOrder } from "@/lib/actions/order.actions"
-import { redirect } from 'next/navigation'
 
 export const generateMetadata = async (props: { params: Promise<{ id: string }> }) => {
     const params = await props.params;
@@ -23,8 +22,7 @@ const SIngleOrder = async (props: { params: Promise<{ id: string }> }) => {
     const params = await props.params;
     const session = (await auth()) as Session
    if (!session||!session.user.id) {
-    redirect('/login');
-    return 
+    return 'Unauthenticated'
   }
     const order = await getSingleOrder(params.id);
 

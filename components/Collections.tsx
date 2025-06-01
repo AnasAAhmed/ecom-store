@@ -48,7 +48,7 @@ const Collections = ({ collections }: { collections: CollectionType[] }) => {
                 }}
               >
                 <SmartLink
-                  prefetch={false}
+                  prefetch={true}
                   title={`See full ${collection.title} Collection at Borcelle`}
                   href={`/collections/${collection.title}`}
                 >

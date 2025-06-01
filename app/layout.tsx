@@ -77,13 +77,13 @@ export default async function RootLayout({
         <SessionProvider>
           <ToasterProvider />
           <UserFetcher />
-          <Suspense fallback={<Loader />}>
-          <ProgressBar/>
+          <Suspense fallback={'Loading...'}>
+            <ProgressBar />
             <Navbar />
             <div className="mt-20 sm:mt-12">
               {children}
             </div>
-          <IsOnline />
+            <IsOnline />
           </Suspense>
           <Footer />
         </SessionProvider>

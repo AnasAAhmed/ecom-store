@@ -16,7 +16,11 @@ type SmartLinkProps = LinkProps & {
 export default function SmartLink({ target, title = '', children, ...props }: SmartLinkProps) {
     const start = useProgressStore((state) => state.start);
     const pathname = usePathname()
-    const [isPrefetch, setIsPrefetch] = useState(false);
+    const [isPrefetch, setIsPrefetch] = useState(() => {
+        if (props.prefetch === undefined) return false;  
+        return Boolean(props.prefetch);                 
+    });
+
     // const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     //     props.onClick?.(e);
     const handleClick = () => {

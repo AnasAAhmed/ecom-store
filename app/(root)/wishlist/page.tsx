@@ -2,7 +2,7 @@ import { FC } from "react";
 import { getWishList } from "@/lib/actions/product.actions";
 import type { Metadata } from 'next';
 import { auth } from "@/auth";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 import ProductList from "@/components/product/ProductList";
 
 export const metadata: Metadata = {
@@ -13,9 +13,8 @@ export const metadata: Metadata = {
 const WishlistPage: FC = async () => {
   const session = (await auth()) as Session
 
-  if (!session||!session.user.id) {
-    redirect('/login');
-    return 
+  if (!session || !session.user.id) {
+    return 'Unauthenticated'
   }
   const wishlist = await getWishList(session.user.id);
 

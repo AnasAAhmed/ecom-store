@@ -13,7 +13,7 @@ import { getCachedHomePageData } from "@/lib/actions/cached";
 import Image from "next/image";
 import FadeInOnView from "@/components/FadeInView";
 
-export const dynamic = 'force-static';
+// export const dynamic = 'force-static';
 
 export async function generateMetadata() {
   const homeData = await getCachedHomePageData();

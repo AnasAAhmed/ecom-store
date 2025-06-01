@@ -5,7 +5,6 @@ import { getOrders } from "@/lib/actions/order.actions";
 import { slugify } from "@/lib/utils/features";
 import type { Metadata } from "next";
 import Image from "next/image";
-import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
   title: "Borcelle | Orders",
@@ -16,9 +15,8 @@ const Orders = async (props: { searchParams: Promise<any> }) => {
   const searchParams = await props.searchParams;
   const page = Number(searchParams?.page) || 1;
   const session = (await auth()) as Session
- if (!session||!session.user.id) {
-    redirect('/login');
-    return 
+  if (!session||!session.user.id) {
+    return 'Unauthenticated'
   }
   const data = await getOrders(session?.user?.email!, page);
   function getStatusColor(status: string): string {
