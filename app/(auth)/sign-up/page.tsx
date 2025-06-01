@@ -7,7 +7,7 @@ import Loader from '@/components/ui/Loader'
 
 export default async function LoginPage() {
   return (
-    <div className="flex flex-col mt-32 h-screen items-center">
+    <div className="flex flex-col mt-40 h-screen items-center">
 
       <div className="sm:w-[400px]">
         <div className='pb-0'>
