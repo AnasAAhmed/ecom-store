@@ -1,4 +1,4 @@
-import { signIn } from '@/auth'
+import {  signIn } from '@/auth'
 import * as React from "react"
 import LoginForm from '@/components/auth/login-form'
 import AuthLink from '@/components/AuthLink'
@@ -9,9 +9,8 @@ import { Loader2 } from 'lucide-react'
 
 
 export default async function LoginPage() {
-
   return (
-    <div className="flex flex-col mt-40 h-screen items-center">
+    <div className="flex flex-col mt-40 sm:mt-32 h-screen items-center">
       <div className="sm:w-[400px]">
         <div className='pb-0'>
           <h1 className='text-heading3-base'>Login</h1>

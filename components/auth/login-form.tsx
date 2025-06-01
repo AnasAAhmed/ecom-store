@@ -65,6 +65,7 @@ export default function LoginForm() {
         } else {
           toast.success(result.resultCode)
           await getSession();
+          window.location.href=redirectUrl
         }
       }
     }

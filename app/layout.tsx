@@ -77,7 +77,7 @@ export default async function RootLayout({
         <SessionProvider>
           <ToasterProvider />
           <UserFetcher />
-          <Suspense fallback={'Loading...'}>
+          <Suspense fallback={<Loader height={80}/>}>
             <ProgressBar />
             <Navbar />
             <div className="mt-20 sm:mt-12">

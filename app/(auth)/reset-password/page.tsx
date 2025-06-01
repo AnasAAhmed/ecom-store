@@ -18,7 +18,7 @@ export default async function ResetPassPage(props: { searchParams: Promise<{ tok
     }
 
     return (
-        <div className="flex flex-col mt-40 h-screen items-center">
+        <div className="flex flex-col mt-40 sm:mt-32 h-screen items-center">
             <div className="sm:w-[400px]">
                 <div className='pb-0'>
                     <h1 className='text-heading3-base mb-2'>Reset Password</h1>
