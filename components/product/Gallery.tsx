@@ -12,7 +12,7 @@ const Gallery = ({ productMedia }: { productMedia: string[] }) => {
         unoptimized={mainImage !== productMedia[0]}
         src={mainImage}
         placeholder="blur"
-        blurDataURL="/fallback-banner.png"
+        blurDataURL="/fallback.avif"
         alt={'product'}
         width={500}
         loading="eager"
@@ -28,7 +28,7 @@ const Gallery = ({ productMedia }: { productMedia: string[] }) => {
             height={200}
             width={200}
             placeholder="blur"
-            blurDataURL="/fallback-banner.png"
+            blurDataURL="/fallback.avif"
             alt="product"
             className={`w-20 h-20 rounded-lg object-cover cursor-pointer ${mainImage === image ? "border-2 border-black" : ""}`}
             onClick={() => setMainImage(image)}

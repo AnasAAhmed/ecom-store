@@ -57,7 +57,7 @@ export const generateMetadata = async (props: { params: Promise<{ collection: st
       url: `${process.env.ECOM_STORE_URL}/products/${params.collection}`,
       images: [
         {
-          url: collectionDetails.image || 'fallback-image.jpg',
+          url: collectionDetails.image || 'fallback-banner.avif',
           width: 220,
           height: 250,
           alt: collectionDetails.title,

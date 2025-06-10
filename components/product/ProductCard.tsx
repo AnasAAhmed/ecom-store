@@ -46,7 +46,7 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
   return (
     <FadeInOnView animation="animate-fadeInUp" className={`relative bg-white image-width roundsed-t-lg shadosw-md overflow-hidden  ${isSoldOut ? "opacity-70" : ""
       }`}>
-      <SmartLink title={"See details of " + title} href={`/products/${slugifyCsr(title)}`} className="block" prefetch={true} >
+      <SmartLink title={"See details of " + title} href={`/products/${slugifyCsr(title)}`} className="block">
         <div className="relative image-height group overflow-hidden">
           <Image
             src={image1}
@@ -55,7 +55,7 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
             // unoptimized
             loading="lazy"
             placeholder="blur"
-            blurDataURL="/fallback.png"
+            blurDataURL="/fallback.avif"
             sizes="(max-width: 450px) 9rem, (max-width: 700px) 12rem, 16rem"
             className={`inset-0 object-cover transition-opacity duration-300 ${image2 && 'group-hover:opacity-0'}`}
           />

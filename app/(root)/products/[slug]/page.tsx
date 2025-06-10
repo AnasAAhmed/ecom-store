@@ -15,6 +15,7 @@ import { ChevronDown } from "lucide-react";
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
   const product = await getCachedProductDetails(params.slug);
+  console.log("generateMetadata of prodcut page hits",product.slug);
 
   if (!product) return {
     title: "Product 404 Not Found | Borcelle",
@@ -61,7 +62,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
       url: `${process.env.ECOM_STORE_URL}/products/${params.slug}`,
       images: [
         {
-          url: product.media[0] || 'fallback-image.jpg',
+          url: product.media[0] || 'fallback-banner.avif',
           width: 220,
           height: 250,
           alt: product.title,
@@ -73,13 +74,14 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
 }
 
 export default async function ProductPage(
-  
+
   props: { params: Promise<{ slug: string }>, searchParams: Promise<{ page: string }> }
 ) {
   const searchParams = await props.searchParams;
 
   const params = await props.params;
   const product: ProductType = await getCachedProductDetails(params.slug);
+  console.log("ProductDetails func of prodcut page hits", product.slug);
   if (!product) return notFound();
 
   return (
@@ -125,16 +127,16 @@ export default async function ProductPage(
       </section>
       {product.detailDesc && (
         <details className="w-full max-wd-2xl border-y border-gray-200 rounded overflow-hidden transition-all duration-300 open:shadow-md">
-           <summary className="px-4 py-3 text-start text-base font-medium cursor-pointer select-none relative hover:bg-gray-50 transition-colors">
+          <summary className="px-4 py-3 text-start text-base font-medium cursor-pointer select-none relative hover:bg-gray-50 transition-colors">
             Product Detail
             <span className="absolute right-4 top-1/2 transform -translate-y-1/2 transition-transform duration-300 group-open:rotate-180">
               <ChevronDown />
             </span>
-          </summary> 
-           <div
+          </summary>
+          <div
             className="px-4 py-3 text-sm text-gray-700 leading-relaxed"
             dangerouslySetInnerHTML={{ __html: product.detailDesc }}
-          /> 
+          />
         </details>
       )}
 

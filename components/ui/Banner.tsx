@@ -29,7 +29,7 @@ const Banner = ({ imgUrl, videoUrl, text, heading, textColor, shade, link, butto
             src={videoUrl}
             autoPlay
             loop
-            poster='/fallback-banner.png'
+            poster='/fallback-banner.avif'
             muted
             playsInline
           />
@@ -40,7 +40,7 @@ const Banner = ({ imgUrl, videoUrl, text, heading, textColor, shade, link, butto
             fill
             unoptimized
             placeholder="blur"
-            blurDataURL="/fallback-banner.png"
+            blurDataURL="/fallback-banner.avif"
             sizes="(max-width: 450px) 9rem, (max-width: 700px) 12rem, 16rem"
             className={`absolute transition-opacity`}
           />

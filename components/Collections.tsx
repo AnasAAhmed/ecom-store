@@ -48,7 +48,6 @@ const Collections = ({ collections }: { collections: CollectionType[] }) => {
                 }}
               >
                 <SmartLink
-                  prefetch={true}
                   title={`See full ${collection.title} Collection at Borcelle`}
                   href={`/collections/${collection.title}`}
                 >
@@ -57,7 +56,7 @@ const Collections = ({ collections }: { collections: CollectionType[] }) => {
                     src={collection.image}
                     // unoptimized
                     placeholder="blur"
-                    blurDataURL="/fallback-banner.png"
+                    blurDataURL="/fallback-banner.avif"
                     alt={collection.title || 'collection image'}
                     fill
                     className="object-cover w-full h-full duration-300 group-hover:scale-110 transition-transform"
