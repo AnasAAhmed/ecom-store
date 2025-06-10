@@ -17,6 +17,8 @@ export const dynamic = 'force-static';
 
 export async function generateMetadata() {
   const homeData = await getCachedHomePageData();
+  console.log('generateMetadata func hits',homeData?.hero.imgUrl);
+
   if (!homeData?.seo) {
     return null;
   }
@@ -56,7 +58,7 @@ export default async function Home() {
     getProducts(),
     getCachedHomePageData()
   ]);
-  const homePageData = homeData?? fallbackHomeData;
+  const homePageData = homeData ?? fallbackHomeData;
   return (
     <Fragment>
       <Banner

@@ -9,10 +9,8 @@ export default function ProgressBar() {
   const progress = useProgressStore((s) => s.progress);
   const complete = useProgressStore((s) => s.complete);
   const loading = useProgressStore((s) => s.loading);
-  const reset = useProgressStore((s) => s.reset)
   useEffect(() => {
-    if (loading) complete();
-    // return reset();
+    if (loading) return complete();
   }, [searchParams]);
 
   return (

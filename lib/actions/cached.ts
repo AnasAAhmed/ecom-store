@@ -10,6 +10,8 @@ import HomePage from '../models/HomePage';
       await connectToDB();
 
       const homePage = await HomePage.findOne({});
+      console.log('hompagedata func hits');
+      
       return homePage;
     } catch (err) {
       console.log("[homePage_GET]", err);

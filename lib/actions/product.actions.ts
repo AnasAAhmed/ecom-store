@@ -85,6 +85,7 @@ export async function getProducts() {
       .sort({ createdAt: "desc", updatedAt: 'desc' })
       .select("title numOfReviews stock ratings sold price expense media _id")
       .limit(8);
+      console.log('latest Prodcuts func hits');
 
     return JSON.parse(JSON.stringify(products))
   } catch (err) {
