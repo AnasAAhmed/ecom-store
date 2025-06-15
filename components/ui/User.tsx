@@ -75,8 +75,6 @@ const User = () => {
           <div className="space-y-2 text-sm text-gray-700">
             <p><strong>Name:</strong> {session?.user?.name}</p>
             <p><strong>Email:</strong> {session?.user?.email}</p>
-            <p className="capitalize"><strong>Origin Country:</strong> {userWishlist?.country || "N/A"}</p>
-            <p className="capitalize"><strong>Origin City:</strong> {userWishlist?.city || "N/A"}</p>
           </div>
 
           <div className="mt-4">
@@ -85,7 +83,7 @@ const User = () => {
               <ul className="space-y-2 max-h-48 overflow-y-auto text-sm text-gray-700">
                 {userWishlist.signInHistory.map((entry, index) => (
                   <li key={index} className="bg-gray-100 rounded-md p-3 border">
-                    <p className="text-red-500 text-body-medium">{index===0?'Active':''}</p>
+                    <p className="text-blue-500 text-body-medium">{index===0?'Active':''}</p>
                     <p><strong>Date:</strong> {new Date(entry.signedInAt).toLocaleString()}</p>
                     <p><strong>Location:</strong> {entry.city}, {entry.country}</p>
                     <p><strong>Device:</strong> {entry.device} ({entry.os})</p>
@@ -102,7 +100,7 @@ const User = () => {
           <button
             onClick={() => signOut()}
             title="Sign out"
-            className="w-full mt-6 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-md transition-colors"
+            className="w-full mt-6 py-2 bg-black hover:opacity-75 text-white text-sm font-medium rounded-md transition-colors"
           >
             Sign Out
           </button>

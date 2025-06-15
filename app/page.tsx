@@ -205,5 +205,5 @@ async function CollectionProduct({ collectionId }: { collectionId: string }) {
   )
 }
 
-// export const revalidate = 172800;
+// 172800
 

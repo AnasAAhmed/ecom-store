@@ -14,11 +14,12 @@ export const useProgressStore = create<ProgressState>((set) => ({
   progress: 0,
   loading: false,
   start: () => {
-    set({ loading: true, progress: 25 });
+    set({ loading: true, progress: 0 });
 
     const stepTimeouts = [
-      setTimeout(() => set({ progress: 50 }), 300),
-      setTimeout(() => set({ progress: 75 }), 600),
+      // setTimeout(() => set({ progress: 0 }), 100),
+      setTimeout(() => set({ progress: 50 }), 100),
+      setTimeout(() => set({ progress: 75 }), 200),
     ];
 
     // set({ stepTimeouts }); // Optional: store them to cancel later
@@ -27,7 +28,7 @@ export const useProgressStore = create<ProgressState>((set) => ({
     set({ progress: 100 });
 
     setTimeout(() => {
-      set({ loading: false, progress: 0 });
+      set({ loading: false });
     }, 300); 
   },
   reset: () => {

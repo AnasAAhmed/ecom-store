@@ -73,11 +73,10 @@ const CancelOrder = ({ order }: OrderManageProps) => {
   const timeDifference = (currentTime - orderCreationTime) / (1000 * 60 * 60);
   return (
     <div className="w-full mx-auto max-w-4xl px-4 sm:px-6 py-6 space-y-8 font-sans">
-      {/* Close Button */}
-      <SmartLink
-        title="Back to order list"
-        href={'/orders'}
+    
+      <button
         className="print:hidden flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+        onClick={()=>router.back()}
       >
         <svg
           className="w-5 h-5"
@@ -89,7 +88,7 @@ const CancelOrder = ({ order }: OrderManageProps) => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
         </svg>
         Back to Orders
-      </SmartLink>
+      </button>
 
       {/* Order Info */}
       <div className="space-y-4 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
