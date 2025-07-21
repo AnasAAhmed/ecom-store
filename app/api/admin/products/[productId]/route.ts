@@ -128,9 +128,9 @@ export const DELETE = async (req: NextRequest, props: { params: Promise<{ produc
     if (!decodedToken || decodedToken.role !== 'admin') {
       return new NextResponse("Unauthorized", { status: 401, headers: corsHeaders });
     }
-    if (params.productId) {
+    if (!params.productId) {
       return new NextResponse(JSON.stringify("Product Id Required"), {
-        status: 200,
+        status: 400,
         headers: corsHeaders
       });
     }
