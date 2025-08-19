@@ -1,13 +1,9 @@
-"use client";
-
 import Image from "next/image";
 import SmartLink from "@/components/SmartLink";
-import { ChevronDown, ShoppingCart } from "lucide-react";
 import HeartFavorite from "./HeartFavorite";
 import StarRatings from "./StarRatings";
-import useCart, { useRegion } from "@/lib/hooks/useCart";
-import { currencyToSymbolMap, slugifyCsr } from "@/lib/utils/features.csr";
-import FadeInOnView from "../FadeInView";
+import { PriceAndExpense } from "./ProductInteractivity";
+import { slugify } from "@/lib/utils/features";
 
 interface ProductCardProps {
   product: ProductType;
@@ -17,8 +13,6 @@ interface ProductCardProps {
 const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
   const image1 = product.media[0];
   const image2 = product.media[1] ? product.media[1] : null;
-  const { currency, exchangeRate } = useRegion();
-  // const cart = useCart();
   const {
     _id,
     title,
@@ -30,23 +24,11 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
     sold,
   } = product;
 
-  const productPrice = (price * exchangeRate).toFixed();
-  const productExpense = (expense * exchangeRate).toFixed();
   const isSoldOut = stock < 1;
 
-  // const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
-  //   e.preventDefault();
-
-  //   cart.addItem({
-  //     item: { _id, title, media, price, expense, stock },
-  //     quantity: 1,
-  //   });
-  // };
-
   return (
-    <FadeInOnView animation="animate-fadeInUp" className={`relative bg-white image-width roundsed-t-lg shadosw-md overflow-hidden  ${isSoldOut ? "opacity-70" : ""
-      }`}>
-      <SmartLink title={"See details of " + title} href={`/products/${slugifyCsr(title)}`} className="block">
+      <SmartLink title={"See details of " + title} href={`/products/${slugify(title)}`}className={`relative bg-white image-width roundsed-t-lg shadosw-md overflow-hidden  ${isSoldOut ? "opacity-70" : ""
+       }`}>
         <div className="relative image-height group overflow-hidden">
           <Image
             src={image1}
@@ -81,24 +63,6 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
               </span>
             )
           )}
-
-          {/* {!isSoldOut && variants?.length > 0 ? (
-            <span title={JSON.stringify(
-              variants.map(({ size, color }) => ({ size, color }))
-            ).replace(/[\[{"}-]/g, ' ')} className="absolute top-2 right-2 bg-gray-900 text-white p-2 rounded-full">
-              <ChevronDown className="w-4 h-4" />
-            </span>
-          ) : (
-            <button
-              aria-label="Add to cart"
-              title="Add to Cart"
-              disabled={isSoldOut}
-              onClick={(e) => { handleAddToCart(e); e.stopPropagation() }}
-              className="absolute top-2 right-2 bg-blue-600 text-white p-2 rounded-full hover:bg-blue-500 transition-colors"
-            >
-              <ShoppingCart className="w-4 h-4" />
-            </button>
-          )} */}
         </div>
         <div className="py-2 px-1">
           <h6 className="text-small-medium sm:text-body-medium font-medium text-gray-900 line-clamp-2 ">
@@ -107,16 +71,17 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
             </abbr>
           </h6>
           <div className="mt-1 flex items-center justify-between">
-            <div className="flex gap-2 items-center">
+            <div className="sr-only flex gap-2 items-center">
               <p className="text-small-medium sm:text-body-medium font-bold text-gray-900">
-                <small>{currencyToSymbolMap[currency]}</small>  {productPrice}
+                <small>$</small>  {price}
               </p>
               {expense > price && (
                 <p className="text-small-medium max-sm:hidden line-through text-gray-500">
-                  <small>{currencyToSymbolMap[currency]}</small> {productExpense}
+                  <small>$</small> {expense}
                 </p>
               )}
             </div>
+            <PriceAndExpense isCard={true} baseExpense={expense} basePrice={price} />
             <HeartFavorite productId={_id} updateSignedInUser={updateSignedInUser} />
           </div>
           <div className="mt-1 flex flex-wrap justify-between items-center space-x-1 text-small-medium text-gray-600">
@@ -131,7 +96,6 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
           </div>
         </div>
       </SmartLink>
-    </FadeInOnView>
   );
 };
 
