@@ -57,49 +57,9 @@ const Navbar = () => {
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
-  const toggleModal = () => setIsOpen(!isOpen);
-  const text = [
-    { id: 1, text: "Free Shipping around the world over $120  " },
-    { id: 2, text: "Easter Summer sale 50% off " },
-    { id: 3, text: "Free Shipping  all over Pakistan over Rs 2000 " },
-  ];
+  const toggleModal = () => setIsOpen(!isOpen);;
   return (
-    <>
-      <div className="print:hidden overflow-hidden text-white py-2 bg-black border-b border-gray-300">
-        <div className="relative w-full">
-          <div className="flex gap-24 animate-marquee2 w-max">
-            {[...text, ...text].map((i, _) => (
-              <div key={`${i.id}-${_ + i.id}`} id={`${i.id}-${_ + i.id}`} className="flex items-center justify-center min-w-[120px]">
-                <p>&nbsp;{i.text}&nbsp;•</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-      <nav className="print:hidden py-2 px-4 hidden lg:flex justify-between text-sm sm:text-base font-medium text-gray-800 bg-gradient-to-r from-white via-gray-50 to-white border-y border-gray-200">
-
-        <h1 className="text-red-600 font-bold px-4">🔥 50% Off Summer Sale</h1>
-
-        <div className="flex gap-6 items-center">
-          {['men', 'women', 'kids', 'footwear', 'accessories'].map((item) => (
-            <SmartLink
-              title={`${item} collection`}
-              key={item}
-              prefetch={false}
-              aria-label={item}
-              href={`/collections/${item}`}
-              className="hover:text-black text-gray-600 transition-colors duration-200 border-b-2 border-transparent hover:border-black"
-            >
-              {item.charAt(0).toUpperCase() + item.slice(1)}
-            </SmartLink>
-          ))}
-        </div>
-        <h1 className="text-blue-600 px-4 max-md:hidden">
-          📞 Help: <a title="Call us" href="tel:+845466789">+84 546-6789</a>
-        </h1>
-      </nav>
-
-      <nav className={`${scrolled ? 'top-0 fixed shadow-md bg-white' : 'top-13 lg:top-[85px] absolute bg-transparent'} print:hidden z-30 w-full bg-white shadow-md`}>
+   <nav className={`${scrolled ? 'top-0 fixed shadow-md bg-white' : 'top-0 lg:top-[45px] absolute bg-transparent'} print:hidden z-30 w-full bg-white shadow-md`}>
         <div className="flex justify-between items-center p-2">
           <SmartLink title="home" aria-label="go to home" href="/">
             <Image src="/logo.png" alt=" borcelle logo" width={130} height={34} className="h-[35px]" />
@@ -184,7 +144,7 @@ const Navbar = () => {
         {isOpen && <div className="fixed flex lg:hidden right-6 max-sm:top-20 items-center justify-center bg-opacity-50 z-50">
           <ul className="flex flex-col p-4 gap-3 bg-white animate-menu rounded-lg border">
 
-            {["/", "/search", "/contact", "/blog", "/wishlist", "/orders"].map((name, idx) => (
+            {["/", "/search", "/contact", "/blog", "/wishlist", "/orders","https://ecom-admin-panel-xcw7-gh8p.vercel.app/"].map((name, idx) => (
               <SmartLink
                 key={idx}
                 href={name}
@@ -192,7 +152,7 @@ const Navbar = () => {
                 className="border-b px-8 text-center"
                 prefetch={false}
               >
-                {["Home", "Shop", "Contact", "Blog", "Wishlist", "Orders"][idx]}
+                {["Home", "Shop", "Contact", "Blog", "Wishlist", "Orders","CMS"][idx]}
 
               </SmartLink>
             ))}
@@ -203,7 +163,6 @@ const Navbar = () => {
           </ul>
         </div>}
       </nav>
-    </>
   );
 };
 

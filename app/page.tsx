@@ -6,7 +6,7 @@ import Social from "@/components/ui/Social";
 import GroupComponent7 from "@/components/ui/Services";
 import { Fragment, Suspense } from "react";
 import Loader from "@/components/ui/Loader";
-import { brands, fallbackHomeData } from "@/lib/utils/features";
+import { fallbackHomeData } from "@/lib/utils/features";
 import { getCollectionProducts, getCollections } from "@/lib/actions/collection.actions";
 import { getProducts } from "@/lib/actions/product.actions";
 import { getCachedHomePageData } from "@/lib/actions/cached";
@@ -72,22 +72,7 @@ export default async function Home() {
         buttonText={homePageData.hero.buttonText}
       />
 
-      <Collections collections={collections} />
-      <div className="overflow-hidden rotate-2 mt-12 mx-1 gap-6 py-2 bg-white border-y border-gray-200">
-        <div className="relative w-full">
-          <div className="flex gap-12 animate-marquee w-max">
-            {[...brands, ...brands].map((i, _) => (
-              <div key={`${i.id}-${_ + i.id}`} className="flex items-center justify-center min-w-[120px]">
-                <img
-                  src={i.src}
-                  alt={`Brand ${i.id}`}
-                  className="w-16 h-16 sm:w-24 sm:h-24 object-contain grayscale hover:grayscale-0 transition duration-300"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <Collections collections={collections}/>
       <ProductList heading="Latest Products" Products={products} />
       {homePageData.collections.map((i, _) => (
 

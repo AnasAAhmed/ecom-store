@@ -12,6 +12,7 @@ import { SessionProvider } from "next-auth/react";
 import dynamic from "next/dynamic";
 import ProgressBar from "@/components/ProgressBar";
 import IsOnline from "@/components/IsOnline";
+import SmartLink from "@/components/SmartLink";
 
 const roboto = Roboto({
   weight: ['500'],
@@ -78,11 +79,43 @@ export default async function RootLayout({
           <ToasterProvider />
           <UserFetcher />
           <Suspense fallback={''}>
+            <nav className="print:hidden py-2 px-4 hidden lg:flex justify-between text-sm sm:text-base font-medium text-gray-800 bg-gradient-to-r from-red-50 via-gray-100 to-blue-100 border-y border-gray-200">
+
+              <h1 className="text-red-600 font-bold px-4">🔥 50% Off Summer Sale</h1>
+
+              <div className="flex gap-6 items-center">
+                {['men', 'women', 'kids', 'footwear', 'accessories'].map((item) => (
+                  <SmartLink
+                    title={`${item} collection`}
+                    key={item}
+                    prefetch={false}
+                    aria-label={item}
+                    href={`/collections/${item}`}
+                    className="hover:text-black text-gray-600 transition-colors duration-200 border-b-2 border-transparent hover:border-black"
+                  >
+                    {item.charAt(0).toUpperCase() + item.slice(1)}
+                  </SmartLink>
+                ))}
+                {["/", "/search", "/contact", "/blog", "/wishlist", "/orders"].map((item,idx) => (
+                  <a
+                    title={`${item} page at Borcelle`}
+                    key={item}
+                    aria-label={item}
+                    href={item}
+                    className="hover:text-black sr-only text-gray-600 transition-colors duration-200 border-b-2 border-transparent hover:border-black"
+                  >
+                    {["Home", "Shop", "Contact", "Blog", "Wishlist", "Orders"][idx]}
+                  </a>
+                ))}
+              </div>
+              <h1 className="text-blue-600 px-4 max-md:hidden">
+                📞 Help: <a title="Call us" href="tel:+845466789">+84 546-6789</a>
+              </h1>
+            </nav>
             <Navbar />
             <ProgressBar />
           </Suspense>
-
-          <Suspense fallback={<Loader height={80}/>}>
+          <Suspense fallback={<Loader height={80} />}>
             <div className="mt-20 sm:mt-12">
               {children}
             </div>
