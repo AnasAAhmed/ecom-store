@@ -2,11 +2,12 @@ import { corsHeaders } from "@/lib/cors";
 import Collection from "@/lib/models/Collection";
 import Product from "@/lib/models/Product";
 import { connectToDB } from "@/lib/mongoDB";
-import { estimateDimensions, estimateWeight } from "@/lib/utils/features";
+import { estimateDimensions, estimateWeight, extractKeyFromUrl } from "@/lib/utils/features";
 import { decode } from "next-auth/jwt";
 import { revalidatePath } from "next/cache";
 
 import { NextRequest, NextResponse } from "next/server";
+import { UTApi } from "uploadthing/server";
 
 export function OPTIONS() {
   return new NextResponse(null, {
@@ -116,6 +117,8 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ productI
 
 export const DELETE = async (req: NextRequest, props: { params: Promise<{ productId: string }> }) => {
   const params = await props.params;
+  const { searchParams } = new URL(req.url);
+  const deleteImagesToo = Boolean(searchParams.get('deleteImagesToo')!);
   try {
     const token = req.cookies.get('authjs.admin-session')?.value
     if (!token) {
@@ -134,9 +137,11 @@ export const DELETE = async (req: NextRequest, props: { params: Promise<{ produc
         headers: corsHeaders
       });
     }
-    await connectToDB();
+    const utapi = new UTApi();
 
-    const product = await Product.findById(params.productId);
+
+    await connectToDB();
+    const product = await Product.findOneAndDelete({ _id: params.productId }).select('collections media');
 
     if (!product) {
       return new NextResponse(
@@ -144,9 +149,6 @@ export const DELETE = async (req: NextRequest, props: { params: Promise<{ produc
         { status: 404, headers: corsHeaders }
       );
     }
-
-    await Product.findByIdAndDelete(product._id).select('collections');
-
     await Promise.all(
       product.collections.map((collectionId: string) =>
         Collection.findByIdAndUpdate(collectionId, {
@@ -155,9 +157,25 @@ export const DELETE = async (req: NextRequest, props: { params: Promise<{ produc
       )
     );
 
+     let deleteRes: {
+      readonly success: boolean;
+      readonly deletedCount: number;
+    } | null = null
+
+    if (deleteImagesToo && product.media.length > 0) {
+      console.log("Parsed removeImageUrls:", product.media);
+      const keysToDelete = product.media.map(extractKeyFromUrl);
+      console.log("Keys to delete:", keysToDelete);
+      try {
+        const deleteResult = await utapi.deleteFiles(keysToDelete);
+        console.log("Delete result:", deleteResult);
+      } catch (err) {
+        console.error("Delete failed:", err);
+      }
+    }
     revalidatePath('/')
 
-    return new NextResponse(JSON.stringify("Product deleted"), {
+    return new NextResponse(JSON.stringify(`Product deleted ${deleteRes!.success ? 'with images' : ""}`), {
       status: 200,
       headers: corsHeaders
     });

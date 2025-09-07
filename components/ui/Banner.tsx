@@ -21,7 +21,7 @@ const Banner = ({ imgUrl, videoUrl, text, heading, textColor, shade, link, butto
 
   return (
     <SmartLink title={buttonText || 'Shop Now'} href={link} >
-      <div className="relative w-full h-[230px] sm:h-[470px] md:h-[660px] roudnded-xl overflow-hidden">
+      <div className="relative w-full aspect-[3/4] sm:aspect-[16/12] md:aspect-video  roudnded-xl ovesrflow-hidden">
 
         {videoUrl ? (
           <video

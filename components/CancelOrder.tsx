@@ -2,9 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { LoaderIcon } from 'lucide-react';
-import Modal from './ui/Modal';
 import { useRouter } from 'next/navigation';
-import SmartLink from './SmartLink';
 
 type OrderManageProps = {
   order: OrderType;
@@ -73,10 +71,10 @@ const CancelOrder = ({ order }: OrderManageProps) => {
   const timeDifference = (currentTime - orderCreationTime) / (1000 * 60 * 60);
   return (
     <div className="w-full mx-auto max-w-4xl px-4 sm:px-6 py-6 space-y-8 font-sans">
-    
+
       <button
         className="print:hidden flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-        onClick={()=>router.back()}
+        onClick={() => router.back()}
       >
         <svg
           className="w-5 h-5"
@@ -124,6 +122,10 @@ const CancelOrder = ({ order }: OrderManageProps) => {
             <span className="text-gray-900">{order.exchangeRate}</span>
           </p>
           <p>
+            <span className="font-medium text-gray-600">Payment Method:</span>{' '}
+            <span className="text-gray-900">{order.method.toUpperCase()}</span>
+          </p>
+          <p>
             <span className="font-medium text-gray-600">Currency:</span>{' '}
             <span className="text-gray-900">{order.currency}</span>
           </p>
@@ -156,7 +158,7 @@ const CancelOrder = ({ order }: OrderManageProps) => {
               <div className="absolute top-0 left-2 w-0.5 h-full bg-gray-200"></div>
               {order.statusHistory.map((statusItem, index) => (
                 <div key={statusItem._id} className="relative flex items-start gap-4 mb-6 last:mb-0">
-               
+
                   <div style={{ backgroundColor: getStatusColor(statusItem.status) }} className="absolute left-0 w-4 h-4 rounded-full border-2 "></div>
                   <div className="pl-6">
                     <p className={`text-sm font-medium ${statusItem.status.includes('Canceled') ? 'text-red-600' : 'text-gray-900'}`}>
@@ -177,7 +179,7 @@ const CancelOrder = ({ order }: OrderManageProps) => {
               ))}
             </div>
           </div>
-          
+
         </div>
       </div>
 

@@ -43,7 +43,7 @@ export const POST = async (req: NextRequest) => {
       isPaid:false,
       statusHistory: { status: "Payment-Successfull & Processing", changedAt: Date.now() },
       status: 'pending',
-      method: 'COD',
+      method: 'cod',
       exchangeRate
     });
     await newOrder.save();

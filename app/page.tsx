@@ -6,7 +6,7 @@ import Social from "@/components/ui/Social";
 import GroupComponent7 from "@/components/ui/Services";
 import { Fragment, Suspense } from "react";
 import Loader from "@/components/ui/Loader";
-import { fallbackHomeData } from "@/lib/utils/features";
+import { fallbackHomeData, unSlugify } from "@/lib/utils/features";
 import { getCollectionProducts, getCollections } from "@/lib/actions/collection.actions";
 import { getProducts } from "@/lib/actions/product.actions";
 import { getCachedHomePageData } from "@/lib/actions/cached";
@@ -17,7 +17,7 @@ export const dynamic = 'force-static';
 
 export async function generateMetadata() {
   const homeData = await getCachedHomePageData();
-  console.log('generateMetadata func hits',homeData?.hero.imgUrl);
+  console.log('generateMetadata func hits', homeData?.hero.imgUrl);
 
   if (!homeData?.seo) {
     return null;
@@ -72,7 +72,7 @@ export default async function Home() {
         buttonText={homePageData.hero.buttonText}
       />
 
-      <Collections collections={collections}/>
+      <Collections collections={collections} />
       <ProductList heading="Latest Products" Products={products} />
       {homePageData.collections.map((i, _) => (
 
@@ -90,7 +90,7 @@ export default async function Home() {
           />
 
           <Suspense fallback={<Loader />}>
-            <CollectionProduct collectionId={i.collectionId} />
+            <CollectionProduct collectionTitle={i.link.slice(13)} collectionId={i.collectionId} />
           </Suspense>
         </Fragment>
       ))}
@@ -181,12 +181,11 @@ export default async function Home() {
   );
 };
 
-async function CollectionProduct({ collectionId }: { collectionId: string }) {
+async function CollectionProduct({ collectionTitle, collectionId }: { collectionTitle: string; collectionId: string }) {
   const products: ProductType[] | string = await getCollectionProducts(collectionId);
   if (typeof products === 'string') return products;
   return (
-    <ProductList Products={products} />
-
+    <ProductList heading={unSlugify(collectionTitle) + ' Collection'} Products={products} />
   )
 }
 

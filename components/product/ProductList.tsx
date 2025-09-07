@@ -7,7 +7,7 @@ const ProductList = async ({ Products, heading, isViewAll = true }: { Products: 
   return (
     <div className="flex flex-col items-center gap-10 py-8 px-3 sm:px-5">
       {heading &&
-          <p className="text-heading3-bold sm:text-heading2-bold capitalize">{heading}</p>
+          <h3 className="text-heading3-bold sm:text-heading2-bold capitalize">{heading}</h3>
         }
 
       {!Products || Products.length === 0 ? (

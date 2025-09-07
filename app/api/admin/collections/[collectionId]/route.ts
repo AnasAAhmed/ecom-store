@@ -6,6 +6,8 @@ import Product from "@/lib/models/Product";
 import { revalidatePath } from "next/cache";
 import { decode } from "next-auth/jwt";
 import { corsHeaders } from "@/lib/cors";
+import { extractKeyFromUrl } from "@/lib/utils/features";
+import { UTApi } from "uploadthing/server";
 
 export function OPTIONS() {
   return new NextResponse(null, {
@@ -112,6 +114,8 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ collecti
 
 export const DELETE = async (req: NextRequest, props: { params: Promise<{ collectionId: string }> }) => {
   const params = await props.params;
+  const { searchParams } = new URL(req.url);
+  const deleteImagesToo = Boolean(searchParams.get('deleteImagesToo')!);
   try {
     const token = req.cookies.get('authjs.admin-session')?.value
     if (!token) {
@@ -131,16 +135,37 @@ export const DELETE = async (req: NextRequest, props: { params: Promise<{ collec
         headers: corsHeaders,
       });
     }
+    const utapi = new UTApi();
     await connectToDB();
 
-    await Collection.findByIdAndDelete(params.collectionId);
+    const collection = await Collection.findByIdAndDelete(params.collectionId);
 
     await Product.updateMany(
       { collections: params.collectionId },
       { $pull: { collections: params.collectionId } }
     );
+
+    let deleteRes: {
+      readonly success: boolean;
+      readonly deletedCount: number;
+    } | null = null
+    
+    if (deleteImagesToo && collection.image) {
+      console.log("Parsed removeImageUrls:", collection.image);
+      const keyToDelete = extractKeyFromUrl(collection.image);
+      console.log("Keys to delete:", keyToDelete);
+      try {
+        const deleteResult = await utapi.deleteFiles([keyToDelete]);
+        deleteRes = deleteResult;
+        console.log("Delete result:", deleteResult);
+      } catch (err) {
+        console.error("Delete failed:", err);
+      }
+    }
     revalidatePath('/');
-    return new NextResponse("Collection is deleted", { status: 200, headers: corsHeaders });
+    return new NextResponse(
+      `Collection is deleted ${deleteRes?.success ? 'With image' : ''}`,
+      { status: 200, headers: corsHeaders });
   } catch (err) {
     console.log("[collectionId_DELETE]", err);
     return new NextResponse("Internal error", { status: 500, headers: corsHeaders });

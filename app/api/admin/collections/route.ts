@@ -5,6 +5,8 @@ import Collection from "@/lib/models/Collection";
 import { revalidatePath } from "next/cache";
 import { decode } from "next-auth/jwt";
 import { corsHeaders } from "@/lib/cors";
+import mongoose from "mongoose";
+import { isHex24 } from "@/lib/utils/features";
 
 export function OPTIONS() {
   return new NextResponse(null, {
@@ -80,20 +82,52 @@ export const GET = async (req: NextRequest) => {
         headers: corsHeaders,
       });
     }
+    const { searchParams } = new URL(req.url);
+    const page = parseInt(searchParams.get('page')! as string) || 1;
+    const limit = parseInt(searchParams.get('limit')! as string) || 10;
+    const query = searchParams.get('query')! as string || '';
+    const sort = searchParams.get('sort')!;
+    const sortField = searchParams.get('sortField')!;
+
+    let search: any = {};
+
+    const allowedSortFields = ["createdAt", "productCount"];
+    const sortOptions: { [key: string]: 1 | -1 } = {};
+    if (sortField && allowedSortFields.includes(sortField)) {
+      sortOptions[sortField] = sort === "asc" ? 1 : -1;
+    } else {
+      sortOptions["createdAt"] = -1;
+    }
+
+    if (query) {
+      if (isHex24(query)) {
+        search = { _id: new mongoose.Types.ObjectId(query) };
+      } else {
+        search = { title: { $regex: query } }; // case-sensitive
+      }
+    }
+    const skip = (page - 1) * limit;
+
     await connectToDB()
 
     const collectionsWithProductCounts = await Collection.aggregate([
+      { $match: search },
       {
         $lookup: {
           from: 'products',
-          localField: '_id',
-          foreignField: 'collections',
-          as: 'products'
+          let: { collectionId: '$_id' },
+          pipeline: [
+            { $match: { $expr: { $in: ['$$collectionId', '$collections'] } } },
+            { $count: 'count' }
+          ],
+          as: 'productStats'
         }
       },
       {
         $addFields: {
-          productCount: { $size: '$products' }
+          productCount: {
+            $ifNull: [{ $arrayElemAt: ['$productStats.count', 0] }, 0]
+          }
         }
       },
       {
@@ -102,13 +136,20 @@ export const GET = async (req: NextRequest) => {
           productCount: 1
         }
       },
-      {
-        $sort: { createdAt: -1 }
-      }
+      { $sort: sortOptions },
+      { $skip: skip },
+      { $limit: limit }
     ]);
 
+    const totalCollections = await Collection.countDocuments();
+    const totalPages = Math.ceil(totalCollections / limit);
 
-    return NextResponse.json(collectionsWithProductCounts, { status: 200, headers: corsHeaders })
+    return NextResponse.json({
+      data: collectionsWithProductCounts,
+      totalPages,
+      totalCollections,
+    },
+      { status: 200, headers: corsHeaders })
   } catch (err) {
     console.log("[collections_GET]", err)
     return new NextResponse((err as Error).message, { status: 500, headers: corsHeaders })

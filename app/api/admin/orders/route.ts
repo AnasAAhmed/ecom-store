@@ -41,8 +41,9 @@ export const GET = async (req: NextRequest) => {
     const sort = searchParams.get('sort')!;
     const sortField = searchParams.get('sortField')!;
 
+    const allowedSortFields = ["totalAmount", "createdAt", 'shippingRate', 'exchangeRate', 'isPaid', 'method'];
     const sortOptions: { [key: string]: 1 | -1 } = {};
-    if (sort && sortField) {
+    if (sortField && allowedSortFields.includes(sortField)) {
       const sortOrder = sort === "asc" ? 1 : -1;
       sortOptions[sortField] = sortOrder;
     } else {
@@ -54,8 +55,8 @@ export const GET = async (req: NextRequest) => {
     let search: { [key: string]: any } = {};
 
     if (query) {
-      if (key === 'customerEmail') search = { customerEmail: { $regex: query, $options: 'i' } };
-      if (key === 'customerPhone') search = { customerPhone: { $regex: query, $options: 'i' } };
+      if (key === 'customerEmail') { search = { customerEmail: query } };
+      if (key === 'customerPhone') { search = { customerPhone: { $regex: query, $options: 'i' } } };
       if (key === '_id') {
         if (isHex24(query)) {
           search = { _id: new mongoose.Types.ObjectId(query) };
@@ -68,7 +69,11 @@ export const GET = async (req: NextRequest) => {
         }
       }
 
-      if (key === 'status') search = { status: { $regex: query, $options: 'i' } };
+      if (key === 'status' && (query === 'pending' ||'refunded'|| 'shipped' || 'delivered' || 'canceled')) {
+        search = { status: query };
+      }
+
+      //with date search
       if (key === 'createdAt') {
         const queryDate = new Date(query);
         const lowerBound = new Date(queryDate);
@@ -92,7 +97,7 @@ export const GET = async (req: NextRequest) => {
             },
           },
           {
-            $sort: { dateDiff: 1 }, // Sort by how close the date is
+            $sort: { dateDiff: 1 },
           },
           {
             $skip: pageNumber * 10,
@@ -124,6 +129,8 @@ export const GET = async (req: NextRequest) => {
       }
 
     }
+
+    //normal search
     const totalOrders = await Order.countDocuments(search).sort(sortOptions);
     if (totalOrders < 1) {
       return NextResponse.json({
@@ -132,16 +139,19 @@ export const GET = async (req: NextRequest) => {
         totalPages: 0,
       }, { status: 200, headers: corsHeaders });
     }
+
     const orders = await Order.find(search)
       .sort(sortOptions)
       .skip(Number(page) * 10)
       .limit(10)
       .select('-shippingAddress -customerPhone -__v -products.product -products.variantId -products.color -products.size -statusHistory')
+
     return NextResponse.json({
       data: orders,
       totalOrders,
       totalPages: Math.ceil(totalOrders / 10),
     }, { status: 200, headers: corsHeaders });
+
   } catch (err) {
     console.log("[admin_orders_GET] Error:", err);
     return new NextResponse((err as Error).message + " Internal Error", { status: 500, headers: corsHeaders });

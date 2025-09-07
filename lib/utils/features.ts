@@ -10,6 +10,10 @@ export const slugify = (title: string) => {
     .replace(/[^\w-]+/g, "");
 };
 
+export function extractKeyFromUrl(url: string): string {
+  const key = url.split("/").pop();
+  return key!;
+}
 
 export const unSlugify = (slug: string) => {
   return slug
@@ -123,6 +127,7 @@ export const PASSWORD_RESET_REQUEST_TEMPLATE = ({
 };
 
 
+
 export const fallbackHomeData = {
   hero: {
     heading: '',
@@ -180,6 +185,10 @@ export function estimateWeight(categoryOrTitle: string): number {
 
 export function isHex24(str: string) {
   return /^[a-fA-F0-9]{24}$/.test(str);
+}
+
+export function isHex21(str: string) {
+  return /^[a-fA-F0-9]{21}$/.test(str);
 }
 
 export function statusValidation(status: string): string {

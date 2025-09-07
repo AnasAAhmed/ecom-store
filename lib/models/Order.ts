@@ -30,14 +30,14 @@ const orderSchema = new mongoose.Schema({
   method: String,
   statusHistory: [
     {
-      status: { type: String},
+      status: { type: String },
       changedAt: { type: Date, default: Date.now }
     }
-  ],  
-  isPaid: { type: Boolean, default: false,index:true },
+  ],
+  isPaid: { type: Boolean, default: false, index: true },
   status: {
     type: String,
-    enum: ['pending', 'shipped', 'delivered', 'canceled'],
+    enum: ['pending', 'shipped', 'refunded', 'delivered', 'canceled'],
     default: 'pending',
     index: true,
   },

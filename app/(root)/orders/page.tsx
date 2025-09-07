@@ -15,7 +15,7 @@ const Orders = async (props: { searchParams: Promise<any> }) => {
   const searchParams = await props.searchParams;
   const page = Number(searchParams?.page) || 1;
   const session = (await auth()) as Session
-  if (!session||!session.user.id) {
+  if (!session || !session.user.id) {
     return 'Unauthenticated'
   }
   const data = await getOrders(session?.user?.email!, page);
@@ -111,10 +111,10 @@ const Orders = async (props: { searchParams: Promise<any> }) => {
                     <b>Order ID</b>: #{order._id}
                   </p>
                   <p className="text-base-medium">
-                    <b>IsPaid</b>: {String(order.isPaid)}
+                    <b>Payment Status</b>: {order.isPaid ? 'Paid' : 'Not Paid'}
                   </p>
                   <p className="text-base-medium">
-                    <b>Payment</b>: {order.method}
+                    <b>Payment</b>: {order.method.toUpperCase()}
                   </p>
                   <p className="text-base-medium" style={{ color: getStatusColor(order.status) }}>
                     <b>Status</b>: {order.status}

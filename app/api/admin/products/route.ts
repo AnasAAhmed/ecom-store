@@ -129,8 +129,9 @@ export const GET = async (req: NextRequest) => {
     const sort = searchParams.get('sort')!;
     const sortField = searchParams.get('sortField')!;
 
+    const allowedSortFields = ["title", "createdAt", 'stock', "sold", 'price', 'expense', 'weight', 'numOfReviews', 'ratings'];
     const sortOptions: { [key: string]: 1 | -1 } = {};
-    if (sort && sortField) {
+    if (sortField && allowedSortFields.includes(sortField)) {
       const sortOrder = sort === "asc" ? 1 : -1;
       sortOptions[sortField] = sortOrder;
     } else {
@@ -141,7 +142,7 @@ export const GET = async (req: NextRequest) => {
     let search: { [key: string]: any } = {};
 
     if (query) {
-      if (key === 'title') search = { $text: { '$search': 'white' } };
+      if (key === 'title') search = { $text: { '$search': query } };
       if (key === '_id') {
         if (isHex24(query)) {
           search = { _id: new mongoose.Types.ObjectId(query) };

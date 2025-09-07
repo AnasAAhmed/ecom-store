@@ -40,10 +40,9 @@ export const GET = async (req: NextRequest, props: { params: Promise<{ orderId: 
     }
     await connectToDB()
 
-    const orderDetails = await Order.findById(params.orderId).populate({
-      path: "products.product",
-      model: Product
-    })
+    const orderDetails = await Order.findById(params.orderId)
+      .populate({ path: "products.product", model: Product, select: '_id title media price' })
+      .select("-__v -updatedAt");
 
     if (!orderDetails) {
       return new NextResponse(JSON.stringify("Order Not Found"), { status: 404, headers: corsHeaders })
