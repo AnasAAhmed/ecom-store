@@ -1,6 +1,5 @@
 import GroupComponent7 from "@/components/ui/Services";
 import type { Metadata } from 'next';
-import Banner from "@/components/ui/Banner";
 import { Clock, Locate, Mail, Phone } from "lucide-react";
 import FadeInOnView from "@/components/FadeInView";
 
@@ -35,16 +34,6 @@ const Contact = () => {
     return (
         <>
             <div className="w-full bg-white overflow-hidden text-left text-black font-poppins">
-                <Banner
-                    heading="Contact"
-                    text="24/7 Service available."
-                    imgUrl={'/contact.webp'}
-                    shade=""
-                    textColor="gray-800"
-                    link="/search"
-                    buttonText={'Contact Us'}
-                    scrollDown={true}
-                />
                 <div className="flex flex-col items-center py-16 px-4">
                     <FadeInOnView>
 

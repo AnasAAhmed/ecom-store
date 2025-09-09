@@ -141,7 +141,7 @@ export const fallbackHomeData: HomePage = {
   hero: {
     heading: '',
     text: '',
-    imgUrl: '/hero.avif',
+    imgUrl: '/hero.webp',
     // imgUrl: 'https://assets-manager.abtasty.com/2df40c2acabd6f9cf3388199e17e4ce4/25ss_influencer-inverse_site_and_app_full-bleed-hero_large-desk_2000x694px_2-nocopy.jpg',
     shade: '',
     textColor: '#ffff',
@@ -167,7 +167,7 @@ export const fallbackHomeData: HomePage = {
     {
       heading: '',
       text: '',
-      imgUrl: 'https://e1s0bwzoxc.ufs.sh/f/EHhleKT2TuF34TtjXyzxhtOeNMLjQPXk9UF8zmWCg160n3cS',
+      imgUrl: 'https://e1s0bwzoxc.ufs.sh/f/EHhleKT2TuF3NxiKUydBaGn39DLU2XfZ14uxwjW6vKcOMrJm',
       shade: '',
       textColor: '',
       link: '/collections/men',

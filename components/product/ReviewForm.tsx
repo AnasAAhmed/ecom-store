@@ -78,7 +78,7 @@ const ReviewForm = ({ isEditing, productId, oldRating, oldComment }: ReviewFormP
                         <Edit />
                     </button>
                 ) : (
-                    <button onClick={openModal} className="bg-blue-500 text-white px-2 py-1 rounded-full mb-1">
+                    <button onClick={openModal} className="bg-blue-700 text-white px-2 py-1 rounded-full mb-1">
                         Add Review for demo purposes
                     </button>
                 )}

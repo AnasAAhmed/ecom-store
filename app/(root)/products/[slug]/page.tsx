@@ -19,8 +19,7 @@ import { calculateTimeDifference } from "@/lib/utils/features.csr";
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
   const product = await getCachedProductDetails(params.slug);
-  console.log("generateMetadata of prodcut page hits", product.slug);
-
+  
   if (!product) return {
     title: "Product 404 Not Found | Borcelle",
     description: "No such product exists at borcelle store by anas ahmed",
@@ -47,7 +46,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
       site_name: 'Borcelle Next.js by anas ahmed',
     },
   };
-
+  
   return {
     title: `${unSlugify(product.title)} | Borcelle`,
     description: product.description || "Shop high-quality products at Borcelle.",
@@ -156,19 +155,19 @@ export default async function ProductPage(
         </>
       )}
 
-      {/* <Suspense fallback={
+      <Suspense fallback={
         <div className="flex flex-wrap justify-center gap-5">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="h-[22rem] w-64 bg-gray-200 animate-pulse" />
           ))}
         </div>
-      }> */}
-      <hr />
-      <RelatedProducts category={product.category} collections={product.collections} productId={product._id} />
-      {/* </Suspense> */}
-      {/* <Suspense fallback={<div className="h-40 bg-gray-200 animate-pulse" />}> */}
-      <ProductReviewsSection numOfReviews={product.numOfReviews} productId={product._id} page={Number(searchParams.page) || 1} />
-      {/* </Suspense> */}
+      }>
+        <hr />
+        <RelatedProducts category={product.category} collections={product.collections} productId={product._id} />
+      </Suspense>
+      <Suspense fallback={<div className="h-40 bg-gray-200 animate-pulse" />}>
+        <ProductReviewsSection numOfReviews={product.numOfReviews} productId={product._id} page={Number(searchParams.page) || 1} />
+      </Suspense>
 
     </main>
   );

@@ -99,7 +99,7 @@ export default async function Home() {
                 />
               </div>
               <div
-                className={`w-full bg-slate-100 ${idx % 2 === 1 ? "md:order-1" : "md:order-2"
+                className={`w-full bg-slate-50 ${idx % 2 === 1 ? "md:order-1" : "md:order-2"
                   } flex flex-col justify-center sm:px-6`}
               >
                 <Suspense fallback={<Loader />}>

@@ -25,10 +25,10 @@ export async function generateMetadata(props: { searchParams: Promise<{ query: s
       url: `${process.env.ECOM_STORE_URL}/search`,
       images: [
         {
-          url: '/home-preview.avif',
+          url: '/home-insights.webp',
           width: 220,
           height: 250,
-          alt: 'hero banner',
+          alt: 'insights',
         },
       ],
       site_name: 'Borcelle Next.js by anas ahmed',

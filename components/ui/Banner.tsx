@@ -16,12 +16,12 @@ type BannerProps = {
   textPositionV?: string;
   textPosition?: string;
 };
-type rr='center' | 'end' | 'start';
+type rr = 'center' | 'end' | 'start';
 const Banner = ({ imgUrl, videoUrl, text, heading, textColor, shade, link, buttonText, scrollDown, textPositionV = 'center', textPosition = 'center' }: BannerProps) => {
 
   return (
     <SmartLink title={buttonText || 'Shop Now'} href={link} >
-      <div className="relative w-full aspect-[3/3] sm:aspect-[16/12] md:aspect-[16/7] xl:aspect-video  roudnded-xl ovesrflow-hidden">
+      <div className="relative w-full aspect-[3/3] sm:aspect-[16/12] md:aspect-video">
 
         {videoUrl ? (
           <video
@@ -38,8 +38,8 @@ const Banner = ({ imgUrl, videoUrl, text, heading, textColor, shade, link, butto
             src={imgUrl!}
             alt={heading || 'Banner image'}
            fill
-            unoptimized
             placeholder="blur"
+            unoptimized
             blurDataURL="/fallback-banner.avif"
             sizes="(max-width: 450px) 9rem, (max-width: 700px) 12rem, 16rem"
             className={`absolute transition-opacity`}

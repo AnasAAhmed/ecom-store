@@ -82,7 +82,7 @@ const Collections = ({ collections }: { collections: CollectionType[] }) => {
                   src={collection.image}
                   placeholder="blur"
                   blurDataURL="/fallback-banner.avif"
-                  alt={collection.title || "collection image"}
+                  alt={collection.title + "collection image"}
                   width={sizeClasses[index].imageSize}
                   height={sizeClasses[index].imageSize}
                   className="object-cover w-full h-full duration-300 group-hover:scale-110 transition-transform"
@@ -90,7 +90,8 @@ const Collections = ({ collections }: { collections: CollectionType[] }) => {
                 />
                 <div className="group absolute bottom-0 sm:m-2 py-1 px-4 z-10 bg-black/40 text-white backdrop-blur-sm rounded-md">
                   <button
-                    className="flex items-center text-[12px] sm:text-[14px] font-semibold capitalize"
+                    className="flex min-h-14 min-w-14 items-center font-semibold capitalize 
+             text-[12px] sm:text-[14px] px-3 py-2 rounded-md"
                     title={`Shop at ${collection.title} collection now`}
                   >
                     {collection.title}<ChevronRightIcon size={'1rem'} className="group-hover:translate-x-2 duration-300" />
@@ -108,9 +109,9 @@ const Collections = ({ collections }: { collections: CollectionType[] }) => {
           >
             <SmartLink title="See full Collection" href="/collections/">
               <div className="flex flex-col items-start gap-3">
-                <h3 className="text-lg sm:text-xl font-bold capitalize">
+                <h1 className="text-lg sm:text-xl font-bold capitalize">
                   All Collections
-                </h3>
+                </h1>
                 <p className="text-sm sm:text-base text-gray-300">
                   Browse through curated categories and discover more.
                 </p>
@@ -118,7 +119,8 @@ const Collections = ({ collections }: { collections: CollectionType[] }) => {
 
               <div className="absolute bottom-0 py-1 px-4 sm:m-2 z-10 bg-black/60 text-white backdrop-blur-sm rounded-md">
                 <button
-                  className="flex items-center text-[12px] sm:text-[14px] font-semibold capitalize"
+                  className="flex min-h-14 min-w-14 items-center font-semibold capitalize 
+                     text-[12px] sm:text-[14px] px-3 py-2 rounded-md"
                   title="Shop at collection now"
                 >
                   Explore <ChevronRightIcon className="group-hover:translate-x-2 duration-300" />

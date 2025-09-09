@@ -67,18 +67,18 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
           )}
         </FadeInOnView>
         <div className="py-2 px-1">
-          <h3 className="text-small-medium sm:text-body-medium font-medium text-gray-900 line-clamp-2 ">
+          <h1 className="text-small-medium sm:text-body-medium font-medium text-gray-900 line-clamp-2 ">
             <abbr title={title} className="no-underline">
               {title}
             </abbr>
-          </h3>
+          </h1>
           <div className="mt-1 flex items-center justify-between">
             <div className="sr-only flex gap-2 items-center">
               <p className="text-small-medium sm:text-body-medium font-bold text-gray-900">
                 <small>$</small>  {price}
               </p>
               {expense > price && (
-                <p className="text-small-medium max-sm:hidden line-through text-gray-500">
+                <p className="text-small-medium max-sm:hidden line-through text-gray-700">
                   <small>$</small> {expense}
                 </p>
               )}
@@ -86,7 +86,7 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
             <PriceAndExpense isCard={true} baseExpense={expense} basePrice={price} />
             <HeartFavorite productId={_id} updateSignedInUser={updateSignedInUser} />
           </div>
-          <div className="mt-1 flex flex-wrap justify-between items-center space-x-1 text-small-medium text-gray-600">
+          <div className="mt-1 flex flex-wrap justify-between items-center space-x-1 text-small-medium text-gray-800">
             <div className="flex justify-start items-center">
 
               <StarRatings rating={ratings} />

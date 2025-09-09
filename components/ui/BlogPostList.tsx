@@ -19,7 +19,7 @@ const BlogPostList: NextPage<BlogPostListType> = ({ className = "" }) => {
             goingAllInWithMillennialD="Going all-in with millennial design"
           />
           <GroupComponent13
-            previewImages="/blog4.png"
+            previewImages="/blog4.webp"
             wood="Handmade"
             goingAllInWithMillennialD="Exploring new ways of decorating"
             propWidth="24.563rem"
@@ -30,7 +30,7 @@ const BlogPostList: NextPage<BlogPostListType> = ({ className = "" }) => {
             propMinWidth2="5.688rem"
           />
           <GroupComponent13
-            previewImages="/blog5.png"
+            previewImages="/blog5.webp"
             wood="Wood"
             goingAllInWithMillennialD="Handmade pieces that took time to make"
             propWidth="unset"
@@ -114,7 +114,7 @@ const BlogPostList: NextPage<BlogPostListType> = ({ className = "" }) => {
               className="h-[5rem] w-[5rem] relative rounded-3xs object-cover z-[1]"
               loading="lazy"
               alt=""
-              src="/blog5.png"
+              src="/blog5.webp"
             />
             <div className="flex-1 flex flex-col items-start justify-end pt-[0rem] px-[0rem] pb-[0.437rem]">
               <div className="self-stretch flex flex-col items-start justify-start gap-[0.312rem]">
@@ -168,7 +168,7 @@ const BlogPostList: NextPage<BlogPostListType> = ({ className = "" }) => {
               className="h-[5rem] w-[5rem] relative rounded-3xs object-cover z-[1]"
               loading="lazy"
               alt=""
-              src="banner2.avif"
+              src="/blog3.png"
             />
             <div className="flex-1 flex flex-col items-start justify-end pt-[0rem] px-[0rem] pb-[0.437rem]">
               <div className="self-stretch flex flex-col items-start justify-start gap-[0.312rem]">

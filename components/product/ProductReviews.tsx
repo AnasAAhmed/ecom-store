@@ -58,7 +58,7 @@ const DeleteReviews: React.FC<ProductReviewsProps> = ({ reviewComment, reviewRat
     <div className="flex items-center gap-2">
       <button
         onClick={() => handleDeleteReview(reviewId)}
-        className="px-2 py-1 text-xs bg-red-50 hover:bg-red-100 text-red-600 rounded-md flex items-center gap-1"
+        className="px-2 py-1 text-xs hover:bg-red-100 text-red-700 rounded-md flex items-center gap-1"
       >
         {isDeletingReview ? (
           <Loader2 className="animate-spin h-3 w-3" />

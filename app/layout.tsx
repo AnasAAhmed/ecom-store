@@ -90,7 +90,7 @@ export default async function RootLayout({
                     prefetch={false}
                     aria-label={item}
                     href={`/collections/${item}`}
-                    className="hover:text-black text-gray-600 transition-colors duration-200 border-b-2 border-transparent hover:border-black"
+                    className="hover:text-black text-gray-700 transition-colors duration-200 border-b-2 border-transparent hover:border-black"
                   >
                     {item.charAt(0).toUpperCase() + item.slice(1)}
                   </SmartLink>
