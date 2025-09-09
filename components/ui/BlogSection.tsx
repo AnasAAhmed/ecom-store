@@ -8,7 +8,7 @@ const BlogSection = () => {
   return (
     <section className="flex flex-col items-center justify-center pt-14 px-5 pb-13 gap-16 max-w-full text-left text-2xl text-black font-poppins">
       <div className="w-full flex flex-col items-center justify-center text-center gap-3">
-        <h1 className="text-3xl font-medium">Our Blogs</h1>
+        <h1 className="text-heading4-bold sm:text-heading2-bold font-medium">Our Blogs</h1>
         <p className="text-gray-500">Find a bright idea to suit your taste with our great selection</p>
       </div>
       <div className="w-full flex flex-wrap items-start justify-center gap-8">

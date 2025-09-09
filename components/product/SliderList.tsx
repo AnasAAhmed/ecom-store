@@ -4,6 +4,7 @@ import React, { useRef } from 'react'
 import SmartLink from '../SmartLink';
 import Image from 'next/image';
 import ProductCard from './ProductCard';
+import FadeInOnView from '../FadeInView';
 
 const SliderList = ({ Products, heading, text, isViewAll = true }: { text?: string; Products: ProductType[], heading?: string; isViewAll?: boolean }) => {
 
@@ -23,7 +24,7 @@ const SliderList = ({ Products, heading, text, isViewAll = true }: { text?: stri
                 <h1 className="text-heading3-bold text-center mt-8 mb-4 sm:text-heading2-bold capitalize">{heading}</h1>
             }
             {text &&
-                <p className="text-body-semibold text-gray-600 text-center mb-8 sm:text-base-medium capitalize">{text}</p>
+                <p className="max-sm:mx-2 sm:text-body-semibold text-gray-600 text-center mb-8 text-small-medium capitalize">{text}</p>
             }
             <button
                 aria-label="Scroll Left"
@@ -49,6 +50,18 @@ const SliderList = ({ Products, heading, text, isViewAll = true }: { text?: stri
             >
                 <ChevronRight />
             </button>
+            {Products.length > 4 && isViewAll && <div className="self-stretch mt-8 flex flex-row items-start justify-center py-[0rem] px-[1.25rem]">
+                <div className="w-[12.875rem] flex flex-col items-start justify-start ">
+                    <FadeInOnView delay={300} threshold={0.5} animation="animate-fadeIn">
+                        <SmartLink prefetch={false} title=" View All Products" href="/search" className="h-[1.875rem] mx-auto relative font-medium inline-block z-[1] text-heading4-bold">
+                            View All Products
+                        </SmartLink>
+                        <div className="self-stretch flex flex-row items-start justify-start py-[0rem] pr-[0.187rem] pl-[0.375rem]">
+                            <div className="h-[0.125rem] flex-1 relative box-border z-[1] border-t-[2px] border-solid border-black" />
+                        </div>
+                    </FadeInOnView>
+                </div>
+            </div>}
         </div>
     )
 }

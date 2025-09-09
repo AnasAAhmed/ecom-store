@@ -2,14 +2,16 @@ import FadeInOnView from "../FadeInView";
 import ProductCard from "./ProductCard";
 import SmartLink from "@/components/SmartLink";
 
-const ProductList = async ({ Products, heading, isViewAll = true }: { Products: ProductType[], heading?: string; isViewAll?: boolean }) => {
+const ProductList = async ({ Products, heading, text, isViewAll = true }: { text?: string; Products: ProductType[], heading?: string; isViewAll?: boolean }) => {
 
   return (
-    <div className="flex flex-col items-center gap-10 py-8 px-3 sm:px-5">
+    <div className="flex flex-col items-center py-8 px-3 sm:px-5">
       {heading &&
-          <h1 className="text-heading3-bold sm:text-heading2-bold capitalize">{heading}</h1>
-        }
-
+        <h1 className="text-heading3-bold mb-3 sm:text-heading2-bold capitalize">{heading}</h1>
+      }
+      {text &&
+        <p className="max-sm:mx-2 sm:text-body-semibold text-gray-600 text-center mb-8 text-small-medium capitalize">{text}</p>
+      }
       {!Products || Products.length === 0 ? (
         <p className="text-body-bold">No products found</p>
       ) : (
@@ -19,7 +21,7 @@ const ProductList = async ({ Products, heading, isViewAll = true }: { Products: 
           ))}
         </div>
       )}
-      {Products.length > 4 && isViewAll && <div className="self-stretch flex flex-row items-start justify-center py-[0rem] px-[1.25rem]">
+      {Products.length > 4 && isViewAll && <div className="self-stretch mt-8 flex flex-row items-start justify-center py-[0rem] px-[1.25rem]">
         <div className="w-[12.875rem] flex flex-col items-start justify-start ">
           <FadeInOnView delay={300} threshold={0.5} animation="animate-fadeIn">
             <SmartLink prefetch={false} title=" View All Products" href="/search" className="h-[1.875rem] mx-auto relative font-medium inline-block z-[1] text-heading4-bold">

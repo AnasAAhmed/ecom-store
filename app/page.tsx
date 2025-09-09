@@ -54,9 +54,9 @@ export async function generateMetadata() {
 
 export default async function Home() {
 
-  const [collections, products, bestSelling, homePage] = await Promise.all([
-    getCollections(),
+  const [products, collections, bestSelling, homePage] = await Promise.all([
     getProducts(),
+    getCollections(),
     getBestSellingProducts(),
     getCachedHomePageData()
   ]);
@@ -76,7 +76,7 @@ export default async function Home() {
 
       <Collections collections={collections} />
 
-      <SliderList heading="New Arrivals" text="Be the first to shop our latest drops and fresh styles." Products={products} />
+      <ProductList heading="New Arrivals" text="Be the first to shop our latest drops and fresh styles." Products={products} />
 
       {/* <ProductList heading="Latest Products" Products={products} /> */}
       <section className='mt-12 '>

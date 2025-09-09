@@ -11,7 +11,7 @@ export async function getCollectionProducts(collectionId: string): Promise<Produ
       .select("title numOfReviews ratings stock sold price expense media _id");
 
     if (!collectionProducts) return 'Collection Products Not Found';
-      console.log('collectionProducts func hits');
+    console.log('collectionProducts func hits');
 
     return JSON.parse(JSON.stringify(collectionProducts))
   } catch (err) {
@@ -67,9 +67,7 @@ export async function collectionProducts({
 export async function getCollections() {
   try {
 
-    const collections = await Collection.find().sort({ createdAt: "asc" }).select("_id image title").limit(8);
-      console.log('collection func hits');
-
+    const collections = await Collection.find().sort({ createdAt: -1 }).select("image title").limit(8);
     return JSON.parse(JSON.stringify(collections))
 
   } catch (err) {

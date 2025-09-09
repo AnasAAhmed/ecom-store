@@ -62,7 +62,7 @@ const StoreFeatures = () => {
                 <a
                     target="_blank"
                     title="Get yours too"
-                    href="https://www.fiverr.com/anas_ahmed_24/create-ecommerce-store-with-nextjs-and-mongodb-database"
+                    href="https://www.fiverr.com/anas_ahmed_24/nextjs-typescript-rest-api-mern-full-stack-seo"
                     className="w-full md:w-1/2">
                     <Image
                         src="/promotion.png"

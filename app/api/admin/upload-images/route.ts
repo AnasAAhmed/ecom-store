@@ -74,6 +74,9 @@ export async function POST(req: NextRequest) {
 
   } catch (error) {
     console.error("Upload_Image error:", error);
-    return NextResponse.json((error as Error).message, { status: 500, headers: corsHeaders });
+    return NextResponse.json((error as Error).message, { 
+      status: 500, 
+      headers: corsHeaders,
+      statusText:'Images Upload Error: '+(error as Error).message})
   }
 }

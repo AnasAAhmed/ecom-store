@@ -84,7 +84,6 @@ export default async function ProductPage(
 
   const params = await props.params;
   const product: ProductType = await getCachedProductDetails(params.slug);
-  console.log("ProductDetails func of prodcut page hits", product.slug);
   if (!product) return notFound();
 
   return (
