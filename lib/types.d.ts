@@ -77,8 +77,7 @@ interface HomePage {
     buttonText?: string;
     isVideo: boolean;
   },
-  collections: [
-    {
+  collections:{
       heading?: string;
       text?: string;
       imgUrl: string;
@@ -90,8 +89,7 @@ interface HomePage {
       buttonText?: string;
       collectionId: string;
       isVideo: boolean;
-    }
-  ]
+    }[]
 }
 interface GridBannerProps {
   imageUrl: string;

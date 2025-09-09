@@ -8,12 +8,12 @@ const StarRatings = ({ rating }: { rating: number }) => {
         return (
             <span  key={index}>
                 {rating >= index + 1 ? (
-                    <FaStar className="text-blue-500 " />
+                    <FaStar className="text-blue-700 " />
                 ) : rating >= number ? (
 
-                    <FaStarHalfAlt className="text-blue-500 " />
+                    <FaStarHalfAlt className="text-blue-700 " />
                 ) : (
-                    <AiOutlineStar className="text-blue-500 mt-[0.15rem] text-[1.1rem]" />
+                    <AiOutlineStar className="text-blue-700 mt-[0.15rem] text-[1.1rem]" />
                 )}
             </span>
         )

@@ -4,9 +4,31 @@ import GroupComponent7 from "@/components/ui/Services";
 import Banner from "@/components/ui/Banner";
 import type { Metadata } from 'next';
 
-export const metadata: Metadata= {
-  title: "Borcelle | Blog",
-  description: "Explore our BLog",
+export const metadata: Metadata = {
+    title: "Borcelle | Blog",
+    description: "Dicover and Explore our latest blogs.",
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true
+        }
+    },
+    openGraph: {
+        title: "Borcelle | Blog",
+        description: "Explore our BLog",
+        url: `${process.env.ECOM_STORE_URL}/blog`,
+        images: [
+            {
+                url: '/banner.avif',
+                width: 220,
+                height: 250,
+                alt: 'blog preview image',
+            },
+        ],
+        siteName: 'Borcelle Store & CMS Next.js by anas ahmed',
+    },
 };
 export const dynamic = 'force-static';
 const Blog: NextPage = () => {

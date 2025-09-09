@@ -9,7 +9,6 @@ import Loader from "@/components/ui/Loader";
 import UserFetcher from "@/components/UserFetch";
 import { Roboto } from 'next/font/google'
 import { SessionProvider } from "next-auth/react";
-import dynamic from "next/dynamic";
 import ProgressBar from "@/components/ProgressBar";
 import IsOnline from "@/components/IsOnline";
 import SmartLink from "@/components/SmartLink";
@@ -38,16 +37,16 @@ export const metadata: Metadata =
     url: `${process.env.ECOM_STORE_URL}`,
     images: [
       {
-        url: '/home-preview.avif',
-        width: 260,
-        height: 220,
-        alt: 'home screenshot',
-      },
-      {
-        url: '/home-insights.avif',
+        url: '/home-insights.webp',
         width: 220,
         height: 250,
         alt: 'home-insights',
+      },
+      {
+        url: '/home-preview.webp',
+        width: 260,
+        height: 220,
+        alt: 'home screenshot',
       },
       {
         url: '/product-seo.avif',
@@ -57,7 +56,7 @@ export const metadata: Metadata =
       },
 
     ],
-    siteName: 'Borcelle Next.js by anas ahmed',
+    siteName: 'Borcelle Store & CMS Next.js by anas ahmed',
   },
   other: {
     "google-site-verification": "OG4--pwhuorqRhEHtEXwiAIdavrU1KXFAi1sRUu38EY",
@@ -96,7 +95,7 @@ export default async function RootLayout({
                     {item.charAt(0).toUpperCase() + item.slice(1)}
                   </SmartLink>
                 ))}
-                {["/", "/search", "/contact", "/blog", "/wishlist", "/orders"].map((item,idx) => (
+                {["/", "/search", "/contact", "/blog", "/wishlist", "/orders","https://ecom-admin-panel-xcw7-gh8p.vercel.app/"].map((item, idx) => (
                   <a
                     title={`${item} page at Borcelle`}
                     key={item}
@@ -104,7 +103,7 @@ export default async function RootLayout({
                     href={item}
                     className="hover:text-black sr-only text-gray-600 transition-colors duration-200 border-b-2 border-transparent hover:border-black"
                   >
-                    {["Home", "Shop", "Contact", "Blog", "Wishlist", "Orders"][idx]}
+                    {["Home", "Shop", "Contact", "Blog", "Wishlist", "Orders","CMS"][idx]}
                   </a>
                 ))}
               </div>
@@ -116,9 +115,9 @@ export default async function RootLayout({
             <ProgressBar />
           </Suspense>
           <Suspense fallback={<Loader height={80} />}>
-            <div className="mt-20 sm:mt-12">
+            <main className="mt-20 sm:mt-12">
               {children}
-            </div>
+            </main>
             <IsOnline />
           </Suspense>
           <Footer />

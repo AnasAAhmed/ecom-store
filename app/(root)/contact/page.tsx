@@ -7,6 +7,28 @@ import FadeInOnView from "@/components/FadeInView";
 export const metadata: Metadata = {
     title: "Borcelle | Contact",
     description: "Contact Us 24/7",
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true
+        }
+    },
+    openGraph: {
+        title: "Borcelle | Contact",
+        description: "Contact Us 24/7",
+        url: `${process.env.ECOM_STORE_URL}/contact`,
+        images: [
+            {
+                url: '/contact.webp',
+                width: 220,
+                height: 250,
+                alt: 'Contact preview image',
+            },
+        ],
+        siteName: 'Borcelle Store & CMS Next.js by anas ahmed',
+    },
 };
 export const dynamic = 'force-static';
 const Contact = () => {
@@ -26,14 +48,14 @@ const Contact = () => {
                 <div className="flex flex-col items-center py-16 px-4">
                     <FadeInOnView>
 
-                    <h1 className="text-heading2-bold">Get In Touch With Us</h1>
+                        <h1 className="text-heading2-bold">Get In Touch With Us</h1>
                     </FadeInOnView>
                     <FadeInOnView delay={300} animation="animate-fadeIn" threshold={0.7}>
-                    <p className="text-center text-gray-500 mt-4 mb-8 max-w-xl">
-                        For more information about our products & services, please feel free
-                        to drop us an email. Our staff is always here to help you out. Do not
-                        hesitate!
-                    </p>
+                        <p className="text-center text-gray-500 mt-4 mb-8 max-w-xl">
+                            For more information about our products & services, please feel free
+                            to drop us an email. Our staff is always here to help you out. Do not
+                            hesitate!
+                        </p>
                     </FadeInOnView>
 
                     <div className="flex flex-col md:flex-row w-full max-w-6xl gap-8">
@@ -101,8 +123,8 @@ const ContactContainer = () => {
     return (
         <div className="w-full lg:w-1/2 flex flex-col gap-6 p-8 rounded shadow-md bg-white">
             <div className="flex items-center gap-4">
-               
-                <Locate className="w-8 h-8"/>
+
+                <Locate className="w-8 h-8" />
                 <div>
                     <h3 className="text-lg font-medium">Address</h3>
                     <p className="text-gray-600">
@@ -111,7 +133,7 @@ const ContactContainer = () => {
                 </div>
             </div>
             <div className="flex items-center gap-4">
-                <Phone className="w-8 h-8"/>
+                <Phone className="w-8 h-8" />
                 <div>
                     <h3 className="text-lg font-medium">Phone</h3>
                     <p className="text-gray-600">Mobile: +(84) 546-6789</p>
@@ -126,7 +148,7 @@ const ContactContainer = () => {
                 </div>
             </div>
             <div className="flex items-center gap-4">
-               <Clock className="w-8 h-8"/>
+                <Clock className="w-8 h-8" />
                 <div>
                     <h3 className="text-lg font-medium">Working Time</h3>
                     <p className="text-gray-600">Monday-Friday: 9:00 - 22:00</p>

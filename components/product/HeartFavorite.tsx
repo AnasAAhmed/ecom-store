@@ -52,9 +52,23 @@ const HeartFavorite = ({ productId, updateSignedInUser }: HeartFavoriteProps) =>
   };
 
   return (
-    <button style={{fontSize:'24px'}} title="Click here to add on wishlist" onClick={handleLike} disabled={loading}>
-      {loading ? <Loader size={'1.2rem'} className="animate-spin" /> : <Heart className="ml-[10px]" size={'1.2rem'} fill={isLiked ? "red" : "white"} />}
+    <button
+      title="Click here to add on wishlist"
+      onClick={handleLike}
+      disabled={loading}
+      className="flex items-center justify-center w-12 h-12 rounded-full hover:bg-gray-100 disabled:opacity-50"
+    >
+      {loading ? (
+        <Loader size={'1.2rem'} className="animate-spin" />
+      ) : (
+        <Heart
+          className="ml-[1px]"
+          size={'1.2rem'}
+          fill={isLiked ? "red" : "white"}
+        />
+      )}
     </button>
+
   );
 };
 

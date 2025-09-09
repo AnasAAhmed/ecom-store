@@ -23,16 +23,16 @@ const Footer = () => {
           </a>
           <a
             title="Email me"
-            href="mailto:anasahmedd244"
+            href="mailto:anasahmedd244@gmail.com"
             className="block text-sm font-medium text-black hover:underline"
           >
-           anasahmedd244@gmail.com
+            anasahmedd244@gmail.com
           </a>
         </div>
 
         {/* Navigation SmartLinks */}
         <div>
-          <h4 className="mb-4 text-lg font-semibold text-black">Quick SmartLinks</h4>
+          <p className="mb-4 text-lg font-semibold text-black">Quick SmartLinks</p>
           <ul className="space-y-2 text-sm font-medium text-gray-700">
             <li><SmartLink href="/" className="hover:text-black">Home</SmartLink></li>
             <li><SmartLink href="/search" prefetch={false} className="hover:text-black">Shop</SmartLink></li>
@@ -44,7 +44,7 @@ const Footer = () => {
 
         {/* Newsletter & Info */}
         <div>
-          <h4 className="mb-4 text-lg font-semibold text-black">Stay Updated</h4>
+          <p className="mb-4 text-lg font-semibold text-black">Stay Updated</p>
           <form className="flex flex-col sm:flex-row gap-3">
             <input
               type="email"
@@ -71,7 +71,16 @@ const Footer = () => {
 
       {/* Bottom */}
       <div className="mt-10 border-t border-gray-200 pt-6 text-sm text-center text-gray-600">
-        &copy; 2024 Ecommerce — Made by Anas Ahmed. All rights reserved.
+        &copy; {new Date().getFullYear()} Ecommerce — Made by Anas Ahmed. All rights reserved.
+        Page last update at {new Date().toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+          hour12: true,
+        })}
       </div>
     </footer>
   );

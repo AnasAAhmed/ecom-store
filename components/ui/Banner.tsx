@@ -21,7 +21,7 @@ const Banner = ({ imgUrl, videoUrl, text, heading, textColor, shade, link, butto
 
   return (
     <SmartLink title={buttonText || 'Shop Now'} href={link} >
-      <div className="relative w-full aspect-[3/4] sm:aspect-[16/12] md:aspect-video  roudnded-xl ovesrflow-hidden">
+      <div className="relative w-full aspect-[3/3] sm:aspect-[16/12] md:aspect-[16/7] xl:aspect-video  roudnded-xl ovesrflow-hidden">
 
         {videoUrl ? (
           <video
@@ -37,7 +37,7 @@ const Banner = ({ imgUrl, videoUrl, text, heading, textColor, shade, link, butto
           <Image
             src={imgUrl!}
             alt={heading || 'Banner image'}
-            fill
+           fill
             unoptimized
             placeholder="blur"
             blurDataURL="/fallback-banner.avif"

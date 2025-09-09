@@ -3,11 +3,11 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 
 interface ImageZoomProps {
-  src: string;
   alt: string;
+  allSrc: string[]
 }
 
-const ImageZoom = ({ src, alt }: ImageZoomProps) => {
+const ImageZoom = ({ alt, allSrc }: ImageZoomProps) => {
   const [isZoomed, setIsZoomed] = useState(false);
   const [backgroundPosition, setBackgroundPosition] = useState('0% 0%');
   const imgRef = useRef<HTMLImageElement>(null);
@@ -23,13 +23,30 @@ const ImageZoom = ({ src, alt }: ImageZoomProps) => {
       setBackgroundPosition(`${x}% ${y}%`);
     }
   };
+  const [mainImage, setMainImage] = useState(allSrc[0]);
 
   // const formattedSrc = src.replace(/\\/g, '/');
 
   return (
-    <>
-      <div
-        className={`relative ${isZoomed ? "w-100 h-100" : "w-96 h-96"} w-96 lg:w-[500px] h-96 max-md:hidden`}
+    <div className="flex max-md:flex-col max-md:order-2 gap-2">
+      <div className="flex md:flex-col gap-2 overflow-auto">
+        {allSrc.map((image, index) => (
+          <Image
+            key={index}
+            // unoptimized
+            loading="lazy"
+            src={image}
+            height={200}
+            width={200}
+            placeholder="blur"
+            blurDataURL="/fallback.avif"
+            alt="product"
+            className={`w-20 h-20 rounded-lg object-cover cursor-pointer ${mainImage === image ? "border-2 border-black" : ""}`}
+            onClick={() => setMainImage(image)}
+          />
+        ))}
+      </div>
+      <div className="aspect-[1/1] w-96 md:w-[430px] lg:w-[500px] relative max-md:hidden"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onMouseMove={handleMouseMove}
@@ -38,7 +55,7 @@ const ImageZoom = ({ src, alt }: ImageZoomProps) => {
           <div
             className={`rounded-lg top-0 left-0 w-full h-full bg-no-repeat transition-transform duration-300`}
             style={{
-              backgroundImage: `url(${src})`,
+              backgroundImage: `url(${mainImage})`,
               backgroundPosition: backgroundPosition,
               backgroundSize: '200%', // Adjust this value to control the zoom level
             }}
@@ -46,15 +63,19 @@ const ImageZoom = ({ src, alt }: ImageZoomProps) => {
         )}
         <Image
           ref={imgRef}
-          src={src}
+          src={mainImage}
+          // width={1000}
+          // height={1000}
           fill
+          sizes="(max-width: 768px) 100vw, 500px"
+          placeholder="blur"
+          blurDataURL="/fallback.avif"
           alt={alt}
-          className={`absolute rounded-lg top-0 left-0 w-full h-full transition-opacity duration-300 ${isZoomed ? 'opacity-0' : 'opacity-100'}`}
+          className={`cursor-zoom-in  absolute rounded-lg top-0 left-0 s transition-opacity duration-300 ${isZoomed ? 'opacity-0' : 'opacity-100'}`}
         />
       </div>
 
-      <Image src={src} alt={alt} width={500} height={500} className="w-full rounded-lg md:hidden md:h-[500px] h-[300px] object-cover" />
-    </>
+    </div>
   );
 };
 

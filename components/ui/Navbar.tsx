@@ -62,7 +62,7 @@ const Navbar = () => {
    <nav className={`${scrolled ? 'top-0 fixed shadow-md bg-white' : 'top-0 lg:top-[45px] absolute bg-transparent'} print:hidden z-30 w-full bg-white shadow-md`}>
         <div className="flex justify-between items-center p-2">
           <SmartLink title="home" aria-label="go to home" href="/">
-            <Image src="/logo.png" alt=" borcelle logo" width={130} height={34} className="h-[35px]" />
+            <Image src="/logo.png" alt=" borcelle logo" width={130} height={34} />
           </SmartLink>
 
           {/* Desktop search bar */}
@@ -88,17 +88,17 @@ const Navbar = () => {
           </form>
 
           <div className="hidden lg:flex gap-4">
-            {["/", "/search", "/contact", "/wishlist", "/orders"].map(
+            {["/", "/search", "/contact", "/wishlist", "/orders","https://ecom-admin-panel-xcw7-gh8p.vercel.app/"].map(
               (path, idx) => (
                 <SmartLink
-                  title={"Go to " + ["Home", "Shop", "Contact", "Wishlist", "Orders"][idx]}
+                  title={"Go to " + ["Home", "Shop", "Contact", "Wishlist", "Orders","CMS"][idx]}
                   key={idx}
                   href={path}
                   prefetch={false}
                   aria-label={path}
                   className={`hover:text-blue-500 ${pathname === path && "text-blue-500"}`}
                 >
-                  {["Home", "Shop", "Contact", "Wishlist", "Orders"][idx]}
+                  {["Home", "Shop", "Contact", "Wishlist", "Orders",'CMS'][idx]}
                 </SmartLink>
               )
             )}
@@ -141,8 +141,8 @@ const Navbar = () => {
           </form>
         </div>
         {/* Mobile Modal */}
-        {isOpen && <div className="fixed flex lg:hidden right-6 max-sm:top-20 items-center justify-center bg-opacity-50 z-50">
-          <ul className="flex flex-col p-4 gap-3 bg-white animate-menu rounded-lg border">
+        {isOpen && <div className="fixed flex lg:hidden right-6 max-sm:top-10 items-center justify-center bg-opacity-50 z-50">
+          <ul className="flex flex-col p-4 gap-3 w-full bg-white animate-menu rounded-lg border">
 
             {["/", "/search", "/contact", "/blog", "/wishlist", "/orders","https://ecom-admin-panel-xcw7-gh8p.vercel.app/"].map((name, idx) => (
               <SmartLink

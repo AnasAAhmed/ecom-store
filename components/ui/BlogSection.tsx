@@ -31,7 +31,7 @@ export type GroupComponent3Type = {
 
 const GroupComponent3 = ({ blogCardImage, index }: GroupComponent3Type) => {
   return (
-    <FadeInOnView delay={300} threshold={0.3+index} animation="animate-fadeIn">
+    <FadeInOnView delay={300} threshold={0.3+index} animation="animate-fadeInUp">
       <div className="flex flex-col items-start justify-start gap-3 sm:gap-8  max-w-full text-left text-lg text-black font-poppins">
         <Image
           className="self-stretch h-96 relative rounded-md max-w-full object-cover"

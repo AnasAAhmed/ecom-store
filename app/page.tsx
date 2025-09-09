@@ -5,13 +5,14 @@ import BlogSection from "@/components/ui/BlogSection";
 import Social from "@/components/ui/Social";
 import GroupComponent7 from "@/components/ui/Services";
 import { Fragment, Suspense } from "react";
-import Loader from "@/components/ui/Loader";
 import { fallbackHomeData, unSlugify } from "@/lib/utils/features";
 import { getCollectionProducts, getCollections } from "@/lib/actions/collection.actions";
-import { getProducts } from "@/lib/actions/product.actions";
+import { getBestSellingProducts, getProducts } from "@/lib/actions/product.actions";
 import { getCachedHomePageData } from "@/lib/actions/cached";
+import StoreFeatures from "@/components/ui/StoreFeatures";
+import SliderList from "@/components/product/SliderList";
+import Loader from "@/components/ui/Loader";
 import Image from "next/image";
-import FadeInOnView from "@/components/FadeInView";
 
 export const dynamic = 'force-static';
 
@@ -40,7 +41,7 @@ export async function generateMetadata() {
       url: `${process.env.ECOM_STORE_URL}`,
       images: [
         {
-          url: homeData.seo.url || '/home-preview.avif',
+          url: homeData.seo.url || '/home-preview.webp',
           width: homeData.seo.width || 250,
           height: homeData.seo.height || 200,
           alt: homeData.seo.alt || 'home-preview',
@@ -53,12 +54,13 @@ export async function generateMetadata() {
 
 export default async function Home() {
 
-  const [collections, products, homeData] = await Promise.all([
+  const [collections, products, bestSelling, homePage] = await Promise.all([
     getCollections(),
     getProducts(),
+    getBestSellingProducts(),
     getCachedHomePageData()
   ]);
-  const homePageData = homeData ?? fallbackHomeData;
+  const homePageData = homePage ?? fallbackHomeData;
   return (
     <Fragment>
       <Banner
@@ -73,102 +75,74 @@ export default async function Home() {
       />
 
       <Collections collections={collections} />
-      <ProductList heading="Latest Products" Products={products} />
-      {homePageData.collections.map((i, _) => (
 
-        <Fragment key={_}>
-          <Banner
-            heading={i.heading}
-            text={i.text}
-            imgUrl={i.isVideo ? '' : i.imgUrl}
-            videoUrl={i.isVideo ? i.imgUrl : ''}
-            shade={i.shade}
-            textColor={i.textColor}
-            textPositionV={i.textPosition || 'end'}
-            link={i.link}
-            buttonText={i.buttonText}
-          />
+      <SliderList heading="New Arrivals" text="Be the first to shop our latest drops and fresh styles." Products={products} />
 
-          <Suspense fallback={<Loader />}>
-            <CollectionProduct collectionTitle={i.link.slice(13)} collectionId={i.collectionId} />
-          </Suspense>
-        </Fragment>
-      ))}
+      {/* <ProductList heading="Latest Products" Products={products} /> */}
+      <section className='mt-12 '>
+        <article className='w-full my-5'>
+          {homePageData.collections.slice(0, 2).map((i, idx) => (
+            <div
+              key={idx}
+              className="grid grid-cols-1 md:grid-cols-2 gapd-6 items-stretch msy-8"
+            >
+              <div
+                className={`relative w-full ${idx % 2 === 1 ? "md:order-2" : "md:order-1"
+                  } aspect-[4/3] md:h-full`}
+              >
+                <Image
+                  src={i.imgUrl}
+                  alt={i.heading || i.link.slice(13) + " Collection"}
+                  fill
+                  unoptimized
+                  className="object-cover"
+                />
+              </div>
+              <div
+                className={`w-full bg-slate-100 ${idx % 2 === 1 ? "md:order-1" : "md:order-2"
+                  } flex flex-col justify-center sm:px-6`}
+              >
+                <Suspense fallback={<Loader />}>
+                  <CollectionProduct
+                    collectionTitle={i.link.slice(13)}
+                    collectionId={i.collectionId}
+                  />
+                </Suspense>
+              </div>
+            </div>
+          ))}
+        </article >
+        <br />
 
+        <SliderList heading="Don’t Miss Out" text="These trending products are flying off the shelves. Get yours before they’re gone!" Products={bestSelling} />
+
+        <br />
+        {homePageData.collections.length > 2 && homePageData.collections.slice(2).map((i, idx) => (
+          <Fragment key={idx}>
+            <Banner
+              heading={i.heading}
+              text={i.text}
+              imgUrl={i.isVideo ? '' : i.imgUrl}
+              videoUrl={i.isVideo ? i.imgUrl : ''}
+              shade={i.shade}
+              textColor={i.textColor}
+              textPositionV={i.textPosition || 'end'}
+              link={i.link}
+              buttonText={i.buttonText}
+            />
+
+            <Suspense fallback={<Loader />}>
+              <CollectionProduct collectionTitle={i.link.slice(13)} collectionId={i.collectionId} />
+            </Suspense>
+          </Fragment>
+        ))}
+      </section>
       <BlogSection />
 
-      <section className="relative my-10 bg-[#f9f9f9] text-gray-900 px-6 py-20 flex flex-col md:flex-row items-center justify-between gap-12">
-        <div className="max-w-xl space-y-6">
-          <FadeInOnView delay={100} animation="animate-fadeInUp">
-            <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-              Crafted by Anas Ahmed
-            </h1>
-          </FadeInOnView>
-          <FadeInOnView delay={200} threshold={0.4} animation="animate-fadeInUp">
-            <p className="text-lg text-gray-700">
-              Explore a range of freelance services—from fully responsive web apps to blazing-fast backend logic.
-            </p>
-          </FadeInOnView>
-          <FadeInOnView delay={400} threshold={0.5} animation="animate-fadeIn">
-            <p className="text-base text-gray-600">
-              ✨ Full-stack Web Development • SEO Optimization & Best Practices • Fast Page Loads with Optimized DB Queries • Custom Admin Dashboards & API Integrations
-            </p>
-          </FadeInOnView>
-          <FadeInOnView delay={200} threshold={0.4} animation="animate-fadeInUp">
+      <StoreFeatures />
 
-            <a
-              target="_blank"
-              title="Hire me"
-              href="https://www.fiverr.com/anas_ahmed_24"
-              className="inline-block bg-black text-white px-6 py-3 rounded-2xl text-sm font-medium hover:bg-gray-800 transition"
-            >
-              Hire Me on Fiverr
-            </a>
-          </FadeInOnView>
-
-          <FadeInOnView delay={400} threshold={0.5} animation="animate-fadeIn">
-
-            <p className="text-base text-gray-600">
-              ✨ Dynamic SEO • Fast Page Loads • Scalable Architecture • Optimized Search Logic
-            </p>
-          </FadeInOnView>
-
-          <FadeInOnView delay={500} threshold={0.5} animation="animate-fadeInUp">
-
-            <p className="text-sm text-gray-500 pt-s">
-              🛠️ Tech Stack: Next.js • React • TypeScript • Tailwind CSS • Node.js • MongoDB • Prisma • Clerk / NextAuth
-            </p>
-          </FadeInOnView>
-          <FadeInOnView delay={600} threshold={0.6} animation="animate-fadeIn">
-            <a
-              target="_blank"
-              title="Get yours too"
-              href="https://www.fiverr.com/anas_ahmed_24/create-ecommerce-store-with-nextjs-and-mongodb-database"
-              className="inline-block bg-black text-white px-6 py-3 rounded-2xl text-sm font-medium hover:bg-gray-800 transition"
-            >
-              Get Your Store
-            </a>
-          </FadeInOnView>
-
-        </div>
-        <FadeInOnView delay={700} threshold={0.9} animation="animate-fadeInUp">
-          <a
-            target="_blank"
-            title="Get yours too"
-            href="https://www.fiverr.com/anas_ahmed_24/create-ecommerce-store-with-nextjs-and-mongodb-database"
-            className="w-full md:w-1/2">
-            <Image
-              src="/promotion.png"
-              alt="Fashion Model"
-              width={600}
-              height={600}
-              className="rounded-2xl shadow-lg object-cover"
-            />
-          </a>
-        </FadeInOnView>
-
-      </section>
       <Social />
+
       <GroupComponent7
         freeDeliveryHeight="unset"
         freeDeliveryDisplay="unset"
@@ -177,6 +151,7 @@ export default async function Home() {
         securePaymentHeight="unset"
         securePaymentDisplay="unset"
       />
+
     </Fragment>
   );
 };
@@ -185,7 +160,7 @@ async function CollectionProduct({ collectionTitle, collectionId }: { collection
   const products: ProductType[] | string = await getCollectionProducts(collectionId);
   if (typeof products === 'string') return products;
   return (
-    <ProductList heading={unSlugify(collectionTitle) + ' Collection'} Products={products} />
+    <SliderList heading={unSlugify(collectionTitle) + ' Collection'} Products={products} />
   )
 }
 

@@ -1,31 +1,28 @@
+'use client'
 import { FormEvent, useState } from "react";
 import { Edit, Loader2, X } from 'lucide-react';
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Modal from "../ui/Modal";
+import { useSession } from "next-auth/react";
 
 type ReviewFormProps = {
     isEditing?: boolean;
     oldRating?: number;
     oldComment?: string;
     productId: string;
-    user: {
-        id?: string
-        name?: string | null
-        email?: string | null
-        image?: string | null
-    };
 };
 
-const ReviewForm = ({ isEditing, productId, user, oldRating, oldComment }: ReviewFormProps) => {
+const ReviewForm = ({ isEditing, productId, oldRating, oldComment }: ReviewFormProps) => {
+    const { data: session } = useSession();
     const router = useRouter();
     const [rating, setRating] = useState(oldRating);
     const [comment, setComment] = useState(oldComment);
     const [modalOpen, setModalOpen] = useState(false);
     const [isCreatingReview, setIsCreatingReview] = useState(false);
 
-    if (!user) {
-        return null; // Ensure user is available
+    if (!session || !session?.user) {
+        return null;
     }
 
     const handleCreateReview = async (e: FormEvent<HTMLFormElement>) => {
@@ -35,11 +32,11 @@ const ReviewForm = ({ isEditing, productId, user, oldRating, oldComment }: Revie
 
         const reviewData = {
             rating,
-            photo: user.image,
+            photo: session.user?.image,
             comment,
-            email: user.email,
-            name: user.name,
-            userId: user.id,
+            email: session.user?.email,
+            name: session.user?.name,
+            userId: session.user?.id,
         }
         try {
             const res = await fetch(`/api/products/reviews?productId=${productId}`, {
@@ -96,7 +93,7 @@ const ReviewForm = ({ isEditing, productId, user, oldRating, oldComment }: Revie
                             <p className=" text-[10px] sm:text-small-medium">In production enviroment this button/form will be removed, and only customers who bought this product can review this product.</p>
                         </div>
                         <button onClick={closeModal} className="rounded-md">
-                            <X size={'1rem'}/>
+                            <X size={'1rem'} />
                         </button>
                     </div>
                     <form className="space-y-4" onSubmit={handleCreateReview}>
@@ -121,6 +118,7 @@ const ReviewForm = ({ isEditing, productId, user, oldRating, oldComment }: Revie
                                 className="border px-1 rounded-md w-full"
                                 placeholder="Comment"
                                 value={comment}
+                                maxLength={200}
                                 onChange={(e) => setComment(e.target.value)}
                                 required
                             />

@@ -1,21 +1,25 @@
 import { Suspense } from "react";
-import Gallery from "@/components/product/Gallery";
 import ProductInfo from "@/components/product/ProductInfo";
 import PaginationControls from "@/components/PaginationControls";
 import { notFound } from "next/navigation";
 import { getProductReviews, getRelatedProduct } from "@/lib/actions/product.actions";
-import ProductReviews from "@/components/product/ProductReviews";
 import ProductList from "@/components/product/ProductList";
 import { getCachedProductDetails } from "@/lib/actions/cached";
 import Breadcrumb from "@/components/BreadCrumb";
 import { unSlugify } from "@/lib/utils/features";
 import { ChevronDown } from "lucide-react";
+import ImageZoom from "@/components/product/ImageZoom";
+import Image from "next/image";
+import ReviewForm from "@/components/product/ReviewForm";
+import StarRatings from "@/components/product/StarRatings";
+import DeleteReviews from "@/components/product/ProductReviews";
+import { calculateTimeDifference } from "@/lib/utils/features.csr";
 
 
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
   const product = await getCachedProductDetails(params.slug);
-  console.log("generateMetadata of prodcut page hits",product.slug);
+  console.log("generateMetadata of prodcut page hits", product.slug);
 
   if (!product) return {
     title: "Product 404 Not Found | Borcelle",
@@ -85,7 +89,7 @@ export default async function ProductPage(
   if (!product) return notFound();
 
   return (
-    <main className="mx-auto max-w-7xl space-y-3 py-s5">
+    <main className="mx-auto max-w-7xl py-s5">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -120,40 +124,51 @@ export default async function ProductPage(
       />
       <Breadcrumb />
 
-      <section className="flex px-5 justify-center items-start gap-16 max-lg:flex-col max-lg:items-center">
-        <Gallery productMedia={product.media} />
-
+      <section className="flex my-12 px-5 justify-center items-start gap-16 max-md:flex-col max-md:items-center">
+        <div className=" md:sticky top-0 flex flex-col gap-3">
+          <Image
+            placeholder="blur"
+            blurDataURL="/fallback.avif"
+            src={product.media[0]}
+            alt={product.title}
+            width={500}
+            height={500}
+            className="w-full rounded-lg md:hidden md:h-[500px] h-[300px] object-cover" />
+          <ImageZoom allSrc={product.media} alt={product.title} />
+        </div>
         <ProductInfo productInfo={product} />
       </section>
       {product.detailDesc && (
-        <details className="w-full max-wd-2xl border-y border-gray-200 rounded overflow-hidden transition-all duration-300 open:shadow-md">
-          <summary className="px-4 py-3 text-start text-base font-medium cursor-pointer select-none relative hover:bg-gray-50 transition-colors">
-            Product Detail
-            <span className="absolute right-4 top-1/2 transform -translate-y-1/2 transition-transform duration-300 group-open:rotate-180">
-              <ChevronDown />
-            </span>
-          </summary>
-          <div
-            className="px-4 py-3 text-sm text-gray-700 leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: product.detailDesc }}
-          />
-        </details>
+        <>
+          <details className="w-full max-w-2xl border-y border-gray-200 rounded overflow-hidden transition-all duration-300 open:shadow-md">
+            <summary className="px-4 py-3 text-start text-base font-medium cursor-pointer select-none relative hover:bg-gray-50 transition-colors">
+              Product Detail
+              <span className="absolute right-4 top-1/2 transform -translate-y-1/2 transition-transform duration-300 group-open:rotate-180">
+                <ChevronDown />
+              </span>
+            </summary>
+            <div
+              className="px-4 py-3 text-sm text-gray-700 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: product.detailDesc }}
+            />
+          </details>
+          <hr />
+        </>
       )}
 
-      {/* <hr /> */}
-      <Suspense fallback={<div className="flex flex-wrap justify-center gap-5">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="h-[22rem] w-64 bg-gray-200 animate-pulse" />
-        ))}
-      </div>}>
-        <RelatedProducts category={product.category} collections={product.collections} productId={product._id} />
-      </Suspense>
-      <div className="space-y-5 px-5">
-        <h2 className="text-2xl font-bold">Buyer Reviews</h2>
-        <Suspense fallback={<div className="h-40 bg-gray-200 animate-pulse" />}>
-          <ProductReviewsSection numOfReviews={product.numOfReviews} productId={product._id} page={Number(searchParams.page) || 1} />
-        </Suspense>
-      </div>
+      {/* <Suspense fallback={
+        <div className="flex flex-wrap justify-center gap-5">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="h-[22rem] w-64 bg-gray-200 animate-pulse" />
+          ))}
+        </div>
+      }> */}
+      <hr />
+      <RelatedProducts category={product.category} collections={product.collections} productId={product._id} />
+      {/* </Suspense> */}
+      {/* <Suspense fallback={<div className="h-40 bg-gray-200 animate-pulse" />}> */}
+      <ProductReviewsSection numOfReviews={product.numOfReviews} productId={product._id} page={Number(searchParams.page) || 1} />
+      {/* </Suspense> */}
 
     </main>
   );
@@ -165,13 +180,11 @@ async function RelatedProducts({ category, collections, productId }: { category:
   if (!relatedProducts.length) return null;
 
   return (
-    <>
-      <div className="space-y-5">
-        <h2 className="text-2xl font-bold px-5">Related Products</h2>
-        <ProductList Products={relatedProducts} />
-      </div>
-      <hr />
-    </>
+    <section className="space-y-5 my-12">
+      <h2 className="text-2xl font-bold px-5">Related Products</h2>
+      <ProductList Products={relatedProducts} />
+    </section>
+
   );
 }
 
@@ -179,14 +192,49 @@ async function ProductReviewsSection({ numOfReviews, productId, page }: { numOfR
   const reviews: ReviewType[] = await getProductReviews(productId, page);
 
   return (
-    <section className="my-5">
-      <ProductReviews
-        productReviews={reviews}
-        productId={productId}
-        numOfReviews={numOfReviews}
-      />
-      <PaginationControls isScrollToTop={false} totalPages={Math.ceil(numOfReviews / 6)} currentPage={page} />
+    <section id="reviews" className="my-5"><hr />
+      <div className="container mxs-auto p-4 max-ws-2xl">
+        <h3 className="text-2xl font-semibold my-3 text-gray-900">
+          Reviews ({numOfReviews})
+        </h3>
 
+        <div className="mb-8">
+          <ReviewForm productId={productId} />
+        </div>
+        {reviews && reviews.length > 0 ? (
+          <ul className="flex flex-col gap-6">
+            {reviews.map((review, index) => (
+              <li key={index} className="border-b pb-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <img
+                    src={review.photo}
+                    alt={review.name}
+                    className="rounded-full h-10 w-10 object-cover"
+                  />
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">{review.name}</p>
+                    <StarRatings rating={review.rating} />
+                  </div>
+                </div>
+                <p className="text-sm text-gray-800 whitespace-pre-line leading-relaxed">
+                  {review.comment}
+                </p>
+                <div className="flex items-center justify-between mt-3">
+                  <span className="text-xs text-gray-500">
+                    {calculateTimeDifference(review.createdAt)}
+                  </span>
+                  <DeleteReviews productId={productId} reviewRating={review.rating} reviewUserId={review.userId} reviewId={review._id} reviewComment={review.comment} />
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-gray-500 text-base">
+            No reviews yet. Be the first to review!
+          </p>
+        )}
+      </div>
+      <PaginationControls isScrollToTop={false} totalPages={Math.ceil(numOfReviews / 6)} currentPage={page} />
     </section>
   );
 }

@@ -82,11 +82,11 @@ export async function getProducts() {
     await connectToDB();
 
     const products = await Product.find()
-      .sort({ createdAt: "desc", updatedAt: 'desc' })
-      .select("title numOfReviews stock ratings sold price expense media _id")
+      .sort({ createdAt: -1, updatedAt: -1 })
+      .select("title numOfReviews variants stock ratings sold price expense media _id")
       .limit(8);
-      console.log('latest Prodcuts func hits');
-     
+    console.log('latest Prodcuts func hits');
+
     return JSON.parse(JSON.stringify(products))
   } catch (err) {
     console.log("[products_GET]", err);
@@ -99,9 +99,9 @@ export async function getBestSellingProducts() {
     await connectToDB();
 
     const products = await Product.find()
-      .sort({ sold: -1, ratings: -1, createdAt: "desc" })
+      .sort({ sold: -1, ratings: -1})
       .select("title numOfReviews stock ratings sold price expense media _id")
-      .limit(4);
+      .limit(6);
 
     return JSON.parse(JSON.stringify(products));
   } catch (err) {

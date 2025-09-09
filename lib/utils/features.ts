@@ -128,7 +128,16 @@ export const PASSWORD_RESET_REQUEST_TEMPLATE = ({
 
 
 
-export const fallbackHomeData = {
+export const fallbackHomeData: HomePage = {
+  seo: {
+    title: '',
+    desc: '',
+    keywords: [''],
+    url: '',
+    width: 0,
+    height: 0,
+    alt: '',
+  },
   hero: {
     heading: '',
     text: '',
@@ -136,7 +145,7 @@ export const fallbackHomeData = {
     // imgUrl: 'https://assets-manager.abtasty.com/2df40c2acabd6f9cf3388199e17e4ce4/25ss_influencer-inverse_site_and_app_full-bleed-hero_large-desk_2000x694px_2-nocopy.jpg',
     shade: '',
     textColor: '#ffff',
-    textPosition: '',
+    textPosition: 'center',
     link: '#collections',
     buttonText: 'Explore our collections',
     isVideo: false
@@ -158,16 +167,29 @@ export const fallbackHomeData = {
     {
       heading: '',
       text: '',
-      imgUrl: 'https://videos.pexels.com/video-files/3206296/3206296-hd_1920_1080_25fps.mp4',
+      imgUrl: 'https://e1s0bwzoxc.ufs.sh/f/EHhleKT2TuF34TtjXyzxhtOeNMLjQPXk9UF8zmWCg160n3cS',
       shade: '',
       textColor: '',
       link: '/collections/men',
       buttonText: '',
       textPosition: 'center',
       textPositionV: 'center',
-      collectionId: '6810d2ed8ea9e382250af8c2',
-      isVideo: true,
-    }
+      collectionId: '68bed35bfa5c5728ba60fce5',
+      isVideo: false,
+    },
+    // {
+    //   heading: 'Footwear Collection',
+    //   text: 'Step into style with our curated range of shoes, sneakers, and sandals designed for comfort and fashion.',
+    //   imgUrl: 'https://res.cloudinary.com/dvnef4cyd/image/upload/v1745932983/imaginify/yhxgvnyiomxd9u5zxmw6.jpg',
+    //   shade: 'black',
+    //   textColor: 'white',
+    //   link: '/collections/footwear',
+    //   buttonText: '',
+    //   textPosition: 'center',
+    //   textPositionV: 'center',
+    //   collectionId: '6810d2c78ea9e382250af8be',
+    //   isVideo: false,
+    // },
   ],
 }
 

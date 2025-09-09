@@ -63,7 +63,7 @@ const Currency = ({ className, ip = '36.255.42.109' }: { className: string; ip?:
   return (
     <>
       <button title='Change Currency & Region' onClick={openModal} className='flex items-center text-small-medium gap-2'>
-        <img title={countryToFlagMap[country] + " flg"} src={`https://flagcdn.com/96x72/${countryToFlagMap[country] || geoCountryCode?.toLowerCase() || 'ps'}.png` || 'https://flagcdn.com/96x72/pk.png'} alt={countryToFlagMap[country] + " Flag"} width={24} height={18} />
+        {/* <img title={countryToFlagMap[country] + " flg"} src={`https://flagcdn.com/96x72/${countryToFlagMap[country] || geoCountryCode?.toLowerCase() || 'ps'}.png` || 'https://flagcdn.com/96x72/pk.png'} alt={countryToFlagMap[country] + " Flag"} width={24} height={18} /> */}
         {currency} {currencyToSymbolMap[currency]}
       </button>
       <Modal isOpen={modalOpen} onClose={closeModal} overLay={true}>

@@ -32,12 +32,15 @@ export const SizesAndColors = ({ productInfo }: { productInfo: ProductType }) =>
     const handleSizeChange = (size: string) => {
         const matchingVariants = productInfo.variants.filter(variant => variant.size === size);
         setSelectedVariant(matchingVariants.length ? matchingVariants[0] : null);
+        setQuantity(selectedVariant!.quantity >= 1 ? 1 : 0);
     };
 
     const handleColorChange = (color: string) => {
         if (selectedVariant) {
             const variant = productInfo.variants.find(v => v.size === selectedVariant.size && v.color === color);
             setSelectedVariant(variant || null);
+            setQuantity(selectedVariant.quantity >= 1 ? 1 : 0);
+
         }
     };
     return (
@@ -79,16 +82,16 @@ export const SizesAndColors = ({ productInfo }: { productInfo: ProductType }) =>
                 </div>
             )}
             {selectedVariant && (
-                <div className="text-body-medium text-grey-2">
+                <div className="text-body-medium text-gray-700">
                     Variant Stock:{" "}
                     {selectedVariant.quantity > 0 ? (
                         selectedVariant.quantity < 6 ? (
-                            <span className="text-red-500">Only {selectedVariant.quantity} items left</span>
+                            <span className="text-yellow-700">Only {selectedVariant.quantity} items left</span>
                         ) : (
-                            <span className="text-green-500">Available</span>
+                            <span className="text-green-700">Available</span>
                         )
                     ) : (
-                        <span className="text-red-500">Not Available</span>
+                        <span className="text-red-700">Not Available</span>
                     )}
                 </div>
             )}
@@ -102,7 +105,7 @@ export const SizesAndColors = ({ productInfo }: { productInfo: ProductType }) =>
                     <p className="text-body-bold">{quantity}</p>
                     <PlusCircle
                         className="hover:text-red-1 cursor-pointer"
-                        onClick={() => quantity < productInfo.stock && setQuantity(quantity + 1)}
+                        onClick={() => quantity < selectedVariant?.quantity! && setQuantity(quantity + 1)}
                     />
                 </div>
             </div>
@@ -163,10 +166,10 @@ export const PriceAndExpense = ({ isCard = false, baseExpense, basePrice }: { is
             {
                 baseExpense > 0 && (
                     <>
-                        <span className="bg-red-600 ml-3 text-white text-[17px] px-2 py-1 rounded-md">
+                        <span className="bg-gray-600 ml-3 text-white text-[17px] px-2 py-1 rounded-md">
                             {((baseExpense - basePrice) / baseExpense * 100).toFixed(0)}% Off
                         </span>
-                        <p className="text-small-medium line-through  text-red-1">{currencyToSymbolMap[currency]} {expense}</p>
+                        <p className="text-small-medium line-through  text-gray-400">{currencyToSymbolMap[currency]} {expense}</p>
                     </>
                 )
             }
