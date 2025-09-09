@@ -40,7 +40,7 @@ const Collections = ({ collections }: { collections: CollectionType[] }) => {
                   blurDataURL="/fallback-banner.avif"
                   alt={collection.title + "collection image"}
                   width={511}
-                  unoptimized
+                  // unoptimized
                   height={511}
                   className="object-cover w-full h-full duration-300 group-hover:scale-105 transition-transform"
                 />
