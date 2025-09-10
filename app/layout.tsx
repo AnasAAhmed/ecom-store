@@ -80,7 +80,7 @@ export default async function RootLayout({
           <Suspense fallback={''}>
             <nav className="print:hidden py-2 px-4 hidden lg:flex justify-between text-sm sm:text-base font-medium text-gray-800 bg-gradient-to-r from-red-50 via-gray-100 to-blue-100 border-y border-gray-200">
 
-              <h1 className="text-red-600 font-bold px-4">🔥 50% Off Summer Sale</h1>
+              <p className="text-red-600 font-bold px-4">🔥 50% Off Summer Sale</p>
 
               <div className="flex gap-6 items-center">
                 {['men', 'women', 'kids', 'footwear', 'accessories'].map((item) => (
@@ -107,9 +107,9 @@ export default async function RootLayout({
                   </a>
                 ))}
               </div>
-              <h1 className="text-blue-600 px-4 max-md:hidden">
+              <p className="text-blue-600 px-4 max-md:hidden">
                 📞 Help: <a title="Call us" href="tel:+845466789">+84 546-6789</a>
-              </h1>
+              </p>
             </nav>
             <Navbar />
             <ProgressBar />

@@ -179,7 +179,7 @@ async function RelatedProducts({ category, collections, productId }: { category:
 
   return (
     <section className="space-y-5 my-12">
-      <h2 className="text-2xl font-bold px-5">Related Products</h2>
+      <h1 className="text-2xl font-bold px-5">Related Products</h1>
       <ProductList Products={relatedProducts} />
     </section>
 
@@ -192,9 +192,9 @@ async function ProductReviewsSection({ numOfReviews, productId, page }: { numOfR
   return (
     <section id="reviews" className="my-5"><hr />
       <div className="container mxs-auto p-4 max-ws-2xl">
-        <h3 className="text-2xl font-semibold my-3 text-gray-900">
+        <h1 className="text-2xl font-semibold my-3 text-gray-900">
           Reviews ({numOfReviews})
-        </h3>
+        </h1>
 
         <div className="mb-8">
           <ReviewForm productId={productId} />

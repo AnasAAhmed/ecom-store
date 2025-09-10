@@ -115,7 +115,7 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ collecti
 export const DELETE = async (req: NextRequest, props: { params: Promise<{ collectionId: string }> }) => {
   const params = await props.params;
   const { searchParams } = new URL(req.url);
-  const deleteImagesToo = Boolean(searchParams.get('deleteImagesToo')!);
+  const deleteImagesToo = searchParams.get("deleteImagesToo") === "true";
   try {
     const token = req.cookies.get('authjs.admin-session')?.value
     if (!token) {
@@ -146,10 +146,10 @@ export const DELETE = async (req: NextRequest, props: { params: Promise<{ collec
     );
 
     let deleteRes: {
-      readonly success: boolean;
+      readonly success: boolean | null;
       readonly deletedCount: number;
-    } | null = null
-    
+    } = { success: null, deletedCount: 0 }
+
     if (deleteImagesToo && collection.image) {
       console.log("Parsed removeImageUrls:", collection.image);
       const keyToDelete = extractKeyFromUrl(collection.image);

@@ -92,7 +92,7 @@ const ReviewForm = ({ isEditing, productId, oldRating, oldComment }: ReviewFormP
                             <h2 className="text-[15px] font-medium sm:text-heading4-bold">Submit Review</h2>
                             <p className=" text-[10px] sm:text-small-medium">In production enviroment this button/form will be removed, and only customers who bought this product can review this product.</p>
                         </div>
-                        <button onClick={closeModal} className="rounded-md">
+                        <button title='Close form' onClick={closeModal} className="rounded-md">
                             <X size={'1rem'} />
                         </button>
                     </div>

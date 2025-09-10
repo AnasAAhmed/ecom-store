@@ -4,7 +4,10 @@ import { AddtoCartBtnForNonVariant, PriceAndExpense, SizesAndColors } from "./Pr
 import Link from "next/link";
 
 const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
-    
+    const discount=((productInfo.expense - productInfo.price) / productInfo.expense * 100).toFixed(0);
+    const isColors = productInfo.variants.filter(i => i.color !== '')
+    const isSizes = productInfo.variants.filter(i => i.size !== '')
+    const initialVariant = productInfo.variants.find(v => v.quantity > 0) || null;
     return (
         <div className="max-w-1/2 sm:max-w-[500px] flex flex-col gap-4">
 
@@ -20,8 +23,8 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
                     <span className="text-small-medium mr-1">$</span>{productInfo.price}
                     {productInfo.expense > 0 && (
                         <>
-                            <span className="bg-gray-600 ml-3 text-white text-[17px] px-2 py-1 rounded-md">
-                                {((productInfo.expense - productInfo.price) / productInfo.expense * 100).toFixed(0)}% Off
+                            <span className="bg-blue-700 ml-3 text-white text-[17px] px-2 py-1 rounded-md">
+                                {discount}% Off
                             </span>
                             <p className="text-small-medium line-through  text-gray-700">$ {productInfo.expense}</p>
                         </>
@@ -46,7 +49,7 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
             <p className="text-small-medium sm:text-body-medium text-gray-800"  >{productInfo.description}</p>
             {productInfo.variants.length > 0 ? (
                 // for client side interactivity
-                <SizesAndColors productInfo={productInfo} />
+                <SizesAndColors initialVariant={initialVariant} isColors={isColors} isSizes={isSizes} productInfo={productInfo} />
             ) : (
                 <>
                     <div className="text-body-medium text-gray-700">

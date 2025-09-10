@@ -118,7 +118,7 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ productI
 export const DELETE = async (req: NextRequest, props: { params: Promise<{ productId: string }> }) => {
   const params = await props.params;
   const { searchParams } = new URL(req.url);
-  const deleteImagesToo = Boolean(searchParams.get('deleteImagesToo')!);
+  const deleteImagesToo = searchParams.get("deleteImagesToo") === "true";
   try {
     const token = req.cookies.get('authjs.admin-session')?.value
     if (!token) {
@@ -157,10 +157,10 @@ export const DELETE = async (req: NextRequest, props: { params: Promise<{ produc
       )
     );
 
-     let deleteRes: {
-      readonly success: boolean;
+    let deleteRes: {
+      readonly success: boolean | null;
       readonly deletedCount: number;
-    } | null = null
+    } = { success: null, deletedCount: 0 }
 
     if (deleteImagesToo && product.media.length > 0) {
       console.log("Parsed removeImageUrls:", product.media);

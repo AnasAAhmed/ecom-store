@@ -26,10 +26,10 @@ export async function POST(req: NextRequest) {
     }
 
 
-    let deleteRes: {
-      success: boolean;
-      deletedCount: number;
-    } | null = null
+     let deleteRes: {
+      readonly success: boolean | null;
+      readonly deletedCount: number;
+    } = { success: null, deletedCount: 0 }
     if (removeImageUrls.length > 0) {
       const keysToDelete = removeImageUrls.map(extractKeyFromUrl);
       try {

@@ -4,30 +4,23 @@ import { currencyToSymbolMap } from '@/lib/utils/features.csr';
 import { MinusCircle, PlusCircle } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 
-type VariantsType = [{
+type VariantsType = {
     _id: string;
     size: string;
     color: string;
     quantity: number;
-}]
+}
 
-export const SizesAndColors = ({ productInfo }: { productInfo: ProductType }) => {
-    const [selectedVariant, setSelectedVariant] = useState<VariantType | null>(null);
+export const SizesAndColors = (
+    { initialVariant, productInfo, isColors, isSizes }:
+    { initialVariant: VariantsType | null; productInfo: ProductType; isColors: VariantsType[]; isSizes: VariantsType[]; }) => {
+
+    const [selectedVariant, setSelectedVariant] = useState<VariantType | null>(initialVariant!);
     const [quantity, setQuantity] = useState(1);
     const cart = useCart();
-    // const { currency, exchangeRate } = useRegion();
-    // const price = (price * exchangeRate).toFixed();
-    // const expense = (expense * exchangeRate).toFixed();
 
-    const uniqueSizes = Array.from(new Set(productInfo.variants.map(variant => variant.size)));
-    const uniqueColors = Array.from(new Set(productInfo.variants.map(variant => variant.color)));
-    const isColors = productInfo.variants.filter(i => i.color !== '')
-    const isSizes = productInfo.variants.filter(i => i.size !== '')
-
-    useEffect(() => {
-        const availableVariant = productInfo.variants.find(variant => variant.quantity > 0);
-        if (availableVariant) setSelectedVariant(availableVariant);
-    }, [productInfo.variants]);
+    const uniqueSizes = Array.from(new Set(productInfo?.variants?.map(v => v.size) || []));
+    const uniqueColors = Array.from(new Set(productInfo?.variants?.map(v => v.color) || []));
 
     const handleSizeChange = (size: string) => {
         const matchingVariants = productInfo.variants.filter(variant => variant.size === size);
@@ -45,56 +38,49 @@ export const SizesAndColors = ({ productInfo }: { productInfo: ProductType }) =>
     };
     return (
         <>
-            {isSizes.length > 1 && uniqueSizes.length > 0 && (
-                <div className="flex mb-4">
-                    {uniqueSizes.map((size, index) => (
+            <div className={`flex mb-4 ${isSizes.length > 1 && uniqueSizes.length > 0 ? "block" : "hidden"}`}>
+                {uniqueSizes.map((size, index) => (
+                    <button
+                        title={` click here to select ${size} size`}
+                        key={index}
+                        className={`border border-black text-gray-800 px-2 py-1 mr-2 rounded-md ${selectedVariant?.size === size ? "bg-black text-white" : "bg-white"}`}
+                        onClick={() => handleSizeChange(size)}
+                    >
+                        {size}
+                    </button>
+                ))}
+            </div>
+
+            <div className={`flex mb-4 ${isColors.length > 1 && uniqueColors.length > 0 && selectedVariant ? "block" : "hidden"}`}>
+
+                {uniqueColors.map((color, index) => {
+                    const isAvailable = productInfo.variants.some(
+                        (variant) => variant.size === selectedVariant!.size && variant.color === color && variant.quantity > 0
+                    );
+
+                    return (
                         <button
-                            title={` click here to select ${size} size`}
+                            title={` click here to select ${color} color`}
                             key={index}
-                            className={`border border-black text-gray-800 px-2 py-1 mr-2 rounded-md ${selectedVariant?.size === size ? "bg-black text-white" : "bg-white"}`}
-                            onClick={() => handleSizeChange(size)}
+                            className={`border border-black text-gray-800 px-2 py-1 mr-2 rounded-md ${selectedVariant!.color === color ? "bg-black text-white" : "bg-white"} ${!isAvailable ? "opacity-50 cursor-not-allowed line-through" : ""}`}
+                            disabled={!isAvailable}
+                            onClick={() => handleColorChange(color)}
                         >
-                            {size}
+                            {color}
                         </button>
-                    ))}
-                </div>
-            )}
-
-            {isColors.length > 1 && uniqueColors.length > 0 && selectedVariant && (
-                <div className="flex mb-4">
-                    {uniqueColors.map((color, index) => {
-                        const isAvailable = productInfo.variants.some(
-                            (variant) => variant.size === selectedVariant.size && variant.color === color && variant.quantity > 0
-                        );
-
-                        return (
-                            <button
-                                title={` click here to select ${color} color`}
-                                key={index}
-                                className={`border border-black text-gray-800 px-2 py-1 mr-2 rounded-md ${selectedVariant.color === color ? "bg-black text-white" : "bg-white"} ${!isAvailable ? "opacity-50 cursor-not-allowed line-through" : ""}`}
-                                disabled={!isAvailable}
-                                onClick={() => handleColorChange(color)}
-                            >
-                                {color}
-                            </button>
-                        );
-                    })}
-                </div>
-            )}
-            {selectedVariant && (
-                <div className="text-body-medium text-gray-700">
-                    Variant Stock:{" "}
-                    {selectedVariant.quantity > 0 ? (
-                        selectedVariant.quantity < 6 ? (
-                            <span className="text-yellow-700">Only {selectedVariant.quantity} items left</span>
-                        ) : (
-                            <span className="text-green-700">Available</span>
-                        )
-                    ) : (
-                        <span className="text-red-700">Not Available</span>
-                    )}
-                </div>
-            )}
+                    );
+                })}
+            </div>
+            <div className="text-body-medium text-gray-700  h-6">
+                Variant Stock:{" "}
+                {selectedVariant
+                    ? selectedVariant.quantity > 0
+                        ? selectedVariant.quantity < 6
+                            ? <span className="text-yellow-700">Only {selectedVariant.quantity} items left</span>
+                            : <span className="text-green-700">Available</span>
+                        : <span className="text-red-700">Not Available</span>
+                    : null}
+            </div>
             <div className="flex flex-col gap-2">
                 <p className="text-base-medium text-gray-700">Quantity:</p>
                 <div className="flex gap-4 items-center">
@@ -112,7 +98,7 @@ export const SizesAndColors = ({ productInfo }: { productInfo: ProductType }) =>
 
             <button
                 title="Add to cart"
-                className="outline text-base-bold py-3 disabled:cursor-not-allowed rounded-lg bg-black text-white hover:opacity-85"
+                className="min-w-[140px] outline text-base-bold py-3 disabled:cursor-not-allowed rounded-lg bg-black text-white hover:opacity-85"
                 disabled={
                     (productInfo.variants.length > 0 && (!selectedVariant || selectedVariant.quantity < 1)) ||
                     productInfo.stock < 1
@@ -148,14 +134,27 @@ export const PriceAndExpense = ({ isCard = false, baseExpense, basePrice }: { is
     const expense = (baseExpense * exchangeRate).toFixed();
 
     if (isCard) {
-        return (<div className="flex gap-2 items-center">
-            <p className="text-small-medium sm:text-body-medium font-bold text-gray-900">
-                <small>{currencyToSymbolMap[currency]}</small>  {price}
-            </p>
-            {expense > price && (
-                <p className="text-small-medium max-sm:hidden line-through text-gray-500">
-                    <small>{currencyToSymbolMap[currency]}</small> {expense}
-                </p>
+        return (<div className="mt-1 min-h-[24px]">
+            {currency ? (
+                <>
+                    <span className="text-small-medium mr-1">{currencyToSymbolMap[currency]}</span>{price}
+                    {baseExpense > 0 && (
+                        <>
+                            <span className="bg-blue-700 ml-3 text-white text-[17px] px-2 py-1 rounded-md">
+                                {((baseExpense - basePrice) / baseExpense * 100).toFixed(0)}% Off
+                            </span>
+                            <p className="text-small-medium line-through text-gray-700">
+                                {currencyToSymbolMap[currency]} {expense}
+                            </p>
+                        </>
+                    )}
+                </>
+            ) : (
+                <div className="opacity-0">
+                    $ {basePrice}
+                    <span className="ml-3 px-2 py-1">0% Off</span>
+                    <p className="line-through">$ {baseExpense}</p>
+                </div>
             )}
         </div>)
     }
@@ -166,10 +165,10 @@ export const PriceAndExpense = ({ isCard = false, baseExpense, basePrice }: { is
             {
                 baseExpense > 0 && (
                     <>
-                        <span className="bg-gray-600 ml-3 text-white text-[17px] px-2 py-1 rounded-md">
+                        <span className="bg-blue-700 ml-3 text-white text-[17px] px-2 py-1 rounded-md">
                             {((baseExpense - basePrice) / baseExpense * 100).toFixed(0)}% Off
                         </span>
-                        <p className="text-small-medium line-through  text-gray-400">{currencyToSymbolMap[currency]} {expense}</p>
+                        <p className="text-small-medium line-through  text-gray-700">{currencyToSymbolMap[currency]} {expense}</p>
                     </>
                 )
             }
