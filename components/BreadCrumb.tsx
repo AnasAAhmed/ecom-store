@@ -12,7 +12,7 @@ const Breadcrumb = () => {
     const lastSegment = segments[segments.length - 1]; // last part like "something"
 
     return (
-        <nav className="px-4 pt-8 text-[10px] sm:text-[15px] font-medium">
+        <nav className="px-4 pt-8 sm:pb-6 pb-3 text-[10px] sm:text-[15px] font-medium">
             <div className="max-w-screen-lg mx-lauto">
                 <div className="flex flex-s  items-center space-x-2">
                     {breadcrumbs.map((segment, index) => {

@@ -13,7 +13,7 @@ const Collections = ({ collections }: { collections: CollectionType[] }) => {
   return (
     <div
       id="collections"
-      className="flex flex-col items-center pb-8 sm:px-5 my-[3rem] overflow-hidden relative"
+      className="flex flex-col items-center py-8 sm:px-5 my-[4rem] overflow-hidden relative"
     >
       <h1 className="text-heading3-bold sm:text-heading1-bold">Discover Collections</h1>
       <p className="max-md:mx-2 sm:text-body-semibold text-gray-600 text-center mt-2 mb-8 text-small-medium capitalize">

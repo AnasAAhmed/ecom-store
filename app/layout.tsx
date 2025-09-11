@@ -115,7 +115,7 @@ export default async function RootLayout({
             <ProgressBar />
           </Suspense>
           <Suspense fallback={<Loader height={80} />}>
-            <main className="mt-20 sm:mt-12">
+            <main className="mt-24 sm:mt-12">
               {children}
             </main>
             <IsOnline />

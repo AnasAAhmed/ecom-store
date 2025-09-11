@@ -74,11 +74,11 @@ const ReviewForm = ({ isEditing, productId, oldRating, oldComment }: ReviewFormP
         <div>
             <div className='flex flex-col items-center'>
                 {isEditing ? (
-                    <button className="text-[0.7rem] sm:text-sm px-1 py-1 rounded-md" onClick={openModal}>
+                    <button title="Edit Review" className="text-[0.7rem] sm:text-sm px-1 py-1 rounded-md" onClick={openModal}>
                         <Edit />
                     </button>
                 ) : (
-                    <button onClick={openModal} className="bg-blue-700 text-white px-2 py-1 rounded-full mb-1">
+                    <button title="Add Review for demo purposes" onClick={openModal} className="bg-blue-700 text-white px-2 py-1 rounded-full mb-1">
                         Add Review for demo purposes
                     </button>
                 )}

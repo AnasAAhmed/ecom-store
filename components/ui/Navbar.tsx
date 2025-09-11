@@ -84,7 +84,7 @@ const Navbar = () => {
             <option value="Rain Jacket Women Windbreaker Striped Climbing">Rain Jacket Women Windbreaker Striped Climbing</option>
             <option value="BIYLACLESEN Women 3 in 1 Snowboard Jacket Winter Coats">BIYLACLESEN Women 3 in 1 Snowboard Jacket Winter Coats</option>
           </datalist>
-          <button title="Confirm Search" type="submit"> <Search className="cursor-pointer h-4 w-4 hover:text-blue-500" /></button>
+          <button title="Confirm Search" type="submit"> <Search className="cursor-pointer h-4 w-4 hover:text-blue-700" /></button>
         </form>
 
         <div className="hidden lg:flex gap-4">
@@ -96,7 +96,7 @@ const Navbar = () => {
                 href={path}
                 target={idx === 5 ? '_blank' : ''}
                 aria-label={path}
-                className={`hover:text-blue-500 ${pathname === path && "text-blue-500"}`}
+                className={`hover:text-blue-700 ${pathname === path && "text-blue-500"}`}
               >
                 {["Home", "Shop", "Contact", "Wishlist", "Orders", 'CMS'][idx]}
               </SmartLink>

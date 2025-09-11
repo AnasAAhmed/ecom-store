@@ -8,9 +8,9 @@ import Link from 'next/link';
 export async function generateMetadata(props: { searchParams: Promise<{ query: string }> }) {
   const searchParams = await props.searchParams;
   return {
-    title: `Search ${searchParams.query?'results for '+searchParams.query:''} | Borcelle`,
+    title: `Search ${searchParams.query ? 'results for "' + searchParams.query : ''}" | Borcelle`,
     description: "Search high-quality products at Borcelle.",
-    keywords: ['search',"products",'Borcelle'],
+    keywords: ['search', "products", 'Borcelle'],
     robots: {
       index: true,
       follow: true,
@@ -20,7 +20,7 @@ export async function generateMetadata(props: { searchParams: Promise<{ query: s
       }
     },
     openGraph: {
-      title: `Search | Borcelle`,
+      title: `Search ${searchParams.query ? 'results for "' + searchParams.query : ''}" | Borcelle`,
       description: "Search high-quality products at Borcelle.",
       url: `${process.env.ECOM_STORE_URL}/search`,
       images: [
@@ -47,11 +47,11 @@ const SearchPage = async (props: { searchParams: Promise<any> }) => {
   const sortField = (searchParams?.field as string) || '';
   let page = Number(searchParams?.page) || 1;
 
-  const data = await getSearchProducts(query, sort, sortField, page, category, color,size);
+  const data = await getSearchProducts(query, sort, sortField, page, category, color, size);
 
   return (
     <div className='sm:px-10 px-3 py-12 '>
-      {query && <p className='text-small-medium md:text-body-medium lg:text-heading3-bold my-10'>Search results for {query} <Link className='underline text-small-medium text-blue-500' title='Clear filters' href={'/search'}>Clear &times;</Link></p>}
+      {query && <p className='text-small-medium md:text-body-medium lg:text-heading3-bold mb-3'>Search results for {query} <Link className='underline text-small-medium text-blue-500' title='Clear filters' href={'/search'}>Clear &times;</Link></p>}
       <Sort />
       <div className='min-h-[80vh]'>
 

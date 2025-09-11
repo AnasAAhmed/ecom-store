@@ -13,7 +13,7 @@ type VariantsType = {
 
 export const SizesAndColors = (
     { initialVariant, productInfo, isColors, isSizes }:
-    { initialVariant: VariantsType | null; productInfo: ProductType; isColors: VariantsType[]; isSizes: VariantsType[]; }) => {
+        { initialVariant: VariantsType | null; productInfo: ProductType; isColors: VariantsType[]; isSizes: VariantsType[]; }) => {
 
     const [selectedVariant, setSelectedVariant] = useState<VariantType | null>(initialVariant!);
     const [quantity, setQuantity] = useState(1);
@@ -134,33 +134,30 @@ export const PriceAndExpense = ({ isCard = false, baseExpense, basePrice }: { is
     const expense = (baseExpense * exchangeRate).toFixed();
 
     if (isCard) {
-        return (<div className="mt-1 min-h-[24px]">
-            {currency ? (
-                <>
-                    <span className="text-small-medium mr-1">{currencyToSymbolMap[currency]}</span>{price}
-                    {baseExpense > 0 && (
-                        <>
-                            <span className="bg-blue-700 ml-3 text-white text-[17px] px-2 py-1 rounded-md">
-                                {((baseExpense - basePrice) / baseExpense * 100).toFixed(0)}% Off
-                            </span>
+        return (
+            <div className="mt-1 min-h-[24px]">
+                {currency ? (
+                    <div className='flex items-center gap-1'>
+                        <span className="text-small-medium mr-1">{currencyToSymbolMap[currency]}</span>{price}
+                        {baseExpense > 0 && (
                             <p className="text-small-medium line-through text-gray-700">
                                 {currencyToSymbolMap[currency]} {expense}
                             </p>
-                        </>
-                    )}
-                </>
-            ) : (
-                <div className="opacity-0">
-                    $ {basePrice}
-                    <span className="ml-3 px-2 py-1">0% Off</span>
-                    <p className="line-through">$ {baseExpense}</p>
-                </div>
-            )}
-        </div>)
+                        )}
+                    </div>
+                ) : (
+                    <div className="opacity-0">
+                        $ {basePrice}
+                        <span className="ml-3 px-2 py-1">0% Off</span>
+                        <p className="line-through">$ {baseExpense}</p>
+                    </div>
+                )}
+            </div>
+        )
     }
 
     return (
-        <div className="mt-[2spx]" >
+        <div className="mb-[5px]" >
             <span className="text-small-medium mr-1">{currencyToSymbolMap[currency]}</span>{price}
             {
                 baseExpense > 0 && (

@@ -122,7 +122,7 @@ export default async function ProductPage(
       />
       <Breadcrumb />
 
-      <section className="flex my-12 px-5 justify-center items-start gap-16 max-md:flex-col max-md:items-center">
+      <section className="flex mb-12 px-5 justify-center items-start gap-16 max-md:flex-col max-md:items-center">
         <div className=" md:sticky top-0 flex flex-col gap-3">
           <Image
             placeholder="blur"

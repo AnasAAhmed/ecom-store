@@ -17,7 +17,7 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
             </div>
 
             {/* Price & Discounts */}
-            <div className="text-heading4-bold flex justify-between items-start">
+            <div className="text-heading4-bold flex justify-between items-end">
                 {/* for server side for bots and search engine*/}
                 <div className=" sr-only mt-[2spx]">
                     <span className="text-small-medium mr-1">$</span>{productInfo.price}
