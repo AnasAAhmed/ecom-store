@@ -218,6 +218,7 @@ export function statusValidation(status: string): string {
 
   if (input.includes("pending") || input.includes("processing")) return "pending";
   if (input.includes("shipped")) return "shipped";
+  if (input.includes("refunded")) return "refunded";
   if (input.includes("delivered")) return "delivered";
   if (input.includes("canceled")) return "canceled";
 

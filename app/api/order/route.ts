@@ -29,6 +29,7 @@ export const POST = async (req: NextRequest) => {
     if (!customerInfo.id || !customerInfo.email) {
       return NextResponse.json('User Details Missing/Login first', { status: 400 });
     }
+console.log(orderData);
 
     await stockReduce(products);
 
@@ -62,9 +63,9 @@ export const POST = async (req: NextRequest) => {
 
     await customer.save();
     revalidatePath('/orders')
-    return NextResponse.json({ orderId: newOrder._id }, { status: 200 });
+    return NextResponse.json({ orderId: newOrder._id }, { status: 200 ,statusText:'Order Placed'});
   } catch (error) {
     console.log("NEW_ORDER.Post", error);
-    return NextResponse.json((error as Error).message , { status: 500 });
+    return NextResponse.json((error as Error).message , { status: 500,statusText:(error as Error).message  });
   }
 };

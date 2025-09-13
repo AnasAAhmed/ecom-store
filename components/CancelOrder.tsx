@@ -37,12 +37,12 @@ const CancelOrder = ({ order }: OrderManageProps) => {
       } else {
         const errorResponse = await res.json();
         setLoadingUp(false);
-        throw new Error(errorResponse.message || 'Failed to place order')
+        throw new Error((errorResponse||res.statusText) || 'Failed to Cancel order')
       }
     } catch (err) {
       setLoadingUp(false);
       console.error('Error updating order status:', err);
-      toast.error('Internal server error: ' + (err as Error).message + ' Please try again.');
+      toast.error((err as Error).message);
     }
   };
   function getStatusColor(status: string): string {
@@ -230,7 +230,7 @@ const CancelOrder = ({ order }: OrderManageProps) => {
       </div>
 
       {/* Cancel Order (Conditional) */}
-      {!order.status.startsWith('Canceled') && timeDifference <= 2 && (
+      {!order.status.startsWith('canceled') && timeDifference <= 2 && (
         <div className="flex items-center gap-4 print:hidden bg-white p-6 rounded-lg shadow-sm border border-gray-200">
           <label htmlFor="Cancel" className="text-sm font-medium text-gray-600">
             Cancel Order:

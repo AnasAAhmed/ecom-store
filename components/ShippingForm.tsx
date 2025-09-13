@@ -80,7 +80,7 @@ const ShippingForm = ({ user }: { user: { id: string, email: string, image: stri
             if (!response.ok) {
                 const errorResponse = await response.json();
                 // toast.error(errorResponse.message || 'Failed to place order');
-                throw new Error(errorResponse.message || 'Failed to place order')
+                throw new Error(errorResponse || 'Failed to place order')
             } else {
                 toast.success('Order Placed Successfully');
                 router.push('/payment_success');

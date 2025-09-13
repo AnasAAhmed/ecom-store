@@ -59,7 +59,7 @@ export const stockReduce = async (products: OrderProductCOD[]) => {
   await connectToDB();
   for (let i = 0; i < products.length; i++) {
     const order = products[i];
-    const product = await Product.findById(order.product).select('_id stock variants sold');
+    const product = await Product.findById(order.product).select('_id stock variants sold title slug');
     if (!product) throw new Error("Product Not Found");
 
     // Reduce the general product stock
@@ -72,7 +72,7 @@ export const stockReduce = async (products: OrderProductCOD[]) => {
     }
 
     // Find the matching variant
-    if (order.size || order.color && order.variantId) {
+    if ((order.size || order.color) && order.variantId) {
       const variant = product.variants.find((v: Variant) => v._id!.toString() === order.variantId);
       if (!variant) throw new Error(`Variant not ${order.variantId} found for product: ${order.product}, size: ${order.size}, color: ${order.color}`);
 

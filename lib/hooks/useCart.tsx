@@ -31,9 +31,9 @@ const useCart = create(
           (cartItem) => cartItem.item._id === item._id
         );
         if (!isExisting && currentItems.length >= 10) {
-    toast.error("Cart limit reached (max 10 items)");
-    return;
-  }
+          toast.error("Cart limit reached (max 10 items)");
+          return;
+        }
         let newCartItems = currentItems;
         if (isExisting) {
           newCartItems = currentItems.filter(
@@ -100,19 +100,22 @@ const useCart = create(
           const updatedProduct = updatedProducts.find((p: any) => p._id === cartItem.item._id);
 
           if (updatedProduct) {
-            if (updatedProduct.variants && updatedProduct.variants.length > 0) {
-              const updatedVariant = updatedProduct.variants.find((variant: any) => {
-                return variant.size === cartItem.size && variant.color === cartItem.color;
-              });
+            if (updatedProduct.variants && updatedProduct.variants.length > 0 && cartItem.variantId) {
+              const updatedVariant = updatedProduct.variants.find(
+                (variant: any) => variant._id === cartItem.variantId
+              );
 
               if (updatedVariant) {
                 return {
                   ...cartItem,
                   item: {
                     ...cartItem.item,
-                    stock: updatedVariant.quantity
+                    stock: updatedVariant.quantity || 0
                   }
                 };
+              } else {
+                toast.error(`This ${cartItem.size! + '/' + cartItem.color!} Varaint of ${cartItem.item.title} is Changed Or Remove`)
+                return null;
               }
             } else {
               return {
@@ -126,8 +129,9 @@ const useCart = create(
               };
             }
           }
-          return cartItem;
-        });
+          toast.error(`The Product ${cartItem.item.title} is Changed Or Remove`)
+          return null;
+        }).filter((item): item is NonNullable<typeof item> => item !== null);
 
         set({ cartItems: updatedCartItems });
       },
@@ -196,7 +200,7 @@ export const useRegion = create<RegionStore>()(
       },
 
       clearcur: () => set({ currency: 'USD', exchangeRate: 1 }), // reset to default USD
-      clearcon: () => set({ country: '',currency: 'USD', exchangeRate: 1 }),
+      clearcon: () => set({ country: '', currency: 'USD', exchangeRate: 1 }),
     }),
     {
       name: "region-storage",

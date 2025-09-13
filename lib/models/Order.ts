@@ -28,12 +28,15 @@ const orderSchema = new mongoose.Schema({
   totalAmount: Number,
   currency: String,
   method: String,
-  statusHistory: [
-    {
-      status: { type: String },
-      changedAt: { type: Date, default: Date.now }
-    }
-  ],
+  statusHistory: {
+    type: [
+      {
+        status: { type: String },
+        changedAt: { type: Date, default: Date.now }
+      }
+    ],
+    default: [],  
+  },
   isPaid: { type: Boolean, default: false, index: true },
   status: {
     type: String,

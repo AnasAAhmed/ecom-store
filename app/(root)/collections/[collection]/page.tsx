@@ -96,12 +96,42 @@ const CollectionDetails = async (
               "@type": "Product",
               name: product.title,
               description: product.description,
+              sku: product._id,
+              brand: {
+                "@type": "Brand",
+                name: "Borcelle"
+              },
+              url: `https://ecom-store-anas.vercel.app/products/${product.slug}`,
               image: product.media[0],
               offers: {
-                "@type": "Offer",
+                "@type": "AggregateOffer",
+                availability: product.stock > 0
+                  ? 'https://schema.org/InStock'
+                  : 'https://schema.org/OutOfStock',
                 priceCurrency: "USD",
+                highPrice: product.price,
+                lowPrice: product.expense || 0,
+                offerCount: 5,
                 price: product.price,
               },
+              review: {
+                "@type": "Review",
+                "reviewRating": {
+                  "@type": "Rating",
+                  "ratingValue": 4,
+                  "bestRating": 5
+                },
+                "author": {
+                  "@type": "Person",
+                  "name": "Anas Ahmed"
+                }
+              },
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: product.ratings,
+                reviewCount: product.numOfReviews,
+              },
+              keywords: product.tags?.join(', ') ?? '',
             })),
           }),
         }}
@@ -127,8 +157,8 @@ const CollectionDetails = async (
         /> */}
         {/* <p className="text-heading3-bold text-grey-2 capitalize">{collectionDetails.title}</p>
     <p className="text-body-normal text-grey-2 text-center max-w-[900px]">{collectionDetails.description}</p> */}
-              <Breadcrumb/>
-    
+        <Breadcrumb />
+
         <Sort />
         <Suspense fallback={<Loader />}>
           <CollectionProduct collectionId={collectionDetails._id} page={page} size={size} color={color} sort={sort} sortField={sortField} />
@@ -155,7 +185,7 @@ async function CollectionProduct({ collectionId, page, size, color, sort, sortFi
   return (
     <>
       <ProductList heading='' isViewAll={false} Products={data.products} />
-      <PaginationControls totalPages={data.totalPages} currentPage={page}/>
+      <PaginationControls totalPages={data.totalPages} currentPage={page} />
     </>
   )
 }

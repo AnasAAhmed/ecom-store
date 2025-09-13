@@ -19,7 +19,7 @@ import { calculateTimeDifference } from "@/lib/utils/features.csr";
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
   const product = await getCachedProductDetails(params.slug);
-  
+
   if (!product) return {
     title: "Product 404 Not Found | Borcelle",
     description: "No such product exists at borcelle store by anas ahmed",
@@ -46,7 +46,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
       site_name: 'Borcelle Next.js by anas ahmed',
     },
   };
-  
+
   return {
     title: `${unSlugify(product.title)} | Borcelle`,
     description: product.description || "Shop high-quality products at Borcelle.",
@@ -109,7 +109,22 @@ export default async function ProductPage(
                 ? 'https://schema.org/InStock'
                 : 'https://schema.org/OutOfStock',
               priceCurrency: "USD",
+              highPrice: product.price,
+              lowPrice: product.expense || 0,
+              offerCount: 5,
               price: product.price,
+            },
+            review: {
+              "@type": "Review",
+              "reviewRating": {
+                "@type": "Rating",
+                "ratingValue": 4,
+                "bestRating": 5
+              },
+              "author": {
+                "@type": "Person",
+                "name": "Anas Ahmed"
+              }
             },
             aggregateRating: {
               "@type": "AggregateRating",

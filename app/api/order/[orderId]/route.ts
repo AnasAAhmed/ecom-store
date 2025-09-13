@@ -18,17 +18,17 @@ export const PUT = async (req: NextRequest, props: { params: Promise<{ orderId: 
     const currentTime = new Date().getTime();
     const timeDifference = (currentTime - orderCreationTime) / (1000 * 60 * 60);
 
-    if (order.status.startsWith("Canceled")) {
+    if (order.status==="canceled") {
       return NextResponse.json(
         "Order is already canceled",
-        { status: 409 } // Conflict
+        { status: 409, statusText: "Order is already canceled" } // Conflict
       );
     }
 
     if (timeDifference >= 2) {
       return NextResponse.json(
         "Cancelling order is only allowed within 2 hours after it's placed",
-        { status: 403 } // Forbidden
+        { status: 403, statusText: "Cancelling order is only allowed within 2 hours after it's placed" } // Forbidden
       );
     }
 
@@ -36,6 +36,9 @@ export const PUT = async (req: NextRequest, props: { params: Promise<{ orderId: 
 
     if (order.status) {
       order.status = statusValidation(status);
+      if (!order.statusHistory) {
+        order.statusHistory = [];
+      }
       order.statusHistory.push({
         status: status,
         changedAt: Date.now()
