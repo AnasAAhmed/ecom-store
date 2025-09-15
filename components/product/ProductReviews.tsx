@@ -36,7 +36,7 @@ const DeleteReviews: React.FC<ProductReviewsProps> = ({ reviewComment, reviewRat
       });
 
       if (!response.ok) {
-        throw new Error('Failed to delete review');
+        throw new Error(response.statusText || await response.json());
       }
 
       toast.dismiss();

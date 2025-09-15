@@ -95,9 +95,9 @@ export const POST = async (req: NextRequest) => {
       //reduce stock
       await stockReduce(orderItems);
     }
-    return new NextResponse("Order created", { status: 200 })
+    return NextResponse.json("Order created", { status: 200,statusText:'Order created' })
   } catch (err) {
     console.log("[webhooks_POST]", err)
-    return new NextResponse("Failed to create the order. Contact Owner: " + (err as Error).message, { status: 500 })
+    return NextResponse.json("Failed to create the order. Contact Owner: " + (err as Error).message, { status: 500,statusText:"Failed to create the order. Contact Owner: " + (err as Error).message })
   }
 }

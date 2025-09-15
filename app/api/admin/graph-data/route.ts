@@ -123,20 +123,23 @@ export const GET = async (req: NextRequest) => {
     try {
         const token = req.cookies.get('authjs.admin-session')?.value
         if (!token) {
-            return new NextResponse("Token is missing", {
+            return NextResponse.json("Token is missing", {
                 status: 401,
                 headers: corsHeaders,
+                statusText: 'Admin Auth Token is missing'
+
             });
         }
         const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
         if (!decodedToken || decodedToken.role !== 'admin' || !decodedToken.isAdmin) {
-          return new NextResponse("Unauthorized", { status: 401, headers: corsHeaders });
+            return NextResponse.json("Unauthorized", { status: 401, headers: corsHeaders, statusText: 'Unauthorized' });
         }
         const now = Math.floor(Date.now() / 1000);
         if (decodedToken!.exp && decodedToken!.exp < now) {
-            return new NextResponse("Session expired. Please log in again.", {
+            return NextResponse.json("Session expired. Please log in again.", {
                 status: 401,
                 headers: corsHeaders,
+                statusText: 'Session expired. Please log in again.'
             });
         }
 
@@ -161,6 +164,6 @@ export const GET = async (req: NextRequest) => {
         return NextResponse.json({ graphData }, { status: 200, headers: corsHeaders })
     } catch (err) {
         console.log("[admin_graph_GET]", err)
-        return new NextResponse((err as Error).message, { status: 500, headers: corsHeaders })
+        return NextResponse.json((err as Error).message, { status: 500, headers: corsHeaders, statusText: (err as Error).message, })
     }
 }

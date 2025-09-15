@@ -3,7 +3,7 @@ import { decode } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export function OPTIONS() {
-    return new NextResponse(null, {
+    return NextResponse.json(null, {
         status: 204,
         headers: corsHeaders,
     });
@@ -13,20 +13,20 @@ export async function GET(req: NextRequest) {
     try {
         const token = req.cookies.get('authjs.admin-session')?.value
         if (!token) {
-            return new NextResponse("Log-in first", {
+            return NextResponse.json("Log-in first", {
                 status: 401,
                 headers: corsHeaders,
             });
         }
 
         const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
-        if (!decodedToken ) {
-        // if (!decodedToken || decodedToken.role !== 'admin' || !decodedToken.isAdmin) {
-            return new NextResponse("Access Denied for non-admin", { status: 401, headers: corsHeaders });
+        if (!decodedToken) {
+            // if (!decodedToken || decodedToken.role !== 'admin' || !decodedToken.isAdmin) {
+            return NextResponse.json("Access Denied for non-admin", { status: 401, headers: corsHeaders });
         }
         const now = Math.floor(Date.now() / 1000);
         if (decodedToken.exp && decodedToken.exp < now) {
-            const res = new NextResponse("Session expired. Please log in again.", {
+            const res = NextResponse.json("Session expired. Please log in again.", {
                 status: 401,
                 headers: corsHeaders,
             });
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
     try {
         const token = req.cookies.get('authjs.admin-session')?.value
         if (!token) {
-            return new NextResponse("Log-in first", {
+            return NextResponse.json("Log-in first", {
                 status: 401,
                 headers: corsHeaders,
             });
@@ -63,10 +63,10 @@ export async function POST(req: NextRequest) {
 
         const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
         // if (!decodedToken || decodedToken.role !== 'admin') {
-        //     return new NextResponse("Access Denied for non-admin", { status: 401, headers: corsHeaders });
+        //     return NextResponse.json("Access Denied for non-admin", { status: 401, headers: corsHeaders });
         // }
 
-        const res = new NextResponse("Logout Successfully", {
+        const res = NextResponse.json("Logout Successfully", {
             status: 200,
             headers: corsHeaders,
         });

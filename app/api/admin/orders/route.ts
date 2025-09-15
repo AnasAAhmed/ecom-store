@@ -7,7 +7,7 @@ import { decode } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export function OPTIONS() {
-  return new NextResponse(null, {
+  return NextResponse.json(null, {
     status: 204,
     headers: corsHeaders,
   });
@@ -17,18 +17,18 @@ export const GET = async (req: NextRequest) => {
   try {
     const token = req.cookies.get('authjs.admin-session')?.value
     if (!token) {
-      return new NextResponse("Token is missing", {
+      return NextResponse.json("Token is missing", {
         status: 401,
         headers: corsHeaders,
       });
     }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
-      return new NextResponse("Unauthorized", { status: 401, headers: corsHeaders });
+      return NextResponse.json("Unauthorized", { status: 401, headers: corsHeaders });
     }
     const now = Math.floor(Date.now() / 1000);
     if (decodedToken.exp && decodedToken.exp < now) {
-      return new NextResponse("Session expired. Please log in again.", {
+      return NextResponse.json("Session expired. Please log in again.", {
         status: 401,
         headers: corsHeaders,
       });
@@ -154,6 +154,6 @@ export const GET = async (req: NextRequest) => {
 
   } catch (err) {
     console.log("[admin_orders_GET] Error:", err);
-    return new NextResponse((err as Error).message + " Internal Error", { status: 500, headers: corsHeaders });
+    return NextResponse.json((err as Error).message + " Internal Error", { status: 500, headers: corsHeaders });
   }
 };

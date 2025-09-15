@@ -13,23 +13,24 @@ export async function POST(request: NextRequest) {
 
     const secret = searchParams.get('secret');
 
-    if (secret !==  process.env.REVALIDATE_SECRET_TOKEN) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (secret !== process.env.REVALIDATE_SECRET_TOKEN) {
+        return NextResponse.json("Unauthorized", { status: 401, statusText: "Unauthorized" });
     }
 
     try {
         if (!pathToRevalidate) {
-            return NextResponse.json({ error: "Path is required" }, { status: 400 });
+            return NextResponse.json("Path is required", { status: 400, statusText: "Unauthorized" });
         }
 
         revalidatePath('/');
 
-        return NextResponse.json({ message: `Revalidation triggered for path: ${pathToRevalidate}` }, {
+        return NextResponse.json(`Revalidation triggered for path: ${pathToRevalidate}`, {
             status: 200,
-            headers: corsHeaders
+            headers: corsHeaders,
+            statusText: `Revalidation triggered for path: ${pathToRevalidate}`,
         });
     } catch (error) {
         console.error('Error triggering revalidation:', error);
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+        return NextResponse.json((error as Error).message, { status: 500, statusText: (error as Error).message });
     }
 }

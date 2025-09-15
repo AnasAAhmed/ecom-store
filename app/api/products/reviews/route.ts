@@ -62,12 +62,12 @@ export async function DELETE(request: NextRequest) {
 
     const review = await Review.findOneAndDelete({ _id: reviewId, userId });
     if (!review) {
-      return NextResponse.json({ message: "Review not found" }, { status: 404 });
+      return NextResponse.json("Review not found", { status: 404, statusText: "Review not found" });
     }
 
     const product = await Product.findById(productId);
     if (!product) {
-      return NextResponse.json({ message: "Product not found" }, { status: 404 });
+      return NextResponse.json("Product not found", { status: 404, statusText: "Product not found" });
     }
 
     product.numOfReviews -= 1;
@@ -84,6 +84,6 @@ export async function DELETE(request: NextRequest) {
     });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json((error as Error).message, { status: 500, statusText: (error as Error).message });
   }
 }

@@ -9,7 +9,7 @@ export const GET = async (req: NextRequest) => {
     const session = (await auth()) as Session;
 
     if (!session || !session.user.id) {
-      return new NextResponse(JSON.stringify({ message: "Unauthorized" }), {
+      return NextResponse.json(JSON.stringify({ message: "Unauthorized" }), {
         status: 401,
       });
     }
@@ -17,13 +17,13 @@ export const GET = async (req: NextRequest) => {
     await connectToDB();
 
     const user = await Customer.findById(session.user.id).select("signInHistory");
-    if (!user) return new NextResponse("User not found", { status: 404 });
+    if (!user) return NextResponse.json("User not found", { status: 404, statusText: "User not found" });
 
     let wishlist = await Wishlist.findOne({ userId: session.user.id });
 
     if (!wishlist) {
       wishlist = new Wishlist({
-        userId:session.user.id,
+        userId: session.user.id,
         wishlist: [],
       });
       await wishlist.save();
@@ -37,10 +37,10 @@ export const GET = async (req: NextRequest) => {
         country: user.country,
         city: user.city,
       },
-      { status: 200 }
+      { status: 200, statusText: "User Fetch succefully" }
     );
   } catch (err) {
     console.error("[wishlist_POST]", err);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return NextResponse.json((err as Error).message, { status: 500, statusText: (err as Error).message });
   }
 };

@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
   try {
     const { cartItems, customer, currency, exchangeRate } = await req.json();
     if (!cartItems || !customer || !currency || !exchangeRate) {
-      return new NextResponse("Not enough data to checkout", { statusText: "Not enough data to checkout" });
+      return NextResponse.json("Not enough data to checkout", { statusText: "Not enough data to checkout" });
     }
     const shippingOptions = currency === 'USD'
       ? [
@@ -67,6 +67,6 @@ export async function POST(req: NextRequest) {
     return OPTIONS(session);
   } catch (err) {
     console.log("[checkout_POST]", err);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return NextResponse.json("Internal Server Error", { status: 500 });
   }
 }

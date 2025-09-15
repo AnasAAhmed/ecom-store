@@ -10,7 +10,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { UTApi } from "uploadthing/server";
 
 export function OPTIONS() {
-  return new NextResponse(null, {
+  return NextResponse.json(null, {
     status: 204,
     headers: corsHeaders,
   });
@@ -21,14 +21,14 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ productI
   try {
     const token = req.cookies.get('authjs.admin-session')?.value
     if (!token) {
-      return new NextResponse("Token is missing", {
+      return NextResponse.json("Token is missing", {
         status: 401,
         headers: corsHeaders,
       });
     }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
-      return new NextResponse("Unauthorized", { status: 401, headers: corsHeaders });
+      return NextResponse.json("Unauthorized", { status: 401, headers: corsHeaders });
     }
 
     const {
@@ -48,7 +48,7 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ productI
     } = await req.json();
 
     if (!title || !description || !media || !category || !price || !stock) {
-      return new NextResponse("Not enough data to Update a new product", {
+      return NextResponse.json("Not enough data to Update a new product", {
         status: 400,
         headers: corsHeaders
       });
@@ -58,7 +58,7 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ productI
     const product = await Product.findById(params.productId);
 
     if (!product) {
-      return new NextResponse(
+      return NextResponse.json(
         JSON.stringify("Product not found"),
         { status: 404, headers: corsHeaders }
       );
@@ -111,7 +111,7 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ productI
     return NextResponse.json(product, { status: 200, headers: corsHeaders });
   } catch (err) {
     console.log("[productId_POST]", err);
-    return new NextResponse((err as Error).message, { status: 500, headers: corsHeaders });
+    return NextResponse.json((err as Error).message, { status: 500, headers: corsHeaders });
   }
 };
 
@@ -122,17 +122,17 @@ export const DELETE = async (req: NextRequest, props: { params: Promise<{ produc
   try {
     const token = req.cookies.get('authjs.admin-session')?.value
     if (!token) {
-      return new NextResponse("Token is missing", {
+      return NextResponse.json("Token is missing", {
         status: 401,
         headers: corsHeaders,
       });
     }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
-      return new NextResponse("Unauthorized", { status: 401, headers: corsHeaders });
+      return NextResponse.json("Unauthorized", { status: 401, headers: corsHeaders });
     }
     if (!params.productId) {
-      return new NextResponse(JSON.stringify("Product Id Required"), {
+      return NextResponse.json(JSON.stringify("Product Id Required"), {
         status: 400,
         headers: corsHeaders
       });
@@ -144,7 +144,7 @@ export const DELETE = async (req: NextRequest, props: { params: Promise<{ produc
     const product = await Product.findOneAndDelete({ _id: params.productId }).select('collections media');
 
     if (!product) {
-      return new NextResponse(
+      return NextResponse.json(
         JSON.stringify("Product not found"),
         { status: 404, headers: corsHeaders }
       );
@@ -175,13 +175,13 @@ export const DELETE = async (req: NextRequest, props: { params: Promise<{ produc
     }
     revalidatePath('/')
 
-    return new NextResponse(JSON.stringify(`Product deleted ${deleteRes!.success ? 'with images' : ""}`), {
+    return NextResponse.json(JSON.stringify(`Product deleted ${deleteRes!.success ? 'with images' : ""}`), {
       status: 200,
       headers: corsHeaders
     });
   } catch (err) {
     console.log("[productId_DELETE]", err);
-    return new NextResponse("Internal error", { status: 500, headers: corsHeaders });
+    return NextResponse.json("Internal error", { status: 500, headers: corsHeaders });
   }
 };
 export const GET = async (req: NextRequest, props: { params: Promise<{ productId: string }> }) => {
@@ -189,17 +189,17 @@ export const GET = async (req: NextRequest, props: { params: Promise<{ productId
   try {
     const token = req.cookies.get('authjs.admin-session')?.value
     if (!token) {
-      return new NextResponse("Token is missing", {
+      return NextResponse.json("Token is missing", {
         status: 401,
         headers: corsHeaders,
       });
     }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
-      return new NextResponse("Unauthorized", { status: 401, headers: corsHeaders });
+      return NextResponse.json("Unauthorized", { status: 401, headers: corsHeaders });
     }
     if (!params.productId) {
-      return new NextResponse("Product Id is Required", {
+      return NextResponse.json("Product Id is Required", {
         status: 400,
         headers: corsHeaders
       });
@@ -212,19 +212,19 @@ export const GET = async (req: NextRequest, props: { params: Promise<{ productId
     });
 
     if (!product) {
-      return new NextResponse("Product not found", {
+      return NextResponse.json("Product not found", {
         status: 404,
         headers: corsHeaders
       });
     }
 
-    return new NextResponse(JSON.stringify(product), {
+    return NextResponse.json(JSON.stringify(product), {
       status: 200,
       headers: corsHeaders
     });
   } catch (err) {
     console.log("[productId_DELETE]", err);
-    return new NextResponse("Internal error", { status: 500, headers: corsHeaders });
+    return NextResponse.json("Internal error", { status: 500, headers: corsHeaders });
   }
 };
 export const dynamic = "force-dynamic";

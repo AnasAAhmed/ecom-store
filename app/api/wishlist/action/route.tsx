@@ -9,7 +9,7 @@ export const POST = async (req: NextRequest) => {
     const session = (await auth()) as Session
     const userId = session.user?.id;
     if (!userId) {
-      return new NextResponse("Unauthorized", { status: 401 });
+      return NextResponse.json("Unauthorized", { status: 401 });
     }
 
     await connectToDB();
@@ -17,14 +17,14 @@ export const POST = async (req: NextRequest) => {
     let wishList = await Wishlist.findOne({ userId: userId });
 
     if (!wishList) {
-      return new NextResponse("User not found", { status: 404 });
+      return NextResponse.json("User not found", { status: 404,statusText:"User not found" });
 
     }
 
     const { productId } = await req.json();
 
     if (!productId) {
-      return new NextResponse("Product Id required", { status: 400 });
+      return NextResponse.json("Product Id required", { status: 400 });
     }
 
     const productIndex = wishList.wishlist.indexOf(productId);
@@ -45,6 +45,6 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json({ wishList, isLiked }, { status: 200 ,statusText:`${isLiked ? "Added to" : "Removed from"} your wishlist`});
   } catch (err) {
     console.log("[wishlist_POST]", err);
-    return new NextResponse((err as Error).message, { status: 500 ,statusText:(err as Error).message});
+    return NextResponse.json((err as Error).message, { status: 500 ,statusText:(err as Error).message});
   }
 };

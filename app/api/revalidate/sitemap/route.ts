@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(req: NextRequest) {
   const secret = req.nextUrl.searchParams.get('secret');
   if (secret !== process.env.REVALIDATE_SECRET_TOKEN) {
-    return NextResponse.json({ message: 'Invalid token' }, { status: 401 });
+    return NextResponse.json('Invalid token', { status: 401, statusText: 'Invalid token' });
   }
 
   try {
@@ -15,6 +15,6 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ revalidated: true });
   } catch (err) {
-    return NextResponse.json({ message: 'Error revalidating' }, { status: 500 });
+    return NextResponse.json((err as Error).message, { status: 500, statusText: (err as Error).message });
   }
 }

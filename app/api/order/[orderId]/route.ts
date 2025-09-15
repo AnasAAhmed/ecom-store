@@ -11,7 +11,7 @@ export const PUT = async (req: NextRequest, props: { params: Promise<{ orderId: 
 
     const order = await Order.findById(params.orderId).select('_id status createdAt');
 
-    if (!order) return new NextResponse("Order not found", {
+    if (!order) return NextResponse.json("Order not found", {
       status: 404,
     });
     const orderCreationTime = new Date(order.createdAt).getTime();
@@ -48,7 +48,7 @@ export const PUT = async (req: NextRequest, props: { params: Promise<{ orderId: 
     revalidatePath('/orders')
     return NextResponse.json("Order Canceled Successfully", { status: 200 })
   } catch (error) {
-    return NextResponse.json((error as Error).message, { status: 500 });
+    return NextResponse.json((error as Error).message, { status: 500,statusText:(error as Error).message});
 
   }
 };

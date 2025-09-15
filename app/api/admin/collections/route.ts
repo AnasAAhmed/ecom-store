@@ -9,7 +9,7 @@ import mongoose from "mongoose";
 import { isHex24 } from "@/lib/utils/features";
 
 export function OPTIONS() {
-  return new NextResponse(null, {
+  return NextResponse.json(null, {
     status: 204,
     headers: corsHeaders,
   });
@@ -19,18 +19,18 @@ export const POST = async (req: NextRequest) => {
   try {
     const token = req.cookies.get('authjs.admin-session')?.value
     if (!token) {
-      return new NextResponse("Token is missing", {
+      return NextResponse.json("Token is missing", {
         status: 401,
         headers: corsHeaders,
       });
     }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
-      return new NextResponse("Unauthorized", { status: 401, headers: corsHeaders });
+      return NextResponse.json("Unauthorized", { status: 401, headers: corsHeaders });
     }
     const now = Math.floor(Date.now() / 1000);
     if (decodedToken.exp && decodedToken.exp < now) {
-      return new NextResponse("Session expired. Please log in again.", {
+      return NextResponse.json("Session expired. Please log in again.", {
         status: 401,
         headers: corsHeaders,
       });
@@ -40,11 +40,11 @@ export const POST = async (req: NextRequest) => {
     const { title, description, image } = await req.json()
     const existingCollection = await Collection.findOne({ title })
     if (existingCollection) {
-      return new NextResponse("Collection already exists", { status: 400, headers: corsHeaders })
+      return NextResponse.json("Collection already exists", { status: 400, headers: corsHeaders })
     }
 
     if (!title || !image) {
-      return new NextResponse("Title or image is missing", { status: 400, headers: corsHeaders })
+      return NextResponse.json("Title or image is missing", { status: 400, headers: corsHeaders })
     }
 
     const newCollection = await Collection.create({
@@ -58,7 +58,7 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json(newCollection, { status: 200, headers: corsHeaders })
   } catch (err) {
     console.log("[collections_POST]", err)
-    return new NextResponse("Internal Server Error", { status: 500, headers: corsHeaders })
+    return NextResponse.json("Internal Server Error", { status: 500, headers: corsHeaders })
   }
 }
 
@@ -66,18 +66,18 @@ export const GET = async (req: NextRequest) => {
   try {
     const token = req.cookies.get('authjs.admin-session')?.value
     if (!token) {
-      return new NextResponse("Token is missing", {
+      return NextResponse.json("Token is missing", {
         status: 401,
         headers: corsHeaders,
       });
     }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin' || !decodedToken.isAdmin) {
-      return new NextResponse("Unauthorized", { status: 401, headers: corsHeaders });
+      return NextResponse.json("Unauthorized", { status: 401, headers: corsHeaders });
     }
     const now = Math.floor(Date.now() / 1000);
     if (decodedToken.exp && decodedToken.exp < now) {
-      return new NextResponse("Session expired. Please log in again.", {
+      return NextResponse.json("Session expired. Please log in again.", {
         status: 401,
         headers: corsHeaders,
       });
@@ -152,7 +152,7 @@ export const GET = async (req: NextRequest) => {
       { status: 200, headers: corsHeaders })
   } catch (err) {
     console.log("[collections_GET]", err)
-    return new NextResponse((err as Error).message, { status: 500, headers: corsHeaders })
+    return NextResponse.json((err as Error).message, { status: 500, headers: corsHeaders })
   }
 }
 

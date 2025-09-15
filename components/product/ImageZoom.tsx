@@ -77,7 +77,6 @@ const ImageZoom = ({ alt, allSrc }: ImageZoomProps) => {
           src={mainImage}
           // width={1000}
           // height={1000}
-          unoptimized
           fill
           sizes="(max-width: 768px) 100vw, 500px"
           placeholder="blur"

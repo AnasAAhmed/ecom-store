@@ -10,6 +10,42 @@ export const slugify = (title: string) => {
     .replace(/[^\w-]+/g, "");
 };
 
+// utils/HttpError.ts
+export class HttpError extends Error {
+  status: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.status = status;
+
+    // Ensures the correct prototype chain for `instanceof` checks
+    Object.setPrototypeOf(this, HttpError.prototype);
+  }
+}
+// example usage:
+// try {
+//     const { productId } = await request.json();
+
+//     if (!productId) {
+//       throw new HttpError("Product Id required", 400);
+//     }
+// } catch (err) {
+//     console.error("[wishlist_POST]", err);
+
+//     if (err instanceof HttpError) {
+//       return NextResponse.json(
+//         { error: err.message },
+//         { status: err.status, statusText: err.message }
+//       );
+//     }
+
+//     // fallback for unexpected errors
+//     return NextResponse.json(
+//       { error: "Internal Server Error" },
+//       { status: 500 }
+//     );
+//   }
+
 export function extractKeyFromUrl(url: string): string {
   const key = url.split("/").pop();
   return key!;
