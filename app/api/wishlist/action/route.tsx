@@ -42,9 +42,9 @@ export const POST = async (req: NextRequest) => {
 
     await wishList.save();
 
-    return NextResponse.json({ wishList, isLiked }, { status: 200 });
+    return NextResponse.json({ wishList, isLiked }, { status: 200 ,statusText:`${isLiked ? "Added to" : "Removed from"} your wishlist`});
   } catch (err) {
     console.log("[wishlist_POST]", err);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return new NextResponse((err as Error).message, { status: 500 ,statusText:(err as Error).message});
   }
 };

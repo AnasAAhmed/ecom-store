@@ -13,7 +13,7 @@ interface HeartFavoriteProps {
 
 const HeartFavorite = ({ productId, updateSignedInUser }: HeartFavoriteProps) => {
   const router = useRouter();
-  const { userWishlist, resetUserWishlist } = useWhishListUserStore();
+  const { userWishlist } = useWhishListUserStore();
 
   const [loading, setLoading] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
@@ -34,14 +34,18 @@ const HeartFavorite = ({ productId, updateSignedInUser }: HeartFavoriteProps) =>
         setLoading(true);
         const res = await fetch("/api/wishlist/action", {
           method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ productId }),
         });
+        if (!res.ok) {
+          throw new Error(res.statusText)
+        }
         const updatedUser = await res.json();
-        setIsLiked(updatedUser.isLiked);  // Use the returned isLiked status
+        toast.success(res.statusText || `${updatedUser.isLiked ? "Added to" : "Removed from"} your wishlist`);
+        setIsLiked(updatedUser.isLiked);
 
-        toast.success(`${updatedUser.isLiked ? "Added to" : "Removed from"} your wishlist`);
         updateSignedInUser && updateSignedInUser(updatedUser.user);
-        resetUserWishlist();
+        // resetUserWishlist();
       }
     } catch (err) {
       toast.error("Error updating your wishlist");

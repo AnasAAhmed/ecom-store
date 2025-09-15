@@ -26,7 +26,7 @@ const UserFetcher = (
         };
 
         fetchUserData();
-    }, [session?.user?.id]);
+    }, [status,session?.user?.id]);
 
     return null;
 };

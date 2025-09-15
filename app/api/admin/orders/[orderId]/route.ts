@@ -69,17 +69,18 @@ export const PUT = async (req: NextRequest, props: { params: Promise<{ orderId: 
     }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
-      return new NextResponse("Unauthorized", { status: 401, headers: corsHeaders });
+      return new NextResponse("Access Denied for non-admin", { status: 401, headers: corsHeaders });
     }
     const now = Math.floor(Date.now() / 1000);
     if (decodedToken.exp && decodedToken.exp < now) {
       return new NextResponse("Session expired. Please log in again.", {
         status: 401,
+        statusText: "Session expired. Please log in again.",
         headers: corsHeaders,
       });
     }
     if (!params.orderId) {
-      return new NextResponse(JSON.stringify("Order is missing"), { status: 404, headers: corsHeaders })
+      return new NextResponse(JSON.stringify("OrderId is missing"), { status: 404, headers: corsHeaders, statusText: "OrderId is missing", })
     }
     await connectToDB();
 
@@ -87,6 +88,7 @@ export const PUT = async (req: NextRequest, props: { params: Promise<{ orderId: 
     if (!order) return new NextResponse("Order not found", {
       status: 404,
       headers: corsHeaders
+      , statusText: "OrderId is missing"
     });
 
 
@@ -99,12 +101,12 @@ export const PUT = async (req: NextRequest, props: { params: Promise<{ orderId: 
     }
     await order.save();
 
-    return NextResponse.json("Order Status Updated Successfully", { status: 200, headers: corsHeaders })
+    return NextResponse.json("Order Status Updated Successfully", { status: 200, statusText: "Order Status Updated Successfully", headers: corsHeaders })
   } catch (error) {
     if (error instanceof Error) {
-      return new NextResponse(`Internal Server Error: ${error.message}`, { status: 500, headers: corsHeaders });
+      return new NextResponse(`Internal Server Error: ${error.message}`, { status: 500, statusText: `Internal Server Error: ${error.message}`, headers: corsHeaders });
     } else {
-      return new NextResponse('An unknown error occurred', { status: 500, headers: corsHeaders });
+      return new NextResponse('An unknown error occurred', { status: 500, statusText: 'An unknown error occurred', headers: corsHeaders });
     }
   }
 };

@@ -42,7 +42,7 @@ console.log(orderData);
       customerEmail: customerInfo.email,
       currency,
       isPaid:false,
-      statusHistory: { status: "Payment-Successfull & Processing", changedAt: Date.now() },
+      statusHistory: { status: "Pending: Payment-Successfull & Processing", changedAt: Date.now() },
       status: 'pending',
       method: 'cod',
       exchangeRate

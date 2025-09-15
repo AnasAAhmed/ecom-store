@@ -30,6 +30,7 @@ const Collections = ({ collections }: { collections: CollectionType[] }) => {
               className={`relative rounded-lg overflow-hidden group ${sizeClasses[index]}`}
             >
               <SmartLink
+                prefetch={index === 0 ? true : undefined}
                 title={`See full ${collection.title} Collection`}
                 href={`/collections/${collection.title}`}
               >

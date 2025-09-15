@@ -65,10 +65,10 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ type: 'error', resultCode: ResultCode.InvalidCredentials }, { status: 401, headers: corsHeaders });
 
         }
-        if (user.role !== 'admin') {
-            return NextResponse.json({ type: 'error', resultCode: 'Access Denied for non-admin' }, { status: 401, headers: corsHeaders });
+        // if (user.role !== 'admin') {
+        //     return NextResponse.json({ type: 'error', resultCode: 'Access Denied for non-admin' }, { status: 401, headers: corsHeaders });
 
-        }
+        // }
         const isMatched = await compare(parsedCredentials.data.password, user.password!);
         if (!isMatched) {
             return NextResponse.json({ type: 'error', resultCode: ResultCode.InvalidCredentials }, { status: 401, headers: corsHeaders });
@@ -98,7 +98,6 @@ export async function POST(req: NextRequest) {
             path: '/',
             maxAge: 60 * 60 * 24 * 7,
         });
-        console.log(response);
         
         return response;
     } catch (error) {

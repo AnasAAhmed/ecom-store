@@ -139,14 +139,6 @@ export default async function ProductPage(
 
       <section className="flex mb-12 px-5 justify-center items-start gap-16 max-md:flex-col max-md:items-center">
         <div className=" md:sticky top-0 flex flex-col gap-3">
-          <Image
-            placeholder="blur"
-            blurDataURL="/fallback.avif"
-            src={product.media[0]}
-            alt={product.title}
-            width={500}
-            height={500}
-            className="w-full rounded-lg md:hidden md:h-[500px] h-[300px] object-cover" />
           <ImageZoom allSrc={product.media} alt={product.title} />
         </div>
         <ProductInfo productInfo={product} />

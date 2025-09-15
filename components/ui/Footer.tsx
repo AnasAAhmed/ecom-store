@@ -49,6 +49,8 @@ const Footer = () => {
             <input
               type="email"
               required
+              id="femail"
+              name="email"
               placeholder="Enter your email"
               className="w-full px-4 py-2 text-sm border border-black rounded-md"
             />

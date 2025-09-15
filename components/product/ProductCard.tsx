@@ -4,7 +4,6 @@ import HeartFavorite from "./HeartFavorite";
 import StarRatings from "./StarRatings";
 import { PriceAndExpense } from "./ProductInteractivity";
 import { slugify } from "@/lib/utils/features";
-import FadeInOnView from "../FadeInView";
 
 interface ProductCardProps {
   product: ProductType;

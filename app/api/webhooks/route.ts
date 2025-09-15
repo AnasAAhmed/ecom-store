@@ -69,7 +69,7 @@ export const POST = async (req: NextRequest) => {
         currency: session?.currency,
         shippingRate: (session?.shipping_cost?.amount_total! / 100).toString(),
         totalAmount: totalAmountInUSD,
-        statusHistory: { status: "Payment-Successfull & Processing", changedAt: Date.now() },
+        statusHistory: { status: "Pending: Payment-Successfull & Processing", changedAt: Date.now() },
         status: "pending",
         method: 'card',
         isPaid: true,
