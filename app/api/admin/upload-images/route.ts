@@ -5,7 +5,7 @@ import sharp from "sharp";
 import { extractKeyFromUrl } from "@/lib/utils/features";
 
 export function OPTIONS() {
-  return NextResponse.json(null, {
+  return  new NextResponse(null, {
     status: 204,
     headers: corsHeaders,
   });

@@ -12,7 +12,12 @@ type GraphData = {
     canceledSales: any;
 }[]
 
-
+export function OPTIONS() {
+    return new NextResponse(null, {
+        status: 204,
+        headers: corsHeaders,
+    });
+}
 //monthly or one year data
 const getSalesPerMonth = async (selectedMonthNumber: number = 6, yearBased: boolean) => {
     await connectToDB();

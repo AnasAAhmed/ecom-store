@@ -10,7 +10,7 @@ import { UAParser } from "ua-parser-js";
 import { z } from "zod";
 
 export function OPTIONS() {
-    return NextResponse.json(null, {
+    return new NextResponse(null, {
         status: 204,
         headers: corsHeaders,
     });

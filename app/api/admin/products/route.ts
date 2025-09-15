@@ -10,7 +10,7 @@ import { revalidatePath } from "next/cache";
 import mongoose from "mongoose";
 
 export function OPTIONS() {
-  return NextResponse.json(null, {
+  return  new NextResponse(null, {
     status: 204,
     headers: corsHeaders,
   });

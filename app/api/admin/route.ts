@@ -44,10 +44,10 @@ const getAdminData = async () => {
 
 
 export function OPTIONS() {
-  return NextResponse.json(null, {
-    status: 204,
-    headers: corsHeaders,
-  });
+    return new NextResponse(null, {
+        status: 204,
+        headers: corsHeaders,
+    });
 }
 
 export const GET = async (req: NextRequest) => {

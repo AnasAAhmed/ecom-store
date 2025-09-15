@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export function OPTIONS() {
-    return NextResponse.json(null, {
+    return new NextResponse(null, {
         status: 204,
         headers: corsHeaders,
     });

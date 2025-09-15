@@ -9,10 +9,10 @@ import mongoose from "mongoose";
 import { isHex24 } from "@/lib/utils/features";
 
 export function OPTIONS() {
-  return NextResponse.json(null, {
-    status: 204,
-    headers: corsHeaders,
-  });
+    return new NextResponse(null, {
+        status: 204,
+        headers: corsHeaders,
+    });
 }
 
 export const POST = async (req: NextRequest) => {

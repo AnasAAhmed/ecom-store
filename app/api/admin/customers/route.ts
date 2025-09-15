@@ -7,10 +7,10 @@ import { decode } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export function OPTIONS() {
-  return NextResponse.json(null, {
-    status: 204,
-    headers: corsHeaders,
-  });
+    return new NextResponse(null, {
+        status: 204,
+        headers: corsHeaders,
+    });
 }
 
 export const GET = async (req: NextRequest) => {

@@ -10,10 +10,10 @@ import { extractKeyFromUrl } from "@/lib/utils/features";
 import { UTApi } from "uploadthing/server";
 
 export function OPTIONS() {
-  return NextResponse.json(null, {
-    status: 204,
-    headers: corsHeaders,
-  });
+    return new NextResponse(null, {
+        status: 204,
+        headers: corsHeaders,
+    });
 }
 
 export const GET = async (req: NextRequest, props: { params: Promise<{ collectionId: string }> }) => {
