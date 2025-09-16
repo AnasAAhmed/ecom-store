@@ -28,7 +28,7 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ productI
     }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
-      return NextResponse.json("Unauthorized", { status: 401, headers: corsHeaders });
+      return NextResponse.json("Access Denied for non-admin", { status: 401, headers: corsHeaders });
     }
 
     const {
@@ -129,7 +129,7 @@ export const DELETE = async (req: NextRequest, props: { params: Promise<{ produc
     }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
-      return NextResponse.json("Unauthorized", { status: 401, headers: corsHeaders });
+      return NextResponse.json("Access Denied for non-admin", { status: 401, headers: corsHeaders });
     }
     if (!params.productId) {
       return NextResponse.json(JSON.stringify("Product Id Required"), {
@@ -196,7 +196,7 @@ export const GET = async (req: NextRequest, props: { params: Promise<{ productId
     }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
-      return NextResponse.json("Unauthorized", { status: 401, headers: corsHeaders });
+      return NextResponse.json("Access Denied for non-admin", { status: 401, headers: corsHeaders });
     }
     if (!params.productId) {
       return NextResponse.json("Product Id is Required", {

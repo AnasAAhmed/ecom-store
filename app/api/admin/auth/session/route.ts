@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     try {
         const token = req.cookies.get('authjs.admin-session')?.value
         if (!token) {
-            return NextResponse.json("Log-in first", {
+            return NextResponse.json("Token is missing Log-in first", {
                 status: 401,
                 headers: corsHeaders,
             });
@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
         const now = Math.floor(Date.now() / 1000);
         if (decodedToken.exp && decodedToken.exp < now) {
             const res = NextResponse.json("Session expired. Please log in again.", {
-                status: 401,
+                status: 440,
                 headers: corsHeaders,
             });
 

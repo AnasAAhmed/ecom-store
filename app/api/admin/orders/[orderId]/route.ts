@@ -26,7 +26,7 @@ export const GET = async (req: NextRequest, props: { params: Promise<{ orderId: 
     }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
-      return NextResponse.json("Unauthorized", { status: 401, headers: corsHeaders });
+      return NextResponse.json("Access Denied for non-admin", { status: 401, headers: corsHeaders });
     }
     const now = Math.floor(Date.now() / 1000);
     if (decodedToken.exp && decodedToken.exp < now) {
@@ -123,7 +123,7 @@ export const DELETE = async (req: NextRequest, props: { params: Promise<{ orderI
     }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
-      return NextResponse.json("Unauthorized", { status: 401, headers: corsHeaders });
+      return NextResponse.json("Access Denied for non-admin", { status: 401, headers: corsHeaders });
     }
     const now = Math.floor(Date.now() / 1000);
     if (decodedToken.exp && decodedToken.exp < now) {

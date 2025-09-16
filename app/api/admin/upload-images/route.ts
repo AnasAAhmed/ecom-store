@@ -3,9 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { UTApi } from "uploadthing/server";
 import sharp from "sharp";
 import { extractKeyFromUrl } from "@/lib/utils/features";
+import { decode } from "next-auth/jwt";
 
 export function OPTIONS() {
-  return  new NextResponse(null, {
+  return new NextResponse(null, {
     status: 204,
     headers: corsHeaders,
   });
@@ -13,6 +14,27 @@ export function OPTIONS() {
 
 export async function POST(req: NextRequest) {
   try {
+
+    const token = req.cookies.get('authjs.admin-session')?.value
+    if (!token) {
+      return NextResponse.json("Token is missing", {
+        status: 401,
+        headers: corsHeaders,
+      });
+    }
+    const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
+    if (!decodedToken || decodedToken.role !== 'admin') {
+      return NextResponse.json("Access Denied for non-admin", { status: 401, headers: corsHeaders , statusText:"Access Denied for non-admin"});
+    }
+    const now = Math.floor(Date.now() / 1000);
+    if (decodedToken.exp && decodedToken.exp < now) {
+      return NextResponse.json("Session expired. Please log in again.", {
+        status: 401,
+        headers: corsHeaders,
+        statusText:"Session expired. Please log in again."
+      });
+    }
+
     const { searchParams } = new URL(req.url);
     const isConvert = searchParams.get("isConvert") === "true";
 
@@ -22,11 +44,11 @@ export async function POST(req: NextRequest) {
     const removeImageUrls = formData.getAll("removeImageUrls") as string[];
 
     if (!files.length && !removeImageUrls?.length) {
-      return NextResponse.json("No files OR removeImageUrls provided", { status: 400, headers: corsHeaders });
+      return NextResponse.json("No files OR removeImageUrls provided", { status: 400, headers: corsHeaders,statusText:"No files OR removeImageUrls provided" });
     }
 
 
-     let deleteRes: {
+    let deleteRes: {
       readonly success: boolean | null;
       readonly deletedCount: number;
     } = { success: null, deletedCount: 0 }
@@ -74,9 +96,10 @@ export async function POST(req: NextRequest) {
 
   } catch (error) {
     console.error("Upload_Image error:", error);
-    return NextResponse.json((error as Error).message, { 
-      status: 500, 
+    return NextResponse.json((error as Error).message, {
+      status: 500,
       headers: corsHeaders,
-      statusText:'Images Upload Error: '+(error as Error).message})
+      statusText: 'Images Upload Error: ' + (error as Error).message
+    })
   }
 }

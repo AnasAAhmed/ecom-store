@@ -28,7 +28,7 @@ export const GET = async (req: NextRequest, props: { params: Promise<{ collectio
     }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
-      return NextResponse.json("Unauthorized", { status: 401, headers: corsHeaders });
+      return NextResponse.json("Access Denied for non-admin", { status: 401, headers: corsHeaders });
     }
     const now = Math.floor(Date.now() / 1000);
     if (decodedToken.exp && decodedToken.exp < now) {
@@ -57,7 +57,7 @@ export const GET = async (req: NextRequest, props: { params: Promise<{ collectio
     return NextResponse.json(collection, { status: 200, headers: corsHeaders });
   } catch (err) {
     console.log("[collectionId_GET]", err);
-    return NextResponse.json("Internal error", { status: 500, headers: corsHeaders });
+    return NextResponse.json((err as Error).message, { status: 500, headers: corsHeaders });
   }
 };
 
@@ -73,7 +73,7 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ collecti
     }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
-      return NextResponse.json("Unauthorized", { status: 401, headers: corsHeaders });
+      return NextResponse.json("Access Denied for non-admin", { status: 401, headers: corsHeaders });
     }
     const now = Math.floor(Date.now() / 1000);
     if (decodedToken.exp && decodedToken.exp < now) {
@@ -108,7 +108,7 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ collecti
     return NextResponse.json(collection, { status: 200, headers: corsHeaders });
   } catch (err) {
     console.log("[collectionId_POST]", err);
-    return NextResponse.json("Internal error", { status: 500, headers: corsHeaders });
+    return NextResponse.json((err as Error).message, { status: 500, headers: corsHeaders });
   }
 };
 
@@ -126,7 +126,7 @@ export const DELETE = async (req: NextRequest, props: { params: Promise<{ collec
     }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     if (!decodedToken || decodedToken.role !== 'admin') {
-      return NextResponse.json("Unauthorized", { status: 401, headers: corsHeaders });
+      return NextResponse.json("Access Denied for non-admin", { status: 401, headers: corsHeaders });
     }
     const now = Math.floor(Date.now() / 1000);
     if (decodedToken.exp && decodedToken.exp < now) {
@@ -168,7 +168,7 @@ export const DELETE = async (req: NextRequest, props: { params: Promise<{ collec
       { status: 200, headers: corsHeaders });
   } catch (err) {
     console.log("[collectionId_DELETE]", err);
-    return NextResponse.json("Internal error", { status: 500, headers: corsHeaders });
+    return NextResponse.json((err as Error).message, { status: 500, headers: corsHeaders });
   }
 };
 
