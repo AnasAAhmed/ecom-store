@@ -62,7 +62,8 @@ export const GET = async (req: NextRequest) => {
       });
     }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
-    if (!decodedToken || decodedToken.role !== 'admin' || !decodedToken.isAdmin) {
+    // if (!decodedToken || decodedToken.role !== 'admin' || !decodedToken.isAdmin) {
+      if (!decodedToken ) {
       return NextResponse.json("Access Denied for non-admin", { status: 401, headers: corsHeaders, statusText: 'Access Denied for non-admin' });
     }
     const now = Math.floor(Date.now() / 1000);

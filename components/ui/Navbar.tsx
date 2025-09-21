@@ -88,10 +88,10 @@ const Navbar = () => {
         </form>
 
         <div className="hidden lg:flex gap-4">
-          {["/", "/search", "/contact", "/wishlist", "/orders", "https://ecom-admin-panel-xcw7-gh8p.vercel.app/"].map(
+          {["/", "/search", "/contact", "/wishlist", "/orders", "https://ecom-admin-panel-xcw7-gh8p.vercel.app/","/report"].map(
             (path, idx) => (
               <SmartLink
-                title={"Go to " + ["Home", "Shop", "Contact", "Wishlist", "Orders", "CMS"][idx]}
+                title={"Go to " + ["Home", "Shop", "Contact", "Wishlist", "Orders", "CMS","Metrics"][idx]}
                 key={idx}
                 href={path}
                 target={idx === 5 ? '_blank' : ''}
@@ -144,7 +144,7 @@ const Navbar = () => {
       {isOpen && <div className="absolute flex lg:hidden right-6 max-sm:top-10 items-center justify-center bg-opacity-50 z-50">
         <ul className="flex flex-col p-4 gap-3 w-full bg-white animate-menu rounded-lg border">
 
-          {["/", "/search", "/contact", "/blog", "/wishlist", "/orders", "https://ecom-admin-panel-xcw7-gh8p.vercel.app/"].map((name, idx) => (
+          {["/", "/search", "/contact", "/blog", "/wishlist", "/orders", "https://ecom-admin-panel-xcw7-gh8p.vercel.app/","/report"].map((name, idx) => (
             <SmartLink
               key={idx}
               href={name}
@@ -152,7 +152,7 @@ const Navbar = () => {
               target={idx === 6 ? '_blank' : ''}
               className="border-b px-8 text-center"
             >
-              {["Home", "Shop", "Contact", "Blog", "Wishlist", "Orders", "CMS"][idx]}
+              {["Home", "Shop", "Contact", "Blog", "Wishlist", "Orders", "CMS","Metrics"][idx]}
 
             </SmartLink>
           ))}

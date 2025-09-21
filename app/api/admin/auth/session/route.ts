@@ -13,9 +13,10 @@ export async function GET(req: NextRequest) {
     try {
         const token = req.cookies.get('authjs.admin-session')?.value
         if (!token) {
-            return NextResponse.json("Token is missing Log-in first", {
+            return NextResponse.json('Access denied for non-admin',{
                 status: 401,
                 headers: corsHeaders,
+                statusText:'Access denied for non-admin'
             });
         }
 
@@ -43,6 +44,7 @@ export async function GET(req: NextRequest) {
             id: decodedToken.id!,
             name: decodedToken.name!,
             image: decodedToken.image!,
+            isAdmin: decodedToken.isAdmin!,
         }
         return NextResponse.json(user, { status: 200, headers: corsHeaders });
 
