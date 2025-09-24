@@ -62,7 +62,7 @@ const Navbar = () => {
     <nav className={`${scrolled ? 'top-0 fixed shadow-md bg-white' : 'top-0 lg:top-[45px] absolute bg-transparent'} reslative print:hidden z-30 w-full bg-white shadow-md`}>
       <div className="flex justify-between items-center p-2">
         <SmartLink title="home" aria-label="go to home" href="/">
-          <Image src="/logo.png" alt=" borcelle logo" width={130} height={34} />
+          <Image src="/logo.png" alt=" borcelle logo" priority width={120} height={64} className="size-auto" />
         </SmartLink>
 
         {/* Desktop search bar */}

@@ -9,11 +9,12 @@ import { ReactNode, useState } from 'react';
 type SmartLinkProps = LinkProps & {
     children: ReactNode;
     title?: string;
+    disabled?: boolean;
     className?: string;
     target?: string;
 };
 
-export default function SmartLink({ target, title = '', children, ...props }: SmartLinkProps) {
+export default function SmartLink({ disabled = false, target, title = '', children, ...props }: SmartLinkProps) {
     const start = useProgressStore((state) => state.start);
     const pathname = usePathname()
 
@@ -22,18 +23,23 @@ export default function SmartLink({ target, title = '', children, ...props }: Sm
         return Boolean(props.prefetch);
     });
 
-    // const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    //     props.onClick?.(e);
     const handleClick = () => {
-        const href = (props.href as string).split('?')[0].split('#')[0];
-        console.log(href);
+        const href = props.href as string;
 
-        if ((href || '/') !== pathname) {
+        if (href.startsWith('#') || href.startsWith('?')) {
+            return;
+        }
+
+        const [basePath] = href.split(/[?#]/);
+
+        if (basePath !== pathname) {
             start();
         }
     };
+
     return (
         <Link
+            style={{ pointerEvents: disabled ? "none":undefined,cursor:disabled?'not-allowed':undefined }}
             {...props}
             onNavigate={() => {
                 handleClick();

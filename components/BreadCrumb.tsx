@@ -8,11 +8,11 @@ const Breadcrumb = () => {
 
     const segments = pathname.split('/').filter(Boolean);
 
-    const breadcrumbs = ['', ...segments.slice(0, -1)]; // all but last
-    const lastSegment = segments[segments.length - 1]; // last part like "something"
+    const breadcrumbs = ['', ...segments.slice(0, -1)]; 
+    const lastSegment = segments[segments.length - 1]; 
 
     return (
-        <nav className="px-4 pt-8 sm:pb-6 pb-3 text-[10px] sm:text-[15px] font-medium">
+        <nav className="px-4 pt-4 sm:pt-6 sm:pb-6 max-sm:pb-2 text-[12px] sm:text-[15px] font-medium">
             <div className="max-w-screen-lg mx-lauto">
                 <div className="flex flex-s  items-center space-x-2">
                     {breadcrumbs.map((segment, index) => {
@@ -34,11 +34,11 @@ const Breadcrumb = () => {
 
                     {/* Last segment with query string */}
                     {lastSegment && (
-                        <span className="flex max-w-d truncate text-ellipsis items-center space-x-1">
+                        <span className="flex max-w-d items-center space-x-1">
                             {segments.length > 0 && <span>/</span>}
                             <SmartLink
                                 href={`${pathname}`}
-                                className="text-black font-medium capitalize"
+                                className="text-black line-clamp-1 font-medium capitalize"
                             >
                                 {decodeURIComponent(lastSegment)}
                             </SmartLink>

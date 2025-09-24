@@ -37,26 +37,32 @@ export const metadata: Metadata =
     url: `${process.env.ECOM_STORE_URL}`,
     images: [
       {
-        url: '/home-insights.webp',
-        width: 220,
-        height: 250,
-        alt: 'home-insights',
+        url: '/ecom-store.jpg',
+        width: 1024,
+        height: 1024,
+        alt: 'Project Showcase',
       },
       {
         url: '/home-preview.webp',
-        width: 260,
-        height: 220,
-        alt: 'home screenshot',
+        width: 1280,
+        height: 750,
+        alt: 'home-preview',
+      },
+      {
+        url: '/home-insights.webp',
+        width: 1280,
+        height: 750,
+        alt: 'home-insights',
       },
       {
         url: '/product-seo.avif',
-        width: 220,
-        height: 250,
+        width: 1280,
+        height: 750,
         alt: 'Product seo preview',
       },
 
     ],
-    siteName: 'Borcelle Store & CMS Next.js by anas ahmed',
+    siteName: 'Borcelle',
   },
   other: {
     "google-site-verification": "OG4--pwhuorqRhEHtEXwiAIdavrU1KXFAi1sRUu38EY",

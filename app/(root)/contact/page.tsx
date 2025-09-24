@@ -2,6 +2,7 @@ import GroupComponent7 from "@/components/ui/Services";
 import type { Metadata } from 'next';
 import { Clock, Locate, Mail, Phone } from "lucide-react";
 import FadeInOnView from "@/components/FadeInView";
+import Banner from "@/components/ui/Banner";
 
 export const metadata: Metadata = {
     title: "Borcelle | Contact",
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
                 alt: 'Contact preview image',
             },
         ],
-        siteName: 'Borcelle Store & CMS Next.js by anas ahmed',
+        siteName: 'Borcelle',
     },
 };
 export const dynamic = 'force-static';
@@ -34,8 +35,17 @@ const Contact = () => {
     return (
         <>
             <div className="w-full bg-white overflow-hidden text-left text-black font-poppins">
+                <Banner
+                    heading={'Get In Touch With Us'}
+                    text={'For more information about our products & services, please feel free to drop us an email. Our staff is always here to help you out. Do not hesitate!'}
+                    imgUrl={'/blog5.webp'}
+                    shade={'gray'}
+                    textColor={'white'}
+                    link="#form"
+                    buttonText={'Contact Us'}
+                />
                 <div className="flex flex-col items-center py-16 px-4">
-                    <FadeInOnView>
+                    {/* <FadeInOnView>
 
                         <h1 className="text-heading2-bold">Get In Touch With Us</h1>
                     </FadeInOnView>
@@ -45,7 +55,7 @@ const Contact = () => {
                             to drop us an email. Our staff is always here to help you out. Do not
                             hesitate!
                         </p>
-                    </FadeInOnView>
+                    </FadeInOnView> */}
 
                     <div className="flex flex-col md:flex-row w-full max-w-6xl gap-8">
                         <ContactContainer />

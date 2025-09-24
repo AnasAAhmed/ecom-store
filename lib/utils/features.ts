@@ -182,8 +182,9 @@ export const fallbackHomeData: HomePage = {
     shade: '',
     textColor: '#ffff',
     textPosition: 'center',
+    textPositionV: 'center',
     link: '#collections',
-    buttonText: 'Explore our collections',
+    buttonText: '',
     isVideo: false
   },
   collections: [

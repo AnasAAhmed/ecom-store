@@ -12,16 +12,16 @@ type BannerProps = {
   textColor?: string;
   link: string;
   buttonText?: string;
-  scrollDown?: boolean;
-  textPositionV?: string;
-  textPosition?: string;
+  textPositionV?: rr;
+  textPosition?: rr;
+  aspectRatio?: string | number;
 };
 type rr = 'center' | 'end' | 'start';
-const Banner = ({ imgUrl, videoUrl, text, heading, textColor, shade, link, buttonText, scrollDown, textPositionV = 'center', textPosition = 'center' }: BannerProps) => {
+const Banner = ({ aspectRatio = '16 / 8', imgUrl, videoUrl, text, heading, textColor, shade, link, buttonText, textPositionV = 'center', textPosition = 'center' }: BannerProps) => {
 
   return (
-    <SmartLink title={buttonText || 'Shop Now'} href={link} >
-      <div className="relative w-full aspect-[16/12] md:aspect-video">
+    <SmartLink disabled={link ? false : true} title={buttonText || 'Shop Now'} href={link} >
+      <div className={`relative w-full aspect-[16/14] md:aspect-[16/8]`}>
 
         {videoUrl ? (
           <video
@@ -37,11 +37,10 @@ const Banner = ({ imgUrl, videoUrl, text, heading, textColor, shade, link, butto
           <Image
             src={imgUrl!}
             alt={heading || 'Banner image'}
-           fill
+            fill
             placeholder="blur"
-            unoptimized
             blurDataURL="/fallback-banner.avif"
-            sizes="(max-width: 450px) 9rem, (max-width: 700px) 12rem, 16rem"
+            sizes="100vw"
             className={`absolute transition-opacity`}
           />
         )}
@@ -67,9 +66,9 @@ const Banner = ({ imgUrl, videoUrl, text, heading, textColor, shade, link, butto
             </p>
           </FadeInOnView>
 
-          {scrollDown && (
+          {buttonText && (
             <button
-              onClick={() => window.scroll(0, 800)}
+              // onClick={() => window.scroll(0, 800)}
               className="bg-white text-black font-medium py-3 px-8 rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out"
             >
               {buttonText || 'Learn More'}

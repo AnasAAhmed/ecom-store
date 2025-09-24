@@ -38,12 +38,12 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
       images: [
         {
           url: '/404.png',
-          width: 220,
-          height: 250,
+          width: 1024,
+          height: 768,
           alt: '404 Not Found',
         },
       ],
-      site_name: 'Borcelle Next.js by anas ahmed',
+      site_name: 'Borcelle',
     },
   };
 
@@ -66,12 +66,12 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
       images: [
         {
           url: product.media[0] || 'fallback-banner.avif',
-          width: 220,
-          height: 250,
+          width: 1024,
+          height: 768,
           alt: product.title,
         },
       ],
-      site_name: 'Borcelle Next.js by anas ahmed',
+      site_name: 'Borcelle',
     },
   };
 }
@@ -104,15 +104,13 @@ export default async function ProductPage(
             url: `https://ecom-store-anas.vercel.app/products/${product.slug}`,
             image: product.media[0],
             offers: {
-              "@type": "AggregateOffer",
-              availability: product.stock > 0
-                ? 'https://schema.org/InStock'
-                : 'https://schema.org/OutOfStock',
+              "@type": "Offer",
               priceCurrency: "USD",
-              highPrice: product.price,
-              lowPrice: product.expense || 0,
-              offerCount: 5,
               price: product.price,
+              availability: product.stock > 0
+                ? "https://schema.org/InStock"
+                : "https://schema.org/OutOfStock",
+              url: `${process.env.ECOM_STORE_URL}/products/${product.slug}`,
             },
             review: {
               "@type": "Review",

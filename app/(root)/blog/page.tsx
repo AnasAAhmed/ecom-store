@@ -27,13 +27,22 @@ export const metadata: Metadata = {
                 alt: 'blog preview image',
             },
         ],
-        siteName: 'Borcelle Store & CMS Next.js by anas ahmed',
+        siteName: 'Borcelle',
     },
 };
 export const dynamic = 'force-static';
 const Blog: NextPage = () => {
     return (
         <div>
+            <Banner
+                heading={'Insights & Ideas'}
+                text={'Explore expert tips, tutorials, and the latest updates to fuel your knowledge and creativity.'}
+                imgUrl={'/banner.avif'}
+                shade={'gray'}
+                textColor={'white'}
+                link="#post"
+                buttonText={'Discover Our Blogs'}
+            />
             <div className="w-full relative bg-white overflow-hidden flex flex-col items-start justify-start leading-[normal] tracking-[normal]">
                 <section className="self-stretch bg-white flex flex-col items-center justify-start pt-[2rem] pb-[0rem] pr-[1.437rem] pl-[1.25rem] box-border gap-[3.375rem] max-w-full mq800:gap-[1.688rem] mq800:pt-[1.438rem] mq800:box-border mq1350:pt-[2.25rem] mq1350:box-border">
                     <div id="post" className="w-[90rem] h-[169.375rem] relative bg-white hidden max-w-full" />

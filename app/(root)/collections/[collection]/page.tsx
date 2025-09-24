@@ -35,7 +35,7 @@ export const generateMetadata = async (props: { params: Promise<{ collection: st
           alt: '404 Not Found',
         },
       ],
-      site_name: 'Borcelle Next.js by anas ahmed',
+      site_name: 'Borcelle',
     },
   };
 
@@ -58,12 +58,12 @@ export const generateMetadata = async (props: { params: Promise<{ collection: st
       images: [
         {
           url: collectionDetails.image || 'fallback-banner.avif',
-          width: 220,
-          height: 250,
+          width: 1280,
+          height: 720,
           alt: collectionDetails.title,
         },
       ],
-      site_name: 'Borcelle Next.js by anas ahmed',
+      site_name: 'Borcelle',
     },
   };
 };
@@ -158,8 +158,9 @@ const CollectionDetails = async (
         {/* <p className="text-heading3-bold text-grey-2 capitalize">{collectionDetails.title}</p>
     <p className="text-body-normal text-grey-2 text-center max-w-[900px]">{collectionDetails.description}</p> */}
         <Breadcrumb />
-
-        <Sort />
+        <div className="max-sm:ml-3">
+          <Sort />
+        </div>
         <Suspense fallback={<Loader />}>
           <CollectionProduct collectionId={collectionDetails._id} page={page} size={size} color={color} sort={sort} sortField={sortField} />
         </Suspense>

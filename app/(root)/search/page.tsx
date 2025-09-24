@@ -31,7 +31,7 @@ export async function generateMetadata(props: { searchParams: Promise<{ query: s
           alt: 'insights',
         },
       ],
-      site_name: 'Borcelle Next.js by anas ahmed',
+      site_name: 'Borcelle',
     },
   };
 }

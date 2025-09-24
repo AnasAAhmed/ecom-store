@@ -47,7 +47,7 @@ export async function generateMetadata() {
           alt: homeData.seo.alt || 'home-preview',
         },
       ],
-      site_name: 'Borcelle Next.js by anas ahmed',
+      site_name: 'Borcelle',
     },
   };
 }
@@ -71,9 +71,10 @@ export default async function Home() {
         shade={homePageData.hero.shade!}
         textColor={homePageData.hero.textColor!}
         link={homePageData.hero.link}
+        textPosition={homePageData.hero.textPosition}
+        textPositionV={homePageData.hero.textPositionV}
         buttonText={homePageData.hero.buttonText}
       />
-
       <Collections collections={collections} />
 
       <ProductList heading="New Arrivals" text="Be the first to shop our latest drops and fresh styles." Products={products} />
@@ -140,9 +141,6 @@ export default async function Home() {
       <BlogSection />
 
       <StoreFeatures />
-
-      <Social />
-
       <GroupComponent7
         freeDeliveryHeight="unset"
         freeDeliveryDisplay="unset"
@@ -151,6 +149,7 @@ export default async function Home() {
         securePaymentHeight="unset"
         securePaymentDisplay="unset"
       />
+      <Social />
 
     </Fragment>
   );
