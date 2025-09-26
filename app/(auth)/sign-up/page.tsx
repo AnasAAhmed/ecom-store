@@ -3,6 +3,7 @@ import * as React from "react"
 import SignupForm from '@/components/auth/signup-form'
 import AuthLink from '@/components/AuthLink'
 import Loader from '@/components/ui/Loader'
+import { SubmitButton } from '@/components/auth/SubmitBtn'
 
 
 export default async function LoginPage() {
@@ -21,13 +22,14 @@ export default async function LoginPage() {
               await signIn('google')
             }}
           >
-            <button title='Sign-up With Google' className='w-full border p-2 rounded-md flex items-center gap-4 mt-4 mb-2' >
-              <img alt='google logo' height="24" width="24" id="provider-logo" src="https://authjs.dev/img/providers/google.svg" />
-              Sign up with Google
-            </button>
+            <SubmitButton
+              text='Sign up with Google'
+              provider='google'
+              logo='https://authjs.dev/img/providers/google.svg'
+            />
           </form>
           <div className="text-md text-zinc-400 flex justify-center">or</div>
-          <React.Suspense fallback={<Loader height={30}/>}>
+          <React.Suspense fallback={<Loader height={30} />}>
             <SignupForm />
           </React.Suspense>
         </div>

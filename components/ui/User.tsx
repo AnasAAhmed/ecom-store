@@ -7,9 +7,10 @@ import { useEffect, useState } from "react";
 import SmartLink from "../SmartLink";
 import Modal from "./Modal";
 import { CircleUserRound } from "lucide-react";
+import { SubmitButton } from "../auth/SubmitBtn";
 
 const User = () => {
-   const pathname = usePathname();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const { userWishlist } = useWhishListUserStore();
   const { data: session, status } = useSession();
@@ -83,7 +84,7 @@ const User = () => {
               <ul className="space-y-2 max-h-48 overflow-y-auto text-sm text-gray-700">
                 {userWishlist.signInHistory.map((entry, index) => (
                   <li key={index} className="bg-gray-100 rounded-md p-3 border">
-                    <p className="text-blue-500 text-body-medium">{index===0?'Active':''}</p>
+                    <p className="text-blue-500 text-body-medium">{index === 0 ? 'Active' : ''}</p>
                     <p><strong>Date:</strong> {new Date(entry.signedInAt).toLocaleString()}</p>
                     <p><strong>Location:</strong> {entry.city}, {entry.country}</p>
                     <p><strong>Device:</strong> {entry.device} ({entry.os})</p>
@@ -96,17 +97,13 @@ const User = () => {
               <p className="text-gray-600">No sign-in history available.</p>
             )}
           </div>
-
-          <button
-            onClick={() => signOut()}
-            title="Sign out"
-            className="w-full mt-6 py-2 bg-black hover:opacity-75 text-white text-sm font-medium rounded-md transition-colors"
-          >
-            Sign Out
-          </button>
+          <form
+            action={() => signOut()} >
+            <SubmitButton text="Sign out" />
+          </form>
         </div>
-      </Modal>
-    </div>
+      </Modal >
+    </div >
   )
 }
 export default User

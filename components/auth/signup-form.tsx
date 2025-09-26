@@ -7,6 +7,7 @@ import { Eye, EyeOff, Loader } from 'lucide-react'
 import { z } from 'zod'
 import toast from 'react-hot-toast'
 import { getSession, useSession } from 'next-auth/react'
+import { SubmitButton } from './SubmitBtn'
 
 export default function SignupForm() {
   const { data: session } = useSession();
@@ -69,6 +70,16 @@ export default function SignupForm() {
     updateSession();
   }, [result, router])
 
+  useEffect(() => {
+    if (result) {
+      const timer = setTimeout(() => {
+        setResult(null);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [result]);
+
   if (session) {
     router.push(redirectUrl)
   }
@@ -106,7 +117,7 @@ export default function SignupForm() {
             onClick={() => setShowPassword(prev => !prev)}
             className="block text-small-medium text-zinc-400"
           >
-            {showPassword ? <Eye  size={'1rem'}/> : <EyeOff size={'1rem'}/>}
+            {showPassword ? <Eye size={'1rem'} /> : <EyeOff size={'1rem'} />}
           </button>
         </div>
 
@@ -146,21 +157,9 @@ export default function SignupForm() {
           </div>
         </div>
       </div>
-      <SignUpButton />
+      <SubmitButton title='Click here to Sign-up' text='Sign up' />
+      {result && <p style={{ color: result.type === 'success' ? "lightgreen" : "red" }} className="m-2 text-base-medium">{result?.resultCode}</p>}
+
     </form>
-  )
-}
-
-function SignUpButton() {
-  const { pending } = useFormStatus()
-
-  return (
-    <button
-      title='Click here to Sign-up'
-      className="w-full py-2 flex justify-center bg-black text-white rounded-md hover:opacity-65 mt-4 text-center"
-      aria-disabled={pending}
-    >
-      {pending ? <Loader className='animate-spin' /> : 'Sign up'}
-    </button>
   )
 }

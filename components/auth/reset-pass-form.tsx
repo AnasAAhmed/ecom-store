@@ -7,6 +7,7 @@ import { CheckCircleIcon, Eye, EyeOff, Loader } from 'lucide-react'
 import { z } from 'zod'
 import toast from 'react-hot-toast'
 import { getSession, useSession } from 'next-auth/react'
+import { SubmitButton } from './SubmitBtn'
 
 export default function ResetForm({ token, userId }: { token: string, userId: string }) {
     const { data: session } = useSession();
@@ -27,7 +28,7 @@ export default function ResetForm({ token, userId }: { token: string, userId: st
         const parsedCredentials = z
             .object({
                 token: z.string().uuid(),
-                userId:z.string().min(23, "Invalid userId").transform((id) => String(id)),
+                userId: z.string().min(23, "Invalid userId").transform((id) => String(id)),
                 password: z.string().min(6, "Password must be at least 6 characters long"),
                 ConfirmPassword: z.string().min(6, "ConfirmPassword must be at least 6 characters long"),
             })
@@ -85,9 +86,9 @@ export default function ResetForm({ token, userId }: { token: string, userId: st
 
     useEffect(() => {
         if (session) {
-          router.push(redirectUrl);
+            router.push(redirectUrl);
         }
-      }, [session, router]);
+    }, [session, router]);
 
     return (
         <form
@@ -181,7 +182,7 @@ export default function ResetForm({ token, userId }: { token: string, userId: st
                 minLength={6}
             />
 
-            <ResetBtn />
+            <SubmitButton title='Click here to reset password' text='Confirm' />
             {result && result.type === 'succes' && <div className="bg-green-200 flex px-3 gap-3 items-center mt-4 py-3 w-full rounded-md">
                 <CheckCircleIcon />
                 <p className="text-primary">
@@ -192,16 +193,4 @@ export default function ResetForm({ token, userId }: { token: string, userId: st
     )
 }
 
-function ResetBtn() {
-    const { pending } = useFormStatus()
 
-    return (
-        <button
-            title='Click here to reset password'
-            className="w-full py-2 flex justify-center bg-black text-white rounded-md hover:opacity-65 mt-4 text-center"
-            aria-disabled={pending}
-        >
-            {pending ? <Loader className='animate-spin' /> : 'Confirm'}
-        </button>
-    )
-}

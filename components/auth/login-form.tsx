@@ -8,6 +8,7 @@ import { ForgetPassForm } from './Forget-passwordForm'
 import { z } from 'zod'
 import toast from 'react-hot-toast'
 import { getSession, useSession } from 'next-auth/react'
+import { SubmitButton } from './SubmitBtn'
 
 
 export default function LoginForm() {
@@ -65,12 +66,23 @@ export default function LoginForm() {
         } else {
           toast.success(result.resultCode)
           await getSession();
-          window.location.href=redirectUrl
+          window.location.href = redirectUrl
         }
       }
     }
     updateSession();
   }, [result, router])
+
+  useEffect(() => {
+    if (result) {
+      const timer = setTimeout(() => {
+        setResult(null);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [result]);
+
   if (session) {
     router.push(redirectUrl)
   }
@@ -148,21 +160,9 @@ export default function LoginForm() {
           </div>
         </div>
       </div>
-      <LoginButton />
-    </form>
+      <SubmitButton title='Click here to Login' text='Log in' />
+      {result && <p style={{color:result.type==='success'?"lightgreen":"red"}} className="m-2 text-base-medium">{result?.resultCode}</p>}
+    </form >
   )
 }
 
-function LoginButton() {
-  const { pending } = useFormStatus()
-
-  return (
-    <button
-      title='Click here to Login'
-      className="w-full py-2 flex justify-center bg-black text-white rounded-md hover:opacity-65 mt-4 text-center"
-      aria-disabled={pending}
-    >
-      {pending ? <Loader className='animate-spin' /> : 'Log in'}
-    </button>
-  )
-}

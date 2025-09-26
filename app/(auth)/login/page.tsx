@@ -1,10 +1,11 @@
-import {  signIn } from '@/auth'
+import { signIn } from '@/auth'
 import * as React from "react"
 import LoginForm from '@/components/auth/login-form'
 import AuthLink from '@/components/AuthLink'
 import { ForgetPassForm } from '@/components/auth/Forget-passwordForm'
 import Loader from '@/components/ui/Loader'
 import { Loader2 } from 'lucide-react'
+import { SubmitButton } from '@/components/auth/SubmitBtn'
 
 
 
@@ -23,10 +24,7 @@ export default async function LoginPage() {
               await signIn('google')
             }}
           >
-            <button title='Login with Google' className='w-full border p-2 rounded-md flex items-center gap-4 mt-4 mb-2' >
-              <img alt='google logo' height="24" width="24" id="google-logo" src="https://authjs.dev/img/providers/google.svg" />
-              Log in with Google
-            </button>
+            <SubmitButton text='Log in with Google' title='Login with Google' provider={'google'} logo={'https://authjs.dev/img/providers/google.svg'} />
           </form>
           <div className="text-md text-zinc-400 flex justify-center">or</div>
           <React.Suspense fallback={<Loader />}>

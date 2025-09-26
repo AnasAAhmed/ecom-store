@@ -58,7 +58,7 @@ export const unSlugify = (slug: string) => {
 };
 
 export enum ResultCode {
-  InvalidCredentials = 'INVALID_CREDENTIALS',
+  InvalidCredentials = 'Invalid email or password',
   InvalidSubmission = 'INVALID_SUBMISSION',
   UserAlreadyExists = 'USER_ALREADY_EXISTS',
   UnknownError = 'UNKNOWN_ERROR',

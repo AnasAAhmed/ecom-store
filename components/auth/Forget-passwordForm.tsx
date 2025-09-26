@@ -5,6 +5,7 @@ import { useFormStatus } from "react-dom";
 import toast from "react-hot-toast";
 import { z } from "zod"
 import Modal from "../ui/Modal";
+import { SubmitButton } from "./SubmitBtn";
 
 export function ForgetPassForm({ btnText }: { btnText: string }) {
   const [result, setResult] = useState<Result | null>({ type: '', resultCode: "" });
@@ -54,7 +55,18 @@ export function ForgetPassForm({ btnText }: { btnText: string }) {
         toast.success(result.resultCode)
       }
     }
-  }, [result,])
+  }, [result])
+
+   useEffect(() => {
+    if (result) {
+      const timer = setTimeout(() => {
+        setResult(null);
+      }, 3000);
+
+      return () => clearTimeout(timer); 
+    }
+  }, [result]);
+
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
@@ -92,24 +104,10 @@ export function ForgetPassForm({ btnText }: { btnText: string }) {
               placeholder="Enter your email address"
               className="col-span-3 border w-full p-2 rounded-md focus:outline-none"
             />
-            <ReqBtn />
+            <SubmitButton text="Send email request" title="Send email request" />
           </form>
-        </div>
+          {result && <p className="text-red-1 text-base-medium">{result?.resultCode}</p>} </div>
       </Modal>
     </div>
-  )
-}
-function ReqBtn() {
-  const { pending } = useFormStatus()
-
-  return (
-    <button
-      title="Send email request"
-      className="w-full py-2 flex justify-center mt-4 bg-black text-white rounded-md hover:opacity-45"
-      disabled={pending || process.env.NODE_ENV === 'production'}
-      type="submit"
-    >
-      {pending ? <Loader className='animate-spin' /> : 'Send email request'}
-    </button>
   )
 }
