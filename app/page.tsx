@@ -7,7 +7,7 @@ import GroupComponent7 from "@/components/ui/Services";
 import { Fragment, Suspense } from "react";
 import { fallbackHomeData, unSlugify } from "@/lib/utils/features";
 import { getCollectionProducts, getCollections } from "@/lib/actions/collection.actions";
-import { getBestSellingProducts, getProducts } from "@/lib/actions/product.actions";
+import { getProducts } from "@/lib/actions/product.actions";
 import { getCachedHomePageData } from "@/lib/actions/cached";
 import StoreFeatures from "@/components/ui/StoreFeatures";
 import SliderList from "@/components/product/SliderList";
@@ -55,10 +55,9 @@ export async function generateMetadata() {
 
 export default async function Home() {
 
-  const [products, collections, bestSelling, homePage] = await Promise.all([
+  const [products, collections, homePage] = await Promise.all([
     getProducts(),
     getCollections(),
-    getBestSellingProducts(),
     getCachedHomePageData()
   ]);
   const homePageData = homePage ?? fallbackHomeData;

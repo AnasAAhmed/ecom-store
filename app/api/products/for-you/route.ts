@@ -1,7 +1,5 @@
 import Product from '@/lib/models/Product';
 import { connectToDB } from '@/lib/mongoDB';
-import { HttpError } from '@/lib/utils/features';
-import mongoose from 'mongoose';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -11,9 +9,6 @@ export async function GET(request: NextRequest) {
 
     const productIds = recentlyViewed?.split(',');
 
-    if (!avgPriceRange || !categoriesClicked || !recentlyViewed) {
-        throw new HttpError('Values are missing', 403);
-    }
     try {
         const orConditions: any[] = [];
 
@@ -52,12 +47,7 @@ export async function GET(request: NextRequest) {
 
         );
     } catch (err) {
-        if (err instanceof HttpError) {
-            return NextResponse.json(
-                "Failed to fetch products: " + err.message,
-                { status: err.status, statusText: "Failed to fetch fyp products: " + err.message }
-            );
-        }
+       
         console.error("Error fetching products:", err);
         return NextResponse.json(
             "Failed to fetch products: " + (err as Error).message,
