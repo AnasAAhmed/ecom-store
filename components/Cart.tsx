@@ -25,20 +25,20 @@ const Cart = () => {
   const [isRevalidating, setIsRevalidating] = useState(false);
   const [isCOD, setIsCOD] = useState<string>("NULL");
 
-  // useEffect(() => {
-  //   const ss = async () => {
-  //     setLoading2(true);
-  //     const res = await fetch('/api/products/for-you', {
-  //       method: 'GET',
+  useEffect(() => {
+    const ss = async () => {
+      setLoading2(true);
+      const res = await fetch('/api/products/for-you', {
+        method: 'GET',
 
-  //     })
-  //     if (!res.ok) return toast.error(res.statusText);
-  //     const data = await res.json();
-  //     setProducts(data);
-  //     setLoading2(false);
-  //   };
-  //   ss();
-  // }, [])
+      })
+      if (!res.ok) return toast.error(res.statusText);
+      const data = await res.json();
+      setProducts(data);
+      setLoading2(false);
+    };
+    ss();
+  }, [])
 
   const cart = useCart();
   const total = cart.cartItems.reduce(

@@ -42,7 +42,13 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json(
             products,
-            { status: 200, statusText: 'Fetched For You product successfully' }
+            {
+                status: 200,
+                statusText: 'Fetched For You product successfully',
+                headers: {
+                    "Cache-Control": "public, s-maxage=120, stale-while-revalidate=59",
+                },
+            }
 
         );
     } catch (err) {
