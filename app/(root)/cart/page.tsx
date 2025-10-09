@@ -6,7 +6,6 @@ export const metadata: Metadata = {
   description: "All products that you have added in cart so far",
 };
 
-export const dynamic = 'force-static'
 
 const CartPage = async () => {
 
@@ -14,6 +13,8 @@ const CartPage = async () => {
     <Cart />
   );
 };
-
+async function ForYouProducts() {
+  
+}
 export default CartPage;
 

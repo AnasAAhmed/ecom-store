@@ -1,5 +1,6 @@
 'use client'
 import { useProgressStore } from '@/lib/hooks/useProgressBar';
+import { updateCategories } from '@/lib/hooks/useUserPrefrence';
 import { useRouter } from 'next/navigation';
 import React from 'react'
 
@@ -40,6 +41,7 @@ const Sort = ({ isCollectionPage = false }: { isCollectionPage?: boolean }) => {
         } else {
             searchParams.set('category', category.toString());
             const newUrl = `?${searchParams.toString()}`;
+            updateCategories(category);
             router.push(newUrl, { scroll: true });
         }
     };
@@ -115,7 +117,7 @@ const Sort = ({ isCollectionPage = false }: { isCollectionPage?: boolean }) => {
                 <option value="green">green</option>
                 <option value="">None</option>
             </select>
-            {isCollectionPage && <select
+            <select
                 className="h-10 px-3 my-4 bg-gray-100 rounded-lg"
                 // value={`${sortField}|${sort}`}
                 onChange={handleCategoryChange}
@@ -127,7 +129,7 @@ const Sort = ({ isCollectionPage = false }: { isCollectionPage?: boolean }) => {
                 <option value="hat">hat</option>
                 <option value="pants">pants</option>
                 <option value="">None</option>
-            </select>}
+            </select>
         </div>
     )
 }

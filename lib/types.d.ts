@@ -68,7 +68,8 @@ interface HomePage {
   hero: {
     heading?: string;
     text?: string;
-    imgUrl: string
+    imgUrl: string;
+    mobImgUrl: string;
     shade?: string;
     textColor?: string;
     link: string;
@@ -77,19 +78,20 @@ interface HomePage {
     buttonText?: string;
     isVideo: boolean;
   },
-  collections:{
-      heading?: string;
-      text?: string;
-      imgUrl: string;
-      shade?: string;
-      textColor?: string;
-      link: string;
-      textPosition?: 'end' | 'center' | 'start';
-      textPositionV?: 'end' | 'center' | 'start';
-      buttonText?: string;
-      collectionId: string;
-      isVideo: boolean;
-    }[]
+  collections: {
+    heading?: string;
+    text?: string;
+    imgUrl: string;
+    mobImgUrl: string
+    shade?: string;
+    textColor?: string;
+    link: string;
+    textPosition?: 'end' | 'center' | 'start';
+    textPositionV?: 'end' | 'center' | 'start';
+    buttonText?: string;
+    collectionId: string;
+    isVideo: boolean;
+  }[]
 }
 interface GridBannerProps {
   imageUrl: string;
@@ -186,7 +188,7 @@ type OrderType = {
     country: string
   };
   _id: string;
-  isPaid:boolean;
+  isPaid: boolean;
   customerEmail: string;
   customerPhone: string;
   products: [OrderItemType]

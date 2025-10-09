@@ -12,16 +12,17 @@ type BannerProps = {
   textColor?: string;
   link: string;
   buttonText?: string;
+  mobImgUrl?: string;
   textPositionV?: rr;
   textPosition?: rr;
   aspectRatio?: string | number;
 };
 type rr = 'center' | 'end' | 'start';
-const Banner = ({ aspectRatio = '16 / 8', imgUrl, videoUrl, text, heading, textColor, shade, link, buttonText, textPositionV = 'center', textPosition = 'center' }: BannerProps) => {
+const Banner = ({ aspectRatio = '16 / 8', mobImgUrl, imgUrl, videoUrl, text, heading, textColor, shade, link, buttonText, textPositionV = 'center', textPosition = 'center' }: BannerProps) => {
 
   return (
     <SmartLink disabled={link ? false : true} title={buttonText || 'Shop Now'} href={link} >
-      <div className={`relative w-full aspect-[16/14] md:aspect-[16/8]`}>
+      <div className={`relative w-full aspect-[4/4] md:aspect-[16/8]`}>
 
         {videoUrl ? (
           <video
@@ -34,15 +35,26 @@ const Banner = ({ aspectRatio = '16 / 8', imgUrl, videoUrl, text, heading, textC
             playsInline
           />
         ) : (
-          <Image
-            src={imgUrl!}
-            alt={heading || 'Banner image'}
-            fill
-            placeholder="blur"
-            blurDataURL="/fallback-banner.avif"
-            sizes="100vw"
-            className={`absolute transition-opacity`}
-          />
+          <>
+            <Image
+              src={imgUrl!}
+              alt={heading || 'Banner image'}
+              fill
+              placeholder="blur"
+              blurDataURL="/fallback-banner.avif"
+              sizes="100vw"
+              className={`absolute max-sm:hidden transition-opacity`}
+            />
+            <Image
+              src={mobImgUrl! || imgUrl!}
+              alt={(heading || 'Banner image') + 'mob_image'}
+              fill
+              placeholder="blur"
+              blurDataURL="/fallback-banner.avif"
+              sizes="100vw"
+              className={`absolute sm:hidden transition-opacity`}
+            />
+          </>
         )}
         {shade && (
           <div

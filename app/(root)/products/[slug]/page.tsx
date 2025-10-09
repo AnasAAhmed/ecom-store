@@ -160,10 +160,13 @@ export default async function ProductPage(
       )}
 
       <Suspense fallback={
-        <div className="flex flex-wrap justify-center gap-5">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-[22rem] w-64 bg-gray-200 animate-pulse" />
-          ))}
+        <div className="flex flex-col flex-wrap items-center justify-center gap-5">
+          <div className='h-7 w-36 bg-gray-200 animate-pulse' />
+          <div className="flex flex-wrap justify-center gap-5">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="h-[22rem] w-64 bg-gray-200 animate-pulse" />
+            ))}
+          </div>
         </div>
       }>
         <hr />

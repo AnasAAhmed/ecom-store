@@ -13,6 +13,7 @@ export interface IHomePage extends mongoose.Document {
         heading?: string;
         text?: string;
         imgUrl: string
+        mobImgUrl?: string
         shade?: string;
         textColor?: string;
         link: string;
@@ -26,6 +27,7 @@ export interface IHomePage extends mongoose.Document {
             heading?: string;
             text?: string;
             imgUrl: string;
+            mobImgUrl: string;
             shade?: string;
             textColor?: string;
             link: string;
@@ -52,6 +54,7 @@ const homePageSchema = new mongoose.Schema({
         heading: { type: String },
         text: { type: String },
         imgUrl: { type: String, required: true },
+        mobImgUrl: { type: String, required: false },
         shade: { type: String },
         textColor: { type: String },
         textPosition: { type: String },
@@ -65,6 +68,8 @@ const homePageSchema = new mongoose.Schema({
             heading: { type: String },
             text: { type: String },
             imgUrl: { type: String, required: true },
+            mobImgUrl: { type: String, required: false },
+
             shade: { type: String },
             textColor: { type: String },
             textPosition: { type: String },

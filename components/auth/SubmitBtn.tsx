@@ -1,6 +1,6 @@
 "use client"
 
-import { Loader2 } from "lucide-react"
+import { Loader } from "lucide-react"
 import { useFormStatus } from "react-dom"
 
 export function SubmitButton({ text, title, logo, provider = 'google' }: { logo?: string; provider?: string; title?: string; text: string }) {
@@ -21,7 +21,7 @@ export function SubmitButton({ text, title, logo, provider = 'google' }: { logo?
                 id={provider + "-logo"}
                 src={logo} />
             }
-           {text} {pending && <Loader2 className='animate-spin duration-100' />} 
+            {text} {pending && <Loader className='animate-spin duration-100' />}
         </button>
     )
 }

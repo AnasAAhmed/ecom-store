@@ -1,5 +1,6 @@
 'use client'
 import useCart, { useRegion } from '@/lib/hooks/useCart';
+import { updateCategories, updatePriceRange, updateRecentlyViewed } from '@/lib/hooks/useUserPrefrence';
 import { currencyToSymbolMap } from '@/lib/utils/features.csr';
 import { MinusCircle, PlusCircle } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
@@ -128,10 +129,29 @@ export const SizesAndColors = (
     )
 }
 
-export const PriceAndExpense = ({ isCard = false, baseExpense, basePrice }: { isCard?: boolean; baseExpense: number; basePrice: number }) => {
+export const PriceAndExpense = ({ productId, category, isCard = false, baseExpense, basePrice }: { category: string; productId: string; isCard?: boolean; baseExpense: number; basePrice: number }) => {
     const { currency, exchangeRate } = useRegion();
     const price = (basePrice * exchangeRate).toFixed();
     const expense = (baseExpense * exchangeRate).toFixed();
+
+    //updating Categories Cookie for userPrefrences
+    useEffect(() => {
+         if (!isCard) {
+            const timeout = setTimeout(() => updateCategories(category));
+            return () => clearTimeout(timeout);
+        }
+    }, [category]);
+    //updating PriceRange Cookie for userPrefrences
+    useEffect(() => {
+        if (!isCard) {
+            const timeout = setTimeout(() => updatePriceRange(basePrice), 50);
+            return () => clearTimeout(timeout);
+        }
+    }, [basePrice]);
+    //updating RecentlyViewed Cookie for userPrefrences
+    useEffect(() => {
+        if (!isCard) updateRecentlyViewed(productId);
+    }, [productId]);
 
     if (isCard) {
         return (

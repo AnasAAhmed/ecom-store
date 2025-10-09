@@ -62,9 +62,9 @@ export default function LoginForm() {
     async function updateSession() {
       if (result && result.type) {
         if (result.type === 'error') {
-          toast.error(result.resultCode)
+          toast.error(result.resultCode.replaceAll('_',' ').toLowerCase())
         } else {
-          toast.success(result.resultCode)
+          toast.success(result.resultCode.replaceAll('_',' ').toLowerCase())
           await getSession();
           window.location.href = redirectUrl
         }

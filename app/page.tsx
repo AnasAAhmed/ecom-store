@@ -67,6 +67,7 @@ export default async function Home() {
         heading={homePageData.hero.heading!}
         text={homePageData.hero.text!}
         imgUrl={homePageData.hero.isVideo ? '' : homePageData.hero.imgUrl}
+        mobImgUrl={homePageData.hero.isVideo ? '' : homePageData.hero.mobImgUrl}
         videoUrl={homePageData.hero.isVideo ? homePageData.hero.imgUrl : ''}
         shade={homePageData.hero.shade!}
         textColor={homePageData.hero.textColor!}

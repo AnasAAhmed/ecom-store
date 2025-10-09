@@ -4,7 +4,7 @@ import { AddtoCartBtnForNonVariant, PriceAndExpense, SizesAndColors } from "./Pr
 import Link from "next/link";
 
 const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
-    const discount=((productInfo.expense - productInfo.price) / productInfo.expense * 100).toFixed(0);
+    const discount = ((productInfo.expense - productInfo.price) / productInfo.expense * 100).toFixed(0);
     const isColors = productInfo.variants.filter(i => i.color !== '')
     const isSizes = productInfo.variants.filter(i => i.size !== '')
     const initialVariant = productInfo.variants.find(v => v.quantity > 0) || null;
@@ -31,7 +31,11 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
                     )}
                 </div>
                 {/* for client side for different currencies */}
-                <PriceAndExpense baseExpense={productInfo.expense} basePrice={productInfo.price} />
+                <PriceAndExpense
+                    category={productInfo.category}
+                    productId={productInfo._id}
+                    baseExpense={productInfo.expense}
+                    basePrice={productInfo.price} />
                 <HeartFavorite productId={productInfo._id} />
             </div>
 
@@ -40,7 +44,7 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
                 <div className="flex gap-2">
                     <StarRatings rating={productInfo.ratings} />
                     <Link href={'#reviews'}>
-                    <span title="ratings" className="text-blue-700"> ({(productInfo.ratings).toFixed()}/5)</span>
+                        <span title="ratings" className="text-blue-700"> ({(productInfo.ratings).toFixed()}/5)</span>
                     </Link>
                 </div>
                 sold({productInfo.sold})

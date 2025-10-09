@@ -101,7 +101,7 @@ export default async function RootLayout({
                     {item.charAt(0).toUpperCase() + item.slice(1)}
                   </SmartLink>
                 ))}
-                {["/", "/search", "/contact", "/blog", "/wishlist", "/orders","https://ecom-admin-panel-xcw7-gh8p.vercel.app/"].map((item, idx) => (
+                {["/", "/search", "/contact", "/blog", "/wishlist", "/orders", "https://ecom-admin-panel-xcw7-gh8p.vercel.app/"].map((item, idx) => (
                   <a
                     title={`${item} page at Borcelle`}
                     key={item}
@@ -109,7 +109,7 @@ export default async function RootLayout({
                     href={item}
                     className="hover:text-black sr-only text-gray-600 transition-colors duration-200 border-b-2 border-transparent hover:border-black"
                   >
-                    {["Home", "Shop", "Contact", "Blog", "Wishlist", "Orders","CMS"][idx]}
+                    {["Home", "Shop", "Contact", "Blog", "Wishlist", "Orders", "CMS"][idx]}
                   </a>
                 ))}
               </div>
@@ -120,10 +120,11 @@ export default async function RootLayout({
             <Navbar />
             <ProgressBar />
           </Suspense>
-          <Suspense fallback={<Loader height={80} />}>
-            <main className="mt-24 sm:mt-12">
-              {children}
-            </main>
+          <main className="mt-24 sm:mt-12">
+            {children}
+          </main>
+          <Suspense fallback={''}>
+            {/* <Suspense fallback={<Loader height={80} />}> */}
             <IsOnline />
           </Suspense>
           <Footer />

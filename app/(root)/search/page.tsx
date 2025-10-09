@@ -8,7 +8,7 @@ import Link from 'next/link';
 export async function generateMetadata(props: { searchParams: Promise<{ query: string }> }) {
   const searchParams = await props.searchParams;
   return {
-    title: `Search ${searchParams.query ? 'results for "' + searchParams.query : ''}" | Borcelle`,
+    title: `Search ${searchParams.query ? 'results for: ' + searchParams.query : ''} | Borcelle`,
     description: "Search high-quality products at Borcelle.",
     keywords: ['search', "products", 'Borcelle'],
     robots: {

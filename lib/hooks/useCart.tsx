@@ -13,9 +13,9 @@ interface CartItem {
 interface CartStore {
   cartItems: CartItem[];
   addItem: (item: CartItem) => void;
-  removeItem: (idToRemove: string) => void;
-  increaseQuantity: (idToIncrease: string) => void;
-  decreaseQuantity: (idToDecrease: string) => void;
+  removeItem: (idToRemove: string, varaintId?: string) => void;
+  increaseQuantity: (idToIncrease: string, varaintId?: string) => void;
+  decreaseQuantity: (idToDecrease: string, varaintId?: string) => void;
   clearCart: () => void;
   updateStock: () => Promise<void>;
 }
@@ -27,36 +27,94 @@ const useCart = create(
       addItem: (data: CartItem) => {
         const { item, quantity, color, size, variantId } = data;
         const currentItems = get().cartItems;
-        const isExisting = currentItems.find(
-          (cartItem) => cartItem.item._id === item._id
-        );
-        if (!isExisting && currentItems.length >= 10) {
+
+        // cart limit (10 items)
+        if (currentItems.length >= 10) {
           toast.error("Cart limit reached (max 10 items)");
           return;
         }
-        let newCartItems = currentItems;
-        if (isExisting) {
-          newCartItems = currentItems.filter(
-            (cartItem) => cartItem.item._id !== item._id
-          );
-        };
 
-        set({ cartItems: [...newCartItems, { item, quantity, color, size, variantId }] });
-        toast.success(item.title + ' (Added to cart)');
-      },
-      removeItem: (idToRemove: string) => {
-        const newCartItems = get().cartItems.filter(
-          (cartItem) => cartItem.item._id !== idToRemove
+        // find existing item
+        const isExisting = currentItems.find(
+          (cartItem) =>
+            cartItem.item._id === item._id &&
+            (cartItem.variantId ? cartItem.variantId === variantId : !variantId)
         );
-        const item = get().cartItems.find(
-          (cartItem) => cartItem.item._id === idToRemove
+
+        let newCartItems: CartItem[];
+
+        if (isExisting) {
+          // update quantity if same product + same variant
+          newCartItems = currentItems.map((cartItem) =>
+            cartItem.item._id === item._id &&
+              (cartItem.variantId ? cartItem.variantId === variantId : !variantId)
+              ? { ...cartItem, quantity: cartItem.quantity + quantity }
+              : cartItem
+          );
+        } else {
+          // add as new line item
+          newCartItems = [
+            ...currentItems,
+            { item, quantity: 45, color, size, variantId: variantId || undefined },
+          ];
+        }
+
+        set({ cartItems: newCartItems });
+        if (item) {
+          const variantLabel = variantId
+            ? ` (${color || ""} - ${size || ""})`
+            : "";
+
+          toast.success(item.title + variantLabel + " (Added to cart)");
+        }
+      },
+
+      removeItem: (idToRemove: string, variantId?: string) => {
+        let newCartItems: CartItem[] | undefined;
+
+        if (variantId) {
+          // for if there is varaintId it means we nreed to handle it 
+          // with varaintId there is varaints in product
+          newCartItems = get().cartItems.filter(
+            (cartItem) => cartItem.variantId !== variantId
+          );
+        } else {
+          // for if there is no varaintId we can handle it with only product.Id(item._id)
+          newCartItems = get().cartItems.filter(
+            (cartItem) => cartItem.item._id !== idToRemove
+          );
+        }
+
+        const removedCartItem = get().cartItems.find(
+          (cartItem) => (variantId
+            ? (cartItem.item._id === idToRemove && cartItem.variantId === variantId)
+            : (cartItem.item._id === idToRemove))
         );
         set({ cartItems: newCartItems });
-        toast.success(item?.item.title + ' (Removed from cart)');
+
+        if (removedCartItem) {
+          const variantLabel = removedCartItem.variantId
+            ? ` (${removedCartItem.color || ""} - ${removedCartItem.size || ""})`
+            : "";
+
+          toast.success(removedCartItem.item.title + variantLabel + " (Removed from cart)");
+        }
       },
-      increaseQuantity: async (idToIncrease: string) => {
+      increaseQuantity: async (idToIncrease: string, variantId?: string) => {
         const newCartItems = get().cartItems.map((cartItem) => {
-          if (cartItem.item._id === idToIncrease) {
+          // if there is varaint then handle by variantId
+          if (variantId && cartItem.variantId === variantId) {
+            if (cartItem.quantity < cartItem.item.stock) {
+              return { ...cartItem, quantity: cartItem.quantity + 1 };
+            } else {
+              const variantLabel = cartItem.variantId
+                ? ` (${cartItem.color || ""} - ${cartItem.size || ""})`
+                : "";
+              toast.error("Cannot add more, stock limit reached for variant " + variantLabel);
+            }
+          }
+          // if there is no varaint then handle by _id
+          if (cartItem.item._id === idToIncrease && !variantId) {
             if (cartItem.quantity < cartItem.item.stock) {
               return { ...cartItem, quantity: cartItem.quantity + 1 };
             } else {
@@ -67,13 +125,20 @@ const useCart = create(
         });
         set({ cartItems: newCartItems });
       },
-      decreaseQuantity: (idToDecrease: string) => {
+      decreaseQuantity: (idToDecrease: string, variantId?: string) => {
         const newCartItems = get().cartItems.map((cartItem) => {
-          if (cartItem.item._id === idToDecrease) {
+          // if there is varaint then handle by variantId
+          if (variantId && cartItem.variantId === variantId) {
             if (cartItem.quantity > 1) {
-              return { ...cartItem, quantity: cartItem.quantity - 1 }
-            };
-          };
+              return { ...cartItem, quantity: cartItem.quantity - 1 };
+            }
+          }
+          // if there is no varaint then handle by _id
+          if (cartItem.item._id === idToDecrease && !variantId) {
+            if (cartItem.quantity > 1) {
+              return { ...cartItem, quantity: cartItem.quantity - 1 };
+            }
+          }
           return cartItem;
         });
         set({ cartItems: newCartItems });
@@ -94,44 +159,62 @@ const useCart = create(
           throw new Error('Failed to fetch products stock');
         }
 
-        const updatedProducts = await response.json();
+        const updatedProducts: ProductType[] = await response.json();
 
-        const updatedCartItems = currentItems.map((cartItem) => {
-          const updatedProduct = updatedProducts.find((p: any) => p._id === cartItem.item._id);
+        const updatedCartItems = currentItems
+          .map((cartItem) => {
+            // Case 1: simple product (no variants)
+            const updatedProduct = updatedProducts.find(
+              (p) => !p.variants && p._id === cartItem.item._id
+            );
 
-          if (updatedProduct) {
-            if (updatedProduct.variants && updatedProduct.variants.length > 0 && cartItem.variantId) {
-              const updatedVariant = updatedProduct.variants.find(
-                (variant: any) => variant._id === cartItem.variantId
+            // Case 2: variant product
+            const updatedVariantProduct = updatedProducts.find((p) =>
+              p.variants?.some((v) => v._id === cartItem.variantId)
+            );
+
+            // --- handle simple product ---
+            if (updatedProduct) {
+              return {
+                ...cartItem,
+                // reset quantity if stock got reduced
+                quantity: Math.min(cartItem.quantity, updatedProduct.stock),
+                item: {
+                  ...cartItem.item,
+                  stock: updatedProduct.stock,
+                },
+              };
+            }
+
+            // --- handle variant product ---
+            if (updatedVariantProduct && cartItem.variantId) {
+              const updatedVariant = updatedVariantProduct.variants.find(
+                (v) => v._id === cartItem.variantId
               );
 
               if (updatedVariant) {
                 return {
                   ...cartItem,
+                  quantity: Math.min(cartItem.quantity, updatedVariant.quantity),
                   item: {
                     ...cartItem.item,
-                    stock: updatedVariant.quantity || 0
-                  }
+                    stock: updatedVariant.quantity,
+                  },
                 };
               } else {
-                toast.error(`This ${cartItem.size! + '/' + cartItem.color!} Varaint of ${cartItem.item.title} is Changed Or Remove`)
+                toast.error(
+                  `This ${cartItem.size! + "/" + cartItem.color!} variant of ${cartItem.item.title
+                  } has been changed or removed`
+                );
                 return null;
               }
-            } else {
-              return {
-                ...cartItem,
-                quantity: 1,
-                item: {
-                  ...cartItem.item,
-                  stock: updatedProduct.stock,
-
-                }
-              };
             }
-          }
-          toast.error(`The Product ${cartItem.item.title} is Changed Or Remove`)
-          return null;
-        }).filter((item): item is NonNullable<typeof item> => item !== null);
+
+            // --- product not found at all ---
+            toast.error(`The product ${cartItem.item.title} has been changed or removed`);
+            return null;
+          })
+          .filter((item): item is NonNullable<typeof item> => item !== null);
 
         set({ cartItems: updatedCartItems });
       },
