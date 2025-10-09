@@ -8,8 +8,8 @@ export async function GET(request: NextRequest) {
     const recentlyViewed = request.cookies.get('Product-IDs')?.value;
 
     const productIds = recentlyViewed?.split(',');
-
     try {
+        
         const orConditions: any[] = [];
 
         if (productIds?.length) {
@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
             products,
             {
                 status: 200,
-                statusText: 'Fetched For You product successfully',
+                statusText: 'Fetched FY product successfully',
                 headers: {
                     "Cache-Control": "public, s-maxage=120, stale-while-revalidate=59",
                 },
@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
 
         );
     } catch (err) {
-       
+
         console.error("Error fetching products:", err);
         return NextResponse.json(
             "Failed to fetch products: " + (err as Error).message,

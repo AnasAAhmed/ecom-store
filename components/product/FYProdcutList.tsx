@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import SliderList from './SliderList';
 
-const FYProdcutList = () => {
+const FYProdcutList = ({ heading, text }: { heading?: string; text?: string }) => {
     const [loading2, setLoading2] = useState(true);
     const [products, setProducts] = useState([]);
     const [error, setError] = useState('');
@@ -14,7 +14,11 @@ const FYProdcutList = () => {
                 method: 'GET',
 
             })
-            if (!res.ok) return setError(res.statusText || 'Something Went wrong with FYP Products');
+            if (!res.ok) {
+                setError(res.statusText || 'Something Went wrong with FYP Products');
+                setLoading2(false);
+                return;
+            }
             const data = await res.json();
             setProducts(data);
             setLoading2(false);
@@ -33,9 +37,14 @@ const FYProdcutList = () => {
         </div>
     </div>)
 
-    if (!error) return <p className='text-heading3-bold self-center text-center'>{error}</p>;
+    if (error) return <p className='text-heading3-bold self-center text-center my-12'>{error}</p>;
 
-    return <SliderList heading='You would also like' text="Personalized picks based on your browsing" Products={products} />;
+    return (
+        <SliderList heading={heading || 'You would also like'}
+            text={text || "Personalized picks based on your browsing"}
+            Products={products}
+        />
+    )
 }
 
 export default FYProdcutList
