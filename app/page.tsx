@@ -13,6 +13,7 @@ import StoreFeatures from "@/components/ui/StoreFeatures";
 import SliderList from "@/components/product/SliderList";
 import Loader from "@/components/ui/Loader";
 import Image from "next/image";
+import FYProdcutList from "@/components/product/FYProdcutList";
 
 export const dynamic = 'force-static';
 
@@ -116,7 +117,8 @@ export default async function Home() {
         </article >
         <br />
 
-        <SliderList heading="Don’t Miss Out" text="These trending products are flying off the shelves. Get yours before they’re gone!" Products={bestSelling} />
+        {/* CSR Compo */}
+        <FYProdcutList />
 
         <br />
         {homePageData.collections.length > 2 && homePageData.collections.slice(2).map((i, idx) => (

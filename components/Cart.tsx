@@ -11,6 +11,7 @@ import { useSession } from 'next-auth/react'
 import { currencyToSymbolMap, slugifyCsr } from '@/lib/utils/features.csr';
 import SliderList from './product/SliderList';
 import Loader from './ui/Loader';
+import FYProdcutList from './product/FYProdcutList';
 
 
 const Cart = () => {
@@ -18,27 +19,12 @@ const Cart = () => {
   const { data: session } = useSession();
   const { currency, exchangeRate } = useRegion();
   const [loading, setLoading] = useState(false);
-  const [loading2, setLoading2] = useState(true);
-  const [products, setProducts] = useState([]);
+  
   const [expand, setExpand] = useState(false);
   const [message, setMessage] = useState(false);
   const [isRevalidating, setIsRevalidating] = useState(false);
   const [isCOD, setIsCOD] = useState<string>("NULL");
 
-  useEffect(() => {
-    const ss = async () => {
-      setLoading2(true);
-      const res = await fetch('/api/products/for-you', {
-        method: 'GET',
-
-      })
-      if (!res.ok) return toast.error(res.statusText);
-      const data = await res.json();
-      setProducts(data);
-      setLoading2(false);
-    };
-    ss();
-  }, [])
 
   const cart = useCart();
   const total = cart.cartItems.reduce(
@@ -263,20 +249,7 @@ const Cart = () => {
           </button>}
         </div>
       </div>
-      {loading2 ?
-        <div className="flex flex-col items-centers w-full mt-6 mb-12">
-          <div className='h-7 w-36 self-center text-center bg-gray-200 mb-3 animate-pulse' />
-          <div className='h-7 w-96 self-center text-center bg-gray-200 mb-7 animate-pulse' />
-          <div className="flex gap-4 sm:gap-6 overflow-x-scroll no-scrollbar px-4 sm:px-14 snap-x snap-mandatory scroll-smooth">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="flex-shrink-0 h-[22rem] w-64 bg-gray-200 animate-pulse" />
-
-            ))}
-          </div>
-        </div>
-
-        : <SliderList heading='You would also like' text="Personalized picks based on your browsing"  Products={products} />
-      }
+     <FYProdcutList/>
     </>
   );
 };

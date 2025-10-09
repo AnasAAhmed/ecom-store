@@ -129,14 +129,14 @@ export const SizesAndColors = (
     )
 }
 
-export const PriceAndExpense = ({ productId, category, isCard = false, baseExpense, basePrice }: { category: string; productId: string; isCard?: boolean; baseExpense: number; basePrice: number }) => {
+export const PriceAndExpense = ({ productId, category, isCard = false, baseExpense, basePrice }: { category?: string; productId?: string; isCard?: boolean; baseExpense: number; basePrice: number }) => {
     const { currency, exchangeRate } = useRegion();
     const price = (basePrice * exchangeRate).toFixed();
     const expense = (baseExpense * exchangeRate).toFixed();
 
     //updating Categories Cookie for userPrefrences
     useEffect(() => {
-         if (!isCard) {
+        if (!isCard && category) {
             const timeout = setTimeout(() => updateCategories(category));
             return () => clearTimeout(timeout);
         }
@@ -150,7 +150,7 @@ export const PriceAndExpense = ({ productId, category, isCard = false, baseExpen
     }, [basePrice]);
     //updating RecentlyViewed Cookie for userPrefrences
     useEffect(() => {
-        if (!isCard) updateRecentlyViewed(productId);
+        if (!isCard && productId) updateRecentlyViewed(productId);
     }, [productId]);
 
     if (isCard) {
