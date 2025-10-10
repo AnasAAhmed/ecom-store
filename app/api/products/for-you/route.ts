@@ -1,5 +1,6 @@
 import Product from '@/lib/models/Product';
 import { connectToDB } from '@/lib/mongoDB';
+import mongoose from 'mongoose';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -8,12 +9,24 @@ export async function GET(request: NextRequest) {
     const recentlyViewed = request.cookies.get('Product-IDs')?.value;
 
     const productIds = recentlyViewed?.split(',');
+
+    if (!categoriesClicked && !avgPriceRange) {
+        return NextResponse.json(
+            null,
+            {
+                status: 204,
+                statusText: 'Fetched FY product successfully but it is null because both categories and avgPriceRange are null',
+            }
+        );
+    };
+
+    let query: any = {};
     try {
-        
+
         const orConditions: any[] = [];
 
         if (productIds?.length) {
-            orConditions.push({ _id: { $nin: productIds } });
+            query._id = { $nin: productIds.map(id => new mongoose.Types.ObjectId(id)) };
         }
         if (categoriesClicked) {
             const parsedCategories = JSON.parse(categoriesClicked);
@@ -27,7 +40,9 @@ export async function GET(request: NextRequest) {
             orConditions.push({ price: { $gte: parsedPriceRange.min, $lte: parsedPriceRange.max } });
         }
 
-        const query = orConditions.length > 0 ? { $or: orConditions } : {};
+        if (orConditions.length) {
+            query.$and = orConditions;
+        }
 
         await connectToDB();
 
@@ -40,11 +55,10 @@ export async function GET(request: NextRequest) {
             {
                 status: 200,
                 statusText: 'Fetched FY product successfully',
-                headers: {
-                    "Cache-Control": "private, max-age=120, stale-while-revalidate=59",
-                },
+                // headers: {
+                //     "Cache-Control": "private, max-age=120, stale-while-revalidate=59",
+                // },
             }
-
         );
     } catch (err) {
 

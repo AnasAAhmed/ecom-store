@@ -32,10 +32,9 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
                 </div>
                 {/* for client side for different currencies */}
                 <PriceAndExpense
-                    category={productInfo.category}
-                    productId={productInfo._id}
+                    basePrice={productInfo.price}
                     baseExpense={productInfo.expense}
-                    basePrice={productInfo.price} />
+                />
                 <HeartFavorite productId={productInfo._id} />
             </div>
 

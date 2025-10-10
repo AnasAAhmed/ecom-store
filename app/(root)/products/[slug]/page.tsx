@@ -14,6 +14,7 @@ import ReviewForm from "@/components/product/ReviewForm";
 import StarRatings from "@/components/product/StarRatings";
 import DeleteReviews from "@/components/product/ProductReviews";
 import { calculateTimeDifference } from "@/lib/utils/features.csr";
+import { ProductSignals } from "@/components/product/ProductInteractivity";
 
 
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }) {
@@ -134,7 +135,7 @@ export default async function ProductPage(
         }}
       />
       <Breadcrumb />
-
+      <ProductSignals product={product}/>
       <section className="flex mb-12 px-5 justify-center items-start gap-16 max-md:flex-col max-md:items-center">
         <div className=" md:sticky top-0 flex flex-col gap-3">
           <ImageZoom allSrc={product.media} alt={product.title} />

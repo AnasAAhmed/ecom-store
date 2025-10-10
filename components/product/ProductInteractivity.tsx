@@ -1,5 +1,6 @@
 'use client'
 import useCart, { useRegion } from '@/lib/hooks/useCart';
+import { addRecentlyViewed } from '@/lib/hooks/useRecentlyViewed';
 import { updateCategories, updatePriceRange, updateRecentlyViewed } from '@/lib/hooks/useUserPrefrence';
 import { currencyToSymbolMap } from '@/lib/utils/features.csr';
 import { MinusCircle, PlusCircle } from 'lucide-react';
@@ -129,29 +130,10 @@ export const SizesAndColors = (
     )
 }
 
-export const PriceAndExpense = ({ productId, category, isCard = false, baseExpense, basePrice }: { category?: string; productId?: string; isCard?: boolean; baseExpense: number; basePrice: number }) => {
+export const PriceAndExpense = ({ isCard = false, baseExpense, basePrice }: { isCard?: boolean; baseExpense: number; basePrice: number }) => {
     const { currency, exchangeRate } = useRegion();
     const price = (basePrice * exchangeRate).toFixed();
     const expense = (baseExpense * exchangeRate).toFixed();
-
-    //updating Categories Cookie for userPrefrences
-    useEffect(() => {
-        if (!isCard && category) {
-            const timeout = setTimeout(() => updateCategories(category));
-            return () => clearTimeout(timeout);
-        }
-    }, [category]);
-    //updating PriceRange Cookie for userPrefrences
-    useEffect(() => {
-        if (!isCard) {
-            const timeout = setTimeout(() => updatePriceRange(basePrice), 50);
-            return () => clearTimeout(timeout);
-        }
-    }, [basePrice]);
-    //updating RecentlyViewed Cookie for userPrefrences
-    useEffect(() => {
-        if (!isCard && productId) updateRecentlyViewed(productId);
-    }, [productId]);
 
     if (isCard) {
         return (
@@ -236,4 +218,44 @@ export const AddtoCartBtnForNonVariant = ({ productInfo }: { productInfo: Produc
             </button>
         </>
     )
+}
+
+
+export const ProductSignals = ({ product }: { product: ProductType }) => {
+    useEffect(() => {
+        if (product?.category) {
+            const timeout = setTimeout(() => updateCategories(product?.category));
+            return () => clearTimeout(timeout);
+        }
+    }, [product?.category]);
+
+    //updating PriceRange Cookie for userPrefrences
+    useEffect(() => {
+        const timeout = setTimeout(() => updatePriceRange(product?.price), 50);
+        return () => clearTimeout(timeout);
+    }, [product?.price]);
+
+    //updating RecentlyViewed Cookie for userPrefrences
+    useEffect(() => {
+        if (product?._id) {
+            updateRecentlyViewed(product?._id);
+
+            const excludingFields = {
+                _id: product._id,
+                title: product.title,
+                media: product.media,
+                category: product.category,
+                slug: product.slug,
+                stock: product.stock,
+                numOfReviews: product.numOfReviews,
+                sold: product.sold,
+                ratings: product.ratings,
+                price: product.price,
+                expense: product.expense,
+                updatedAt: product.updatedAt,
+            }
+            addRecentlyViewed(excludingFields!);
+        }
+    }, [product?._id]);
+    return null;
 }

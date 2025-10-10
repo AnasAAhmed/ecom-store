@@ -14,12 +14,13 @@ import SliderList from "@/components/product/SliderList";
 import Loader from "@/components/ui/Loader";
 import Image from "next/image";
 import FYProdcutList from "@/components/product/FYProdcutList";
+import RecentlyViewed from "@/components/product/RecentlyViewed";
 
 export const dynamic = 'force-static';
 
 export async function generateMetadata() {
   const homeData = await getCachedHomePageData();
-  console.log('generateMetadata func hits', homeData?.hero.imgUrl);
+  console.log('generateMetadata func hits homepage');
 
   if (!homeData?.seo) {
     return null;
@@ -60,6 +61,9 @@ export default async function Home() {
     getCollections(),
     getCachedHomePageData()
   ]);
+  // const products: ProductType[] = []
+  // const collections: CollectionType[] = []
+  // const homePage: HomePage | null = null
   const homePageData = homePage ?? fallbackHomeData;
   return (
     <Fragment>
@@ -139,6 +143,8 @@ export default async function Home() {
             </Suspense>
           </Fragment>
         ))}
+        <br />
+        <RecentlyViewed />
       </section>
       <BlogSection />
 
