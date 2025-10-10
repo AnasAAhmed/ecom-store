@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
                 status: 200,
                 statusText: 'Fetched FY product successfully',
                 headers: {
-                    "Cache-Control": "public, s-maxage=120, stale-while-revalidate=59",
+                    "Cache-Control": "private, max-age=120, stale-while-revalidate=59",
                 },
             }
 
