@@ -12,12 +12,11 @@ import { getCachedHomePageData } from "@/lib/actions/cached";
 import StoreFeatures from "@/components/ui/StoreFeatures";
 import SliderList from "@/components/product/SliderList";
 import Loader from "@/components/ui/Loader";
-import Image from "next/image";
 import FYProdcutList from "@/components/product/FYProdcutList";
 import RecentlyViewed from "@/components/product/RecentlyViewed";
-import SmartLink from "@/components/SmartLink";
 
 // export const dynamic = 'force-static';
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
   // const homeData = await getCachedHomePageData();

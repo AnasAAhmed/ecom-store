@@ -80,11 +80,12 @@ export async function getCollectionDetails(title: string) {
   try {
     await connectToDB();
 
-    const collection = await Collection.findOne({ title }).populate({
-      path: 'products',
-      options: { limit: 2 },
-      select: "title numOfReviews stock ratings sold price expense media _id",
-    });
+    const collection = await Collection.findOne({ title });
+    // .populate({
+    //   path: 'products',
+    //   options: { limit: 2 },
+    //   select: "title numOfReviews stock ratings sold price expense media _id",
+    // });
 
     if (!collection) {
       return null

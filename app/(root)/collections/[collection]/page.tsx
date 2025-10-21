@@ -102,47 +102,47 @@ const CollectionDetails = async (
             "@type": "CollectionPage",
             name: collectionDetails.title,
             description: collectionDetails.description,
-            mainEntity: collectionDetails.products.map((product: ProductType) => ({
-              "@type": "Product",
-              name: product.title,
-              description: product.description,
-              sku: product._id,
-              brand: {
-                "@type": "Brand",
-                name: "Borcelle"
-              },
-              url: `https://ecom-store-anas.vercel.app/products/${product.slug}`,
-              image: product.media[0],
-              offers: {
-                "@type": "AggregateOffer",
-                availability: product.stock > 0
-                  ? 'https://schema.org/InStock'
-                  : 'https://schema.org/OutOfStock',
-                priceCurrency: "USD",
-                highPrice: product.price,
-                lowPrice: product.expense || 0,
-                offerCount: 5,
-                price: product.price,
-              },
-              review: {
-                "@type": "Review",
-                "reviewRating": {
-                  "@type": "Rating",
-                  "ratingValue": 4,
-                  "bestRating": 5
-                },
-                "author": {
-                  "@type": "Person",
-                  "name": "Anas Ahmed"
-                }
-              },
-              aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: product.ratings,
-                reviewCount: product.numOfReviews,
-              },
-              keywords: product.tags?.join(', ') ?? '',
-            })),
+            // mainEntity: collectionDetails.products.map((product: ProductType) => ({
+            //   "@type": "Product",
+            //   name: product.title,
+            //   description: product.description,
+            //   sku: product._id,
+            //   brand: {
+            //     "@type": "Brand",
+            //     name: "Borcelle"
+            //   },
+            //   url: `https://ecom-store-anas.vercel.app/products/${product.slug}`,
+            //   image: product.media[0],
+            //   offers: {
+            //     "@type": "AggregateOffer",
+            //     availability: product.stock > 0
+            //       ? 'https://schema.org/InStock'
+            //       : 'https://schema.org/OutOfStock',
+            //     priceCurrency: "USD",
+            //     highPrice: product.price,
+            //     lowPrice: product.expense || 0,
+            //     offerCount: 5,
+            //     price: product.price,
+            //   },
+            //   review: {
+            //     "@type": "Review",
+            //     "reviewRating": {
+            //       "@type": "Rating",
+            //       "ratingValue": 4,
+            //       "bestRating": 5
+            //     },
+            //     "author": {
+            //       "@type": "Person",
+            //       "name": "Anas Ahmed"
+            //     }
+            //   },
+            //   aggregateRating: {
+            //     "@type": "AggregateRating",
+            //     ratingValue: product.ratings,
+            //     reviewCount: product.numOfReviews,
+            //   },
+            //   keywords: product.tags?.join(', ') ?? '',
+            // })),
           }),
         }}
       />
