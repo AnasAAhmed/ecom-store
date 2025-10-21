@@ -9,10 +9,10 @@ import mongoose from "mongoose";
 import { isHex24 } from "@/lib/utils/features";
 
 export function OPTIONS() {
-    return new NextResponse(null, {
-        status: 204,
-        headers: corsHeaders,
-    });
+  return new NextResponse(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
 }
 
 export const POST = async (req: NextRequest) => {
@@ -110,44 +110,65 @@ export const GET = async (req: NextRequest) => {
 
     await connectToDB()
 
-    const collectionsWithProductCounts = await Collection.aggregate([
+    const pipeline: any[] = [
       { $match: search },
-      {
-        $lookup: {
-          from: 'products',
-          let: { collectionId: '$_id' },
-          pipeline: [
-            { $match: { $expr: { $in: ['$$collectionId', '$collections'] } } },
-            { $count: 'count' }
-          ],
-          as: 'productStats'
-        }
-      },
-      {
-        $addFields: {
-          productCount: {
-            $ifNull: [{ $arrayElemAt: ['$productStats.count', 0] }, 0]
-          }
-        }
-      },
+    ];
+
+    pipeline.push(
       {
         $project: {
+          _id: 1,
           title: 1,
-          productCount: 1
+          image: 1,
+          productCount: 1,
         }
       },
       { $sort: sortOptions },
       { $skip: skip },
       { $limit: limit }
-    ]);
+    );
 
-    const totalCollections = await Collection.countDocuments();
-    const totalPages = Math.ceil(totalCollections / limit);
+    // const collectionsWithProductCounts = await Collection.aggregate(pipeline);
 
+    // const totalCollections = await Collection.countDocuments();
+    // const totalPages = Math.ceil(totalCollections / limit);
+    
+
+    // return NextResponse.json({
+    //   data: collectionsWithProductCounts,
+    //   totalPages,
+    //   totalCollections,
+    // },
+    //   { status: 200, headers: corsHeaders })
     return NextResponse.json({
-      data: collectionsWithProductCounts,
-      totalPages,
-      totalCollections,
+      "data": [
+        {
+          "_id": "6810d2c78ea9e382250af8be",
+          "title": "footwear",
+          "image": "https://res.cloudinary.com/dvnef4cyd/image/upload/v1745932983/imaginify/yhxgvnyiomxd9u5zxmw6.jpg",
+          "productCount": 2
+        },
+        {
+          "_id": "682203b1b50a422585dca64d",
+          "title": "summer",
+          "image": "https://e1s0bwzoxc.ufs.sh/f/EHhleKT2TuF3trF9xmgI0bLU8TkNwialQVmrnPSDsHp9o72j",
+          "productCount": 2
+        },
+        {
+          "_id": "68bd93848dea7304cc2f46ea",
+          "title": "women",
+          "image": "https://e1s0bwzoxc.ufs.sh/f/EHhleKT2TuF3o5WgC0432T78lGrHy0ZJjCnB6EXKNYPOQwp5",
+          "productCount": 0
+        },
+        {
+          "_id": "68bed35bfa5c5728ba60fce5",
+          "title": "men",
+          "image": "https://e1s0bwzoxc.ufs.sh/f/EHhleKT2TuF3NxiKUydBaGn39DLU2XfZ14uxwjW6vKcOMrJm",
+          "productCount": 0
+        }
+      ],
+        "totalPages": 1,
+          "totalCollections": 4
     },
       { status: 200, headers: corsHeaders })
   } catch (err) {

@@ -47,7 +47,7 @@ export default function ProgressBar() {
         priority
         width={240}
         height={174}
-        className="size-auto"
+        className="size-auto brightness-0 invert-0"
       />
     </div>
   );

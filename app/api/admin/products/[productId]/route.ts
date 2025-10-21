@@ -4,13 +4,13 @@ import Product from "@/lib/models/Product";
 import { connectToDB } from "@/lib/mongoDB";
 import { estimateDimensions, estimateWeight, extractKeyFromUrl } from "@/lib/utils/features";
 import { decode } from "next-auth/jwt";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 import { NextRequest, NextResponse } from "next/server";
 import { UTApi } from "uploadthing/server";
 
 export function OPTIONS() {
-  return  new NextResponse(null, {
+  return new NextResponse(null, {
     status: 204,
     headers: corsHeaders,
   });
@@ -64,32 +64,38 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ productI
       );
     }
 
-    // const productCollectionIds = (product.collections as string[]).map(String);
+    const productCollectionIds = (product.collections as string[]).map(String);
 
-    // const addedCollections = collections.filter(
-    //   (id: string) => !productCollectionIds.includes(id)
-    // );
+    const areSameCollections =
+      productCollectionIds.length === collections.length &&
+      productCollectionIds.every(id => collections.includes(id));
 
-    // const removedCollections = productCollectionIds.filter(
-    //   (id: string) => !collections.includes(id)
-    // );
+    if (!areSameCollections) {
+      const addedCollections = collections.filter(
+        (id: string) => !productCollectionIds.includes(id)
+      );
 
+      const removedCollections = productCollectionIds.filter(
+        (id: string) => !collections.includes(id)
+      );
 
-    // await Promise.all([
+      await Promise.all([
+        ...removedCollections.map((collectionId: string) =>
+          Collection.findByIdAndUpdate(collectionId, {
+            $pull: { products: product._id },
+            $inc: { productCount: -1 },
+          })
+        ),
+        ...addedCollections.map((collectionId: string) =>
+          Collection.findByIdAndUpdate(collectionId, {
+            $addToSet: { products: product._id },
+            $inc: { productCount: 1 },
+          })
+        ),
+      ]);
+    }
 
-    //   ...removedCollections.map((collectionId: string) =>
-    //     Collection.findByIdAndUpdate(collectionId, {
-    //       $pull: { products: product._id },
-    //     })
-    //   ),
-    //   ...addedCollections.map((collectionId: string) =>
-    //     Collection.findByIdAndUpdate(collectionId, {
-    //       $addToSet: { products: product._id }
-    //     })
-    //   ),
-    // ]);
-
-
+    const oldSlug = product.slug
     product.title = title
     product.description = description
     product.media = media
@@ -107,6 +113,9 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ productI
     await product.save();
 
     revalidatePath('/')
+    revalidatePath(`/products/${oldSlug}`);
+    revalidateTag(`/products/${oldSlug}`);
+    revalidateTag('search-default')
 
     return NextResponse.json(product, { status: 200, headers: corsHeaders });
   } catch (err) {
@@ -153,6 +162,7 @@ export const DELETE = async (req: NextRequest, props: { params: Promise<{ produc
       product.collections.map((collectionId: string) =>
         Collection.findByIdAndUpdate(collectionId, {
           $pull: { products: product._id },
+          $inc: { productCount: -1 },
         })
       )
     );
@@ -174,6 +184,9 @@ export const DELETE = async (req: NextRequest, props: { params: Promise<{ produc
       }
     }
     revalidatePath('/')
+    revalidatePath(`/products/${product.slug}`);
+    revalidateTag(`/products/${product.slug}`);
+    revalidateTag('search-default');
 
     return NextResponse.json(JSON.stringify(`Product deleted ${deleteRes!.success ? 'with images' : ""}`), {
       status: 200,
@@ -206,9 +219,10 @@ export const GET = async (req: NextRequest, props: { params: Promise<{ productId
     }
     await connectToDB();
 
-    const product = await Product.findById(params.productId).populate({
+    const product = await Product.findById(params.productId).select('-searchableVariants -variantColors -variantSizes -__v').populate({
       path: "collections",
       model: Collection,
+      select: "_id title"
     });
 
     if (!product) {
@@ -218,13 +232,13 @@ export const GET = async (req: NextRequest, props: { params: Promise<{ productId
       });
     }
 
-    return NextResponse.json(JSON.stringify(product), {
+    return NextResponse.json(product, {
       status: 200,
       headers: corsHeaders
     });
   } catch (err) {
     console.log("[productId_DELETE]", err);
-    return NextResponse.json("Internal error", { status: 500, headers: corsHeaders });
+    return NextResponse.json((err as Error).message, { status: 500, headers: corsHeaders });
   }
 };
 export const dynamic = "force-dynamic";

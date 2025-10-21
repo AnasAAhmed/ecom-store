@@ -26,7 +26,7 @@ type RecenltyProdcut = {
   updatedAt: Date;
 }
 
-export function addRecentlyViewed(product: RecenltyProdcut) {
+export function addProductToRecentlyViewed(product: RecenltyProdcut) {
   let items: RecenltyProdcut[] = JSON.parse(localStorage.getItem(RECENTLY_VIEWED_KEY) || "[]");
 
   // Remove if already exists
@@ -42,7 +42,29 @@ export function addRecentlyViewed(product: RecenltyProdcut) {
 
   localStorage.setItem(RECENTLY_VIEWED_KEY, JSON.stringify(items));
 }
+export function removeRecentlyViewed(productId: string) {
+  let items: RecenltyProdcut[] = JSON.parse(localStorage.getItem(RECENTLY_VIEWED_KEY) || "[]");
 
+  // remove from Product-IDs Cookie
+  const cookieKey = "Product-IDs";
+  const ids = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith(cookieKey + "="))
+    ?.split("=")[1];
+
+  let newIds = ids ? decodeURIComponent(ids).split(",") : [];
+
+  // remove if exists
+  newIds = newIds.filter((id) => id !== productId);
+
+
+  document.cookie = `${cookieKey}=${encodeURIComponent(newIds.join(","))}; path=/;`;
+
+   // remove from recentlyViewedProducts Local Storage
+  const filteredItems = items.filter((i) => i._id !== productId);
+
+  localStorage.setItem(RECENTLY_VIEWED_KEY, JSON.stringify(filteredItems));
+}
 export function getRecentlyViewed(): ProductType[] | [] {
   return JSON.parse(localStorage.getItem(RECENTLY_VIEWED_KEY) || "[]");
 }

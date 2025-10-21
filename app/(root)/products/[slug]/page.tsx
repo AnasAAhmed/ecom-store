@@ -5,17 +5,19 @@ import { notFound } from "next/navigation";
 import { getProductReviews, getRelatedProduct } from "@/lib/actions/product.actions";
 import ProductList from "@/components/product/ProductList";
 import { getCachedProductDetails } from "@/lib/actions/cached";
+import remarkGfm from "remark-gfm";
 import Breadcrumb from "@/components/BreadCrumb";
 import { unSlugify } from "@/lib/utils/features";
 import { ChevronDown } from "lucide-react";
 import ImageZoom from "@/components/product/ImageZoom";
-import Image from "next/image";
 import ReviewForm from "@/components/product/ReviewForm";
 import StarRatings from "@/components/product/StarRatings";
 import DeleteReviews from "@/components/product/ProductReviews";
 import { calculateTimeDifference } from "@/lib/utils/features.csr";
 import { ProductSignals } from "@/components/product/ProductInteractivity";
-
+import { unstable_cache } from "next/cache";
+import MarkDown from 'react-markdown'
+import SliderList from "@/components/product/SliderList";
 
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
@@ -82,13 +84,21 @@ export default async function ProductPage(
   props: { params: Promise<{ slug: string }>, searchParams: Promise<{ page: string }> }
 ) {
   const searchParams = await props.searchParams;
-
   const params = await props.params;
-  const product: ProductType = await getCachedProductDetails(params.slug);
+
+  const getProductDetailsData = unstable_cache(
+    async () => {
+      return await getCachedProductDetails(params.slug)
+    },
+    [`product/${params.slug}`],
+    { revalidate: 86400, tags: [`product/${params.slug}`] } // 1 days
+  );
+
+  const product: ProductType | null = await getProductDetailsData();
   if (!product) return notFound();
 
   return (
-    <main className="mx-auto max-w-7xl py-s5">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -134,8 +144,8 @@ export default async function ProductPage(
           }),
         }}
       />
-      <Breadcrumb />
-      <ProductSignals product={product}/>
+      <Breadcrumb className="sm:mt-24 mt-14" />
+      <ProductSignals product={product} />
       <section className="flex mb-12 px-5 justify-center items-start gap-16 max-md:flex-col max-md:items-center">
         <div className=" md:sticky top-0 flex flex-col gap-3">
           <ImageZoom allSrc={product.media} alt={product.title} />
@@ -143,21 +153,22 @@ export default async function ProductPage(
         <ProductInfo productInfo={product} />
       </section>
       {product.detailDesc && (
-        <>
-          <details className="w-full max-w-2xl border-y border-gray-200 rounded overflow-hidden transition-all duration-300 open:shadow-md">
-            <summary className="px-4 py-3 text-start text-base font-medium cursor-pointer select-none relative hover:bg-gray-50 transition-colors">
-              Product Detail
-              <span className="absolute right-4 top-1/2 transform -translate-y-1/2 transition-transform duration-300 group-open:rotate-180">
-                <ChevronDown />
-              </span>
-            </summary>
-            <div
-              className="px-4 py-3 text-sm text-gray-700 leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: product.detailDesc }}
-            />
-          </details>
-          <hr />
-        </>
+        // <>
+        <details className="w-full border-y border-gray-200 rounded overflow-hidden transition-all duration-300 open:shadow-md">
+          <summary className="px-4 py-3 text-start text-base font-medium cursor-pointer select-none relative hover:bg-gray-50 transition-colors">
+            Product Detail
+            <span className="absolute right-4 top-1/2 transform -translate-y-1/2 transition-transform duration-300 group-open:rotate-180">
+              <ChevronDown />
+            </span>
+          </summary>
+          <div className="prose max-w-none w-full flex flex-col text-start items-start px-5 sm:px-10">
+            <MarkDown
+              remarkPlugins={[remarkGfm]}>
+              {product.detailDesc}
+            </MarkDown>
+          </div>
+        </details>
+
       )}
 
       <Suspense fallback={
@@ -177,26 +188,54 @@ export default async function ProductPage(
         <ProductReviewsSection numOfReviews={product.numOfReviews} productId={product._id} page={Number(searchParams.page) || 1} />
       </Suspense>
 
-    </main>
+    </>
   );
 }
 
 async function RelatedProducts({ category, collections, productId }: { category: string, collections: string[], productId: string }) {
-  const relatedProducts: ProductType[] = await getRelatedProduct(productId, category, collections);
+
+  const getCachedRelatedProduct = unstable_cache(
+    async () => {
+      return await getRelatedProduct(productId, category, collections);
+    },
+    [`related-products-${productId}-${category}-${collections.join('-')}`],
+    {
+      revalidate: 259200, // 3 days
+      tags: [`related-products-${productId}-${category}-${collections.join('-')}`],
+    }
+  );
+
+
+  const relatedProducts: ProductType[] = await getCachedRelatedProduct();
 
   if (!relatedProducts.length) return null;
 
   return (
-    <section className="space-y-5 my-12">
-      <h1 className="text-2xl font-bold px-5">Related Products</h1>
-      <ProductList Products={relatedProducts} />
-    </section>
-
+    <SliderList heading="Related Products" Products={relatedProducts} />
   );
 }
 
 async function ProductReviewsSection({ numOfReviews, productId, page }: { numOfReviews: number, productId: string, page: number }) {
-  const reviews: ReviewType[] = await getProductReviews(productId, page);
+
+  let reviews: ReviewType[];
+
+  if (page === 1) {
+    // Cache only the first page
+    const getCachedProductReviews = unstable_cache(
+      async () => {
+        return await getProductReviews(productId, page);
+      },
+      [`product-reviews-${productId}-page1`],
+      { revalidate: 604800, tags: [`product-reviews-${productId}`] } // 7 days
+    );
+
+    reviews = await getCachedProductReviews();
+  } else {
+    //  Skip cache for other pages
+    reviews = await getProductReviews(productId, page);
+  }
+
+  if (!reviews.length) return null;
 
   return (
     <section id="reviews" className="my-5"><hr />

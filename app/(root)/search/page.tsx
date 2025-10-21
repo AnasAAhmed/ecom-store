@@ -3,6 +3,8 @@ import PaginationControls from '@/components/PaginationControls';
 import { getSearchProducts } from '@/lib/actions/product.actions';
 import Sort from '@/components/Sort';
 import Link from 'next/link';
+import { unstable_cache } from 'next/cache';
+import ProductList from '@/components/product/ProductList';
 
 
 export async function generateMetadata(props: { searchParams: Promise<{ query: string }> }) {
@@ -47,24 +49,48 @@ const SearchPage = async (props: { searchParams: Promise<any> }) => {
   const sortField = (searchParams?.field as string) || '';
   let page = Number(searchParams?.page) || 1;
 
-  const data = await getSearchProducts(query, sort, sortField, page, category, color, size);
+  const isDefault =
+    (!query || query.trim() === "") &&
+    (!sort || sort === "") &&
+    (!sortField || sortField === "") &&
+    (!category || category === "") &&
+    (!color || color === "") &&
+    (!size || size === "") &&
+    page === 1;
+
+  let data;
+
+  if (isDefault) {
+    const getCachedSearchProducts = unstable_cache(
+      async () => {
+        return await getSearchProducts(query, sort, sortField, page, category, color, size);
+      },
+      ["search-default"],
+      { revalidate: 604800, tags: ["search-default"] } // 7 day cache
+    );
+
+    data = await getCachedSearchProducts();
+  }
+
+  // For all other queries: bypass cache
+  data = await getSearchProducts(query, sort, sortField, page, category, color, size);
 
   return (
-    <div className='sm:px-10 px-3 py-12 '>
-      {query && <p className='text-small-medium md:text-body-medium lg:text-heading3-bold mb-3'>Search results for {query} <Link className='underline text-small-medium text-blue-500' title='Clear filters' href={'/search'}>Clear &times;</Link></p>}
+    <div className='sm:px-10  mt-[2.5rem] md:mt-16 px-3 py-12 '>
       <Sort />
       <div className='min-h-[80vh]'>
-
-        {data.totalProducts > 0 ? (
-          <div className="grid grid-cols-2 justify-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-
-            {data.products.map((product: ProductType) => (
-              <ProductCard key={product._id} product={product} />
-            ))}
-          </div>
-        ) : (
-          <p className='text-body-bold my-5'>No result found</p>
-        )}
+      {(query || sort || sortField || category || color || size) &&
+        <p className='text-small-medium md:text-body-medium lg:text-heading3-bold mb-3'>
+          Search results for {query}
+          <Link
+            className='underline text-small-medium text-blue-500'
+            title='Clear filters'
+            href={'/search'}>
+            Clear &times;
+          </Link>
+        </p>
+      }
+        <ProductList isCsr isViewAll={false} Products={data.products} />
       </div>
       <PaginationControls currentPage={page} totalPages={data.totalPages} />
     </div>

@@ -13,10 +13,6 @@ const ProductSchema = new mongoose.Schema({
       message: 'You can specify maximum 5 medias only.',
     },
   },
-  searchableVariants: {
-    type: String,
-    default: "",
-  },
   detailDesc: String,
   category: String,
   slug: { type: String, unique: true },

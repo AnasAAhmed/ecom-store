@@ -32,8 +32,11 @@ const FadeInOnView = ({ animation = 'animate-fadeInUp', children, delay = 0, thr
     return (
         <div
             ref={ref}
-            className={`transition-opacity ${isVisible ? `opacity-100 ${animation} duration-700` : 'opacity-0'} ${className}`}
-            style={{transitionDelay:`${delay}ms`}}
+            className={`inline-block ${isVisible ? `opacity-100 ${animation} duration-700` : 'opacity-0'} ${className}`}
+            style={{
+                transitionDelay: `${delay}ms`,
+                animationDelay: `${delay}ms`,
+            }}
         >
             {children}
         </div>

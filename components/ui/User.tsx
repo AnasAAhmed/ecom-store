@@ -39,7 +39,7 @@ const User = () => {
         prefetch={false}
         href={`/login?redirect_url=${encodeURIComponent(pathname)}`}
       >
-        <CircleUserRound className="w-8 h-8 my-2 text-gray-700 hover:text-black transition-colors cursor-pointer" />
+        <CircleUserRound className="w-8 h-8 my-2 hover:opacity-55 cursor-pointer" />
       </SmartLink>
     );
   }

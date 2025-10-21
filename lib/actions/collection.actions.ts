@@ -6,7 +6,7 @@ export async function getCollectionProducts(collectionId: string): Promise<Produ
   try {
     await connectToDB();
     const collectionProducts = await Product.find({ collections: collectionId })
-      .sort({ createdAt: -1 })
+      .sort({ updateAt: -1 })
       .limit(6)
       .select("title numOfReviews ratings stock sold price expense media _id");
 
@@ -67,7 +67,7 @@ export async function collectionProducts({
 export async function getCollections() {
   try {
 
-    const collections = await Collection.find().sort({ createdAt: -1 }).select("image title").limit(8);
+    const collections = await Collection.find().sort({ createdAt: -1 }).select("image mobImage productCount title").limit(8);
     return JSON.parse(JSON.stringify(collections))
 
   } catch (err) {

@@ -1,4 +1,4 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { connectToDB } from "../mongoDB";
 import Order from "../models/Order";
 import Product from "../models/Product";
@@ -87,6 +87,7 @@ export const stockReduce = async (products: OrderProductCOD[]) => {
     await product.save();
 
     revalidatePath('/');
-    revalidatePath(`/products/${order.product}`);
+    revalidatePath(`/products/${product.slug}`);
+    revalidateTag(`/products/${product.slug}`);
   };
 };

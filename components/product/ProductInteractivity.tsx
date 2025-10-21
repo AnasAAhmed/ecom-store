@@ -1,6 +1,6 @@
 'use client'
 import useCart, { useRegion } from '@/lib/hooks/useCart';
-import { addRecentlyViewed } from '@/lib/hooks/useRecentlyViewed';
+import { addProductToRecentlyViewed } from '@/lib/hooks/useRecentlyViewed';
 import { updateCategories, updatePriceRange, updateRecentlyViewed } from '@/lib/hooks/useUserPrefrence';
 import { currencyToSymbolMap } from '@/lib/utils/features.csr';
 import { MinusCircle, PlusCircle } from 'lucide-react';
@@ -142,7 +142,7 @@ export const PriceAndExpense = ({ isCard = false, baseExpense, basePrice }: { is
                     <div className='flex items-center gap-1'>
                         <span className="text-small-medium mr-1">{currencyToSymbolMap[currency]}</span>{price}
                         {baseExpense > 0 && (
-                            <p className="text-small-medium line-through text-gray-700">
+                            <p className="text-[12px] sm:text-small-medium line-through text-red-600">
                                 {currencyToSymbolMap[currency]} {expense}
                             </p>
                         )}
@@ -151,7 +151,7 @@ export const PriceAndExpense = ({ isCard = false, baseExpense, basePrice }: { is
                     <div className="opacity-0">
                         $ {basePrice}
                         <span className="ml-3 px-2 py-1">0% Off</span>
-                        <p className="line-through">$ {baseExpense}</p>
+                        <p className="line-through text-red-600">$ {baseExpense}</p>
                     </div>
                 )}
             </div>
@@ -164,16 +164,17 @@ export const PriceAndExpense = ({ isCard = false, baseExpense, basePrice }: { is
             {
                 baseExpense > 0 && (
                     <>
-                        <span className="bg-blue-700 ml-3 text-white text-[17px] px-2 py-1 rounded-md">
+                        <span className="bg-black ml-3 text-white text-[17px] px-2 py-1 rounded-md">
                             {((baseExpense - basePrice) / baseExpense * 100).toFixed(0)}% Off
                         </span>
-                        <p className="text-small-medium line-through  text-gray-700">{currencyToSymbolMap[currency]} {expense}</p>
+                        <p className="text-small-medium line-through  text-red-600">{currencyToSymbolMap[currency]} {expense}</p>
                     </>
                 )
             }
         </div >
     )
 }
+
 
 export const AddtoCartBtnForNonVariant = ({ productInfo }: { productInfo: ProductType }) => {
     const [quantity, setQuantity] = useState(1);
@@ -254,7 +255,7 @@ export const ProductSignals = ({ product }: { product: ProductType }) => {
                 expense: product.expense,
                 updatedAt: product.updatedAt,
             }
-            addRecentlyViewed(excludingFields!);
+            addProductToRecentlyViewed(excludingFields!);
         }
     }, [product?._id]);
     return null;

@@ -3,12 +3,12 @@ import SmartLink from "@/components/SmartLink";
 
 const Footer = () => {
   return (
-    <footer className="print:hidden w-full px-4 py-10 bg-white border-t border-gray-200 md:px-20">
+    <footer className="print:hidden w-full px-4 pt-10 pb-5 bg-white border-t border-gray-200 md:px-20">
       <div className="grid gap-10 md:grid-cols-3">
         {/* Logo & Address */}
         <div>
           <SmartLink href="/" title="Home" className="block mb-4">
-            <Image src="/logo.png" alt="logo" width={130} height={100} />
+            <Image src="/logo.png" className="brightness-0 invert-0" alt="logo" width={130} height={100} />
           </SmartLink>
           <p className="text-sm text-gray-600 leading-relaxed">
             400 University Drive Suite 200 <br />
@@ -72,9 +72,9 @@ const Footer = () => {
       </div>
 
       {/* Bottom */}
-      <div className="mt-10 border-t border-gray-200 pt-6 text-sm text-center text-gray-600">
-        &copy; {new Date().getFullYear()} Ecommerce — Made by Anas Ahmed. All rights reserved.
-        Page last update at {new Date().toLocaleDateString("en-US", {
+      <div className="mt-5 border-t border-gray-200 pt-3 text-sm text-center text-gray-600">
+        &copy; {new Date().getFullYear()} Borcelle Ecommerce Store & CMS — Made by Anas Ahmed(Full Stack Developer).
+        <br />Page last update at {new Date().toLocaleDateString("en-US", {
           year: "numeric",
           month: "long",
           day: "numeric",
@@ -83,6 +83,9 @@ const Footer = () => {
           second: "numeric",
           hour12: true,
         })}
+      </div>
+      <div className="mt-5 border-t border-gray-200 pt-2 text-sm text-center text-gray-600">
+        Every Info, Products, Images and Videos in this site is not mine, this is just the Demo Project just to showcase my skills e.g Nextjs, Mern, Caching Strategies, Mongoose, CMS
       </div>
     </footer>
   );

@@ -163,75 +163,189 @@ export const PASSWORD_RESET_REQUEST_TEMPLATE = ({
 };
 
 
-
-export const fallbackHomeData: HomePage = {
-  seo: {
-    title: '',
-    desc: '',
-    keywords: [''],
-    url: '',
-    width: 0,
-    height: 0,
-    alt: '',
-  },
-  hero: {
-    heading: '',
-    text: '',
-    imgUrl: '/hero.webp',
-    mobImgUrl: '/hero-mob.webp',
-    // imgUrl: 'https://assets-manager.abtasty.com/2df40c2acabd6f9cf3388199e17e4ce4/25ss_influencer-inverse_site_and_app_full-bleed-hero_large-desk_2000x694px_2-nocopy.jpg',
-    shade: '',
-    textColor: '#ffff',
-    textPosition: 'center',
-    textPositionV: 'center',
-    link: '#collections',
-    buttonText: '',
-    isVideo: false
-  },
-  collections: [
+export const ffallBackHomeData: HomePage = {
+  "seo": undefined,
+  "hero": [{
+    "imgUrl": "/hero2.webp",
+    "mobImgUrl": "/hero-mob.webp",
+    "size": "large",
+    "shade": {
+      "color": "black"
+    },
+    "video": {
+      "isVideo": true,
+      "url": "https://e1s0bwzoxc.ufs.sh/f/EHhleKT2TuF3qUeg2IDhNipcKVCdwryUZGE5Fagv6tDmW2jl",
+      "poster": "https://e1s0bwzoxc.ufs.sh/f/EHhleKT2TuF3cpNH5yolhRqAFU6XBJ1EgaryitjsOeT7fpob",
+    },
+    "layout": {
+      "margin": { "top": "2rem", "bottom": "2rem", "left": "2rem", "right": "2rem" },
+      "padding": { "left": "1rem", "right": "1rem", "bottom": "1rem", "top": "1rem" },
+      "backgroundColor": "#f5f5f5",
+      "imagePosition": "center"
+    },
+    "imageContent": {
+      "heading": "Borcelle",
+      "text": "Where Elegance Meets Everywhere",
+      "textColor": "white",
+      "font": "serif",
+      "buttonText": "Shop Now",
+      "contentPositionH": 'center',
+      "buttonType": "link",
+      "link": "#collections"
+    }
+  }],
+  "collections": [
     {
-      heading: '',
-      text: '',
-      imgUrl: '/summer.jpg',
-      mobImgUrl: '',
-      shade: '',
-      textColor: '',
-      link: '/collections/summer',
-      buttonText: '',
-      textPosition: 'center',
-      textPositionV: 'center',
-      collectionId: '682203b1b50a422585dca64d',
-      isVideo: false,
+      "imgUrl": "https://e1s0bwzoxc.ufs.sh/f/EHhleKT2TuF3NxiKUydBaGn39DLU2XfZ14uxwjW6vKcOMrJm",
+      "mobImgUrl": "",
+      "collectionId": "68bed35bfa5c5728ba60fce5",
+      "size": "full",
+      "shade": {
+        "color": "black",
+        "position": "top"
+      },
+      "video": {
+        "isVideo": false,
+        "url": "",
+        "poster": "",
+      },
+      "isRow": true,
+      "imageContent": {
+        "heading": "Men Collection New Arrivals",
+        "text": "Check out what's new",
+        "textColor": "white",
+        "buttonText": "View Collection",
+        "textAlign": "left",
+        "link": "/collections/men",
+        "contentPositionV": "center",
+        "contentPositionH": "start"
+      },
+      "layout": {
+        "padding": { "left": "1rem", "right": "1rem", "bottom": "1rem", "top": "1rem" },
+        "imagePosition": "top",
+      }
     },
     {
-      heading: '',
-      text: '',
-      imgUrl: 'https://e1s0bwzoxc.ufs.sh/f/EHhleKT2TuF3NxiKUydBaGn39DLU2XfZ14uxwjW6vKcOMrJm',
-      mobImgUrl: '',
-      shade: '',
-      textColor: '',
-      link: '/collections/men',
-      buttonText: '',
-      textPosition: 'center',
-      textPositionV: 'center',
-      collectionId: '68bed35bfa5c5728ba60fce5',
-      isVideo: false,
+      "imgUrl": "https://res.cloudinary.com/dvnef4cyd/image/upload/v1745932983/imaginify/yhxgvnyiomxd9u5zxmw6.jpg",
+      "mobImgUrl": "",
+      "collectionId": "6810d2c78ea9e382250af8be",
+      "size": "full",
+      "shade": {
+        "color": "black",
+        "position": "top"
+      },
+      "video": {
+        "isVideo": false,
+        "url": "",
+        "poster": "",
+      },
+      "isRow": true,
+      "imageContent": {
+        "heading": "footwear Collection New Arrivals",
+        "text": "Check out what's new",
+        "textColor": "white",
+        "buttonText": "View Collection",
+        "link": "/collections/footwear",
+        "textAlign": "left",
+        "contentPositionV": "center",
+        "contentPositionH": "start"
+      },
+      "layout": {
+        "padding": { "left": "1rem", "right": "1rem", "bottom": "1rem", "top": "1rem" },
+        "imagePosition": "top",
+      }
     },
-    // {
-    //   heading: 'Footwear Collection',
-    //   text: 'Step into style with our curated range of shoes, sneakers, and sandals designed for comfort and fashion.',
-    //   imgUrl: 'https://res.cloudinary.com/dvnef4cyd/image/upload/v1745932983/imaginify/yhxgvnyiomxd9u5zxmw6.jpg',
-    //   shade: 'black',
-    //   textColor: 'white',
-    //   link: '/collections/footwear',
-    //   buttonText: '',
-    //   textPosition: 'center',
-    //   textPositionV: 'center',
-    //   collectionId: '6810d2c78ea9e382250af8be',
-    //   isVideo: false,
-    // },
+    {
+      "imgUrl": "/summer.jpg",
+      "mobImgUrl": "",
+      "shade": {
+        "color": 'black'
+      },
+      "video": {
+        "isVideo": false,
+        "url": "",
+        "poster": "",
+      },
+      "collectionId": "682203b1b50a422585dca64d",
+      "size": "medium",
+      "isRow": false,
+      "imageContent": {
+        "heading": "New Arrivals At summer Collection",
+        "text": "Check out what's new",
+        "buttonText": "View All Prodcuts",
+        "link": "/collections/summer",
+        "textColor": "white",
+        'textAlign': "left",
+        "contentPositionV": "center",
+        "contentPositionH": "start"
+      },
+      "layout": {
+        "padding": { "left": "1rem", "right": "1rem", "bottom": "1rem", "top": "1rem" },
+      }
+    }
   ],
+  "collectionList": [
+    {
+      _id: '68bed35bfa5c5728ba60fce5',
+      title: 'men',
+      image: 'https://e1s0bwzoxc.ufs.sh/f/EHhleKT2TuF3NxiKUydBaGn39DLU2XfZ14uxwjW6vKcOMrJm',
+      mobImage: 'https://www.zilbil.store/cdn/shop/files/IMG_8289.jpg?v=1758114170&width=1400',
+      productCount:2
+    },
+    {
+      _id: '68bd93848dea7304cc2f46ea',
+      title: 'women',
+      image: 'https://e1s0bwzoxc.ufs.sh/f/EHhleKT2TuF3o5WgC0432T78lGrHy0ZJjCnB6EXKNYPOQwp5',
+      productCount:0
+    },
+    {
+      _id: '682203b1b50a422585dca64d',
+      title: 'summer',
+      image: 'https://e1s0bwzoxc.ufs.sh/f/EHhleKT2TuF3trF9xmgI0bLU8TkNwialQVmrnPSDsHp9o72j',
+      productCount:2
+    },
+    {
+      _id: '6810d2c78ea9e382250af8be',
+      title: 'footwear',
+      image: 'https://res.cloudinary.com/dvnef4cyd/image/upload/v1745932983/imaginify/yhxgvnyiomxd9u5zxmw6.jpg',
+      productCount:2
+    },
+    
+  ]
 }
+
+export const blogs = [
+  {
+    title: 'Going all-in with millennial design',
+    slug: 'going-all-in-with-millennial-design',
+    image: "/blog2.png",
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mus mauris vitae ultricies leo integer malesuada nunc. In nulla posuere sollicitudin aliquam ultrices. Morbi blandit cursus risus at ultrices mi tempus imperdiet. Libero enim sed faucibus turpis in. Cursus mattis molestie a iaculis at erat. Nibh cras pulvinar mattis nunc sed blandit libero. Pellentesque elit ullamcorper dignissim cras tincidunt. Pharetra et ultrices neque ornare aenean euismod elementum.",
+    stringDate: '12 jun 2021',
+    timeAgo: '3.5 years',
+    tags: ['Tech', 'Laptop'],
+    author: 'Admin'
+  },
+  {
+    title: 'Exploring new ways of decorating',
+    slug: 'exploring-new-ways-of-decorating',
+    image: '/banner.avif',
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mus mauris vitae ultricies leo integer malesuada nunc. In nulla posuere sollicitudin aliquam ultrices. Morbi blandit cursus risus at ultrices mi tempus imperdiet. Libero enim sed faucibus turpis in. Cursus mattis molestie a iaculis at erat. Nibh cras pulvinar mattis nunc sed blandit libero. Pellentesque elit ullamcorper dignissim cras tincidunt. Pharetra et ultrices neque ornare aenean euismod elementum.",
+    stringDate: '14 sep 2022',
+    timeAgo: '2 years',
+    tags: ['Wood'],
+    author: 'Admin'
+  },
+  {
+    title: 'Handmade pieces that took time to make',
+    slug: 'handmade-pieces-that-took-time-to-make',
+    image: '/blog5.webp',
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mus mauris vitae ultricies leo integer malesuada nunc. In nulla posuere sollicitudin aliquam ultrices. Morbi blandit cursus risus at ultrices mi tempus imperdiet. Libero enim sed faucibus turpis in. Cursus mattis molestie a iaculis at erat. Nibh cras pulvinar mattis nunc sed blandit libero. Pellentesque elit ullamcorper dignissim cras tincidunt. Pharetra et ultrices neque ornare aenean euismod elementum.",
+    stringDate: '14 Oct 2023',
+    timeAgo: '1.8 years',
+    tags: ['Handmade', 'Tech'],
+    author: 'Admin'
+  },
+]
 
 export function estimateWeight(categoryOrTitle: string): number {
   const input = categoryOrTitle.toLowerCase();

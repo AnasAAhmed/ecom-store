@@ -17,7 +17,7 @@ const IsOnline = () => {
 
         const handleOffline = () => {
             setIsOnline(false);
-            setMessage("You're offline. Check your connection.");
+            setMessage("You're offline. Check your internet connection.");
             setShowMessage(true);
         };
 

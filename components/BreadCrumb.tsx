@@ -3,16 +3,16 @@ import SmartLink from "@/components/SmartLink";
 import { usePathname } from "next/navigation";
 
 
-const Breadcrumb = () => {
+const Breadcrumb = ({ className = '' }: { className?: string }) => {
     const pathname = usePathname();
 
     const segments = pathname.split('/').filter(Boolean);
 
-    const breadcrumbs = ['', ...segments.slice(0, -1)]; 
-    const lastSegment = segments[segments.length - 1]; 
+    const breadcrumbs = ['', ...segments.slice(0, -1)];
+    const lastSegment = segments[segments.length - 1];
 
     return (
-        <nav className="px-4 pt-4 sm:pt-6 sm:pb-6 max-sm:pb-2 text-[12px] sm:text-[15px] font-medium">
+        <nav className={`${className} px-4 pt-4 sm:pt-6 sm:pb-6 max-sm:pb-2 text-[12px] sm:text-[15px] font-medium`}>
             <div className="max-w-screen-lg mx-lauto">
                 <div className="flex flex-s  items-center space-x-2">
                     {breadcrumbs.map((segment, index) => {

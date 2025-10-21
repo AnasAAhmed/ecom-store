@@ -34,20 +34,22 @@ export const dynamic = 'force-static';
 const Contact = () => {
     return (
         <>
-            <div className="w-full bg-white overflow-hidden text-left text-black font-poppins">
+            <div className="w-full mt-[4rem] sm:mt-12 bg-white overflow-hidden text-left text-black font-sans">
                 <Banner
-                    heading={'Get In Touch With Us'}
-                    text={'For more information about our products & services, please feel free to drop us an email. Our staff is always here to help you out. Do not hesitate!'}
                     imgUrl={'/blog5.webp'}
-                    shade={'gray'}
-                    textColor={'white'}
-                    link="#form"
-                    buttonText={'Contact Us'}
+                    imageContent={{
+                        heading: 'Get In Touch With Us',
+                        text: 'Our staff is always here to help you out.',
+                        textColor: 'white',
+                        link: "#form",
+                        buttonText: 'Contact Us',
+                    }}
+                    shade={{ color: 'gray' }}
                 />
                 <div className="flex flex-col items-center py-16 px-4">
-                    {/* <FadeInOnView>
+                    <FadeInOnView>
 
-                        <h1 className="text-heading2-bold">Get In Touch With Us</h1>
+                        <h1 className="text-heading2-bold text-center">Get In Touch With Us</h1>
                     </FadeInOnView>
                     <FadeInOnView delay={300} animation="animate-fadeIn" threshold={0.7}>
                         <p className="text-center text-gray-500 mt-4 mb-8 max-w-xl">
@@ -55,7 +57,7 @@ const Contact = () => {
                             to drop us an email. Our staff is always here to help you out. Do not
                             hesitate!
                         </p>
-                    </FadeInOnView> */}
+                    </FadeInOnView>
 
                     <div className="flex flex-col md:flex-row w-full max-w-6xl gap-8">
                         <ContactContainer />

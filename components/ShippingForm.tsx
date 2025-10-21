@@ -1,7 +1,7 @@
 'use client';
 
 import { ArrowLeftIcon, LoaderIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import useCart, { useRegion } from '@/lib/hooks/useCart';
 import SmartLink from "@/components/SmartLink";
@@ -34,8 +34,15 @@ const ShippingForm = ({ user }: { user: { id: string, email: string, image: stri
     } = useForm({
         resolver: zodResolver(shippingSchema),
     });
+    useEffect(() => {
+        if (!cart.cartItems.length || !user) {
+            router.push("/cart");
+        }
+    }, [cart.cartItems.length, user, router]);
 
-    if (!cart.cartItems.length || !user) return null;
+    if (!cart.cartItems.length || !user) {
+        return null;
+    };
 
     // Calculate the total cost
     const total = cart.cartItems.reduce((acc, item) => acc + item.item.price * item.quantity, 0);
@@ -93,7 +100,7 @@ const ShippingForm = ({ user }: { user: { id: string, email: string, image: stri
     };
 
     return (
-        <div className="px-4 py-8 sm:px-24">
+        <div className=" mt-[4rem] sm:mt-12 px-4 py-8 sm:px-24">
             <SmartLink title='back to cart' aria-label='back to cart' href="/cart" className="back-btn">
                 <ArrowLeftIcon />
             </SmartLink>

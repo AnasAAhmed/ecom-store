@@ -41,10 +41,10 @@ const FYProdcutList = ({ heading, text }: { heading?: string; text?: string }) =
         console.warn('FYP Prodcuts:', error);
         return null;
     }
-    if (!products.length) return null;
+    if (!products?.length) return null;
 
     return (
-        <SliderList heading={heading || 'You would also like'}
+        <SliderList heading={heading || 'You may also like'}
             text={text || "Personalized picks based on your browsing"}
             Products={products}
         />

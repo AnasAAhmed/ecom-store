@@ -31,8 +31,8 @@ const Orders = async (props: { searchParams: Promise<any> }) => {
   }
 
   return (
-    <div className="sm:px-10 py-5 px-3 min-h-[90vh]">
-      <p className="text-heading3-bold my-10">Your Orders ({data.totalOrders || 0})</p>
+    <div className="sm:px-10 mt-12 md:mt-24 py-5 px-3 min-h-[90vh]">
+      <p className="text-heading3-bold my-5">Your Orders ({data.totalOrders || 0})</p>
       <div className="flex flex-col gap-6">
         {data.totalOrders > 0 ? (
           data.orders?.map((order: OrderType) => (

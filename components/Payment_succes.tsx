@@ -11,7 +11,7 @@ const Payment_succes = () => {
     }, []);
 
     return (
-        <div className="h-screen flex flex-col justify-center items-center gap-5">
+        <div className="h-screen pt-24 sm:pt-12 flex flex-col justify-center items-center gap-5">
             <p className="text-heading4-bold text-red-1">Payment Successful</p>
             <p>Thank you for your purchase</p>
             <SmartLink

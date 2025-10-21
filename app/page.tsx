@@ -5,7 +5,7 @@ import BlogSection from "@/components/ui/BlogSection";
 import Social from "@/components/ui/Social";
 import GroupComponent7 from "@/components/ui/Services";
 import { Fragment, Suspense } from "react";
-import { fallbackHomeData, unSlugify } from "@/lib/utils/features";
+import { ffallBackHomeData, unSlugify } from "@/lib/utils/features";
 import { getCollectionProducts, getCollections } from "@/lib/actions/collection.actions";
 import { getProducts } from "@/lib/actions/product.actions";
 import { getCachedHomePageData } from "@/lib/actions/cached";
@@ -15,18 +15,20 @@ import Loader from "@/components/ui/Loader";
 import Image from "next/image";
 import FYProdcutList from "@/components/product/FYProdcutList";
 import RecentlyViewed from "@/components/product/RecentlyViewed";
+import SmartLink from "@/components/SmartLink";
 
-export const dynamic = 'force-static';
+// export const dynamic = 'force-static';
 
 export async function generateMetadata() {
-  const homeData = await getCachedHomePageData();
+  // const homeData = await getCachedHomePageData();
+  const homeData = ffallBackHomeData;
   console.log('generateMetadata func hits homepage');
 
   if (!homeData?.seo) {
     return null;
   }
   return {
-    title: homeData.seo.title || 'Borcelle store',
+    title: homeData.seo.title || "Borcelle: Online Store for Men's and Women's Clothing",
     description: homeData.seo.desc || "Shop high-quality products at Borcelle professinaol spa website in nextjs mongodb Tcs Courier api. By Anas Ahmed Gituhb:https://github.com/AnasAAhmed",
     keywords: homeData.seo.keywords || ['Borcelle', 'Anas Ahmed', 'Ecommerce', "professional ecommerce site in nextjs", 'mongodb', 'SPA Ecommerce', 'TCS courier APIs'],
     robots: {
@@ -38,7 +40,7 @@ export async function generateMetadata() {
       }
     },
     openGraph: {
-      title: homeData.seo.title || 'Borcelle store',
+      title: homeData.seo.title || "Borcelle: Online Store for Men's and Women's Clothing",
       description: homeData.seo.desc || "Shop high-quality products at Borcelle professinaol spa website in nextjs mongodb Tcs Courier api. By Anas Ahmed Gituhb:https://github.com/AnasAAhmed",
       url: `${process.env.ECOM_STORE_URL}`,
       images: [
@@ -56,38 +58,47 @@ export async function generateMetadata() {
 
 export default async function Home() {
 
-  const [products, collections, homePage] = await Promise.all([
-    getProducts(),
-    getCollections(),
-    getCachedHomePageData()
-  ]);
+  // const [homePage] = await Promise.all([
+  //   getCachedHomePageData()
+  // ]);
   // const products: ProductType[] = []
   // const collections: CollectionType[] = []
   // const homePage: HomePage | null = null
-  const homePageData = homePage ?? fallbackHomeData;
+
+  const homePageData =  ffallBackHomeData;
+
   return (
     <Fragment>
+
       <Banner
-        heading={homePageData.hero.heading!}
-        text={homePageData.hero.text!}
-        imgUrl={homePageData.hero.isVideo ? '' : homePageData.hero.imgUrl}
-        mobImgUrl={homePageData.hero.isVideo ? '' : homePageData.hero.mobImgUrl}
-        videoUrl={homePageData.hero.isVideo ? homePageData.hero.imgUrl : ''}
-        shade={homePageData.hero.shade!}
-        textColor={homePageData.hero.textColor!}
-        link={homePageData.hero.link}
-        textPosition={homePageData.hero.textPosition}
-        textPositionV={homePageData.hero.textPositionV}
-        buttonText={homePageData.hero.buttonText}
+        isHero
+        smAspectRatio="aspect-[4/6]"
+        imgUrl={homePageData.hero[0].imgUrl}
+        mobImgUrl={homePageData.hero[0].mobImgUrl}
+        size={homePageData.hero[0].size}
+        video={homePageData.hero[0].video}
+        shade={homePageData.hero[0].shade}
+        layout={homePageData.hero[0].layout}
+        imageContent={homePageData.hero[0].imageContent}
       />
-      <Collections collections={collections} />
 
-      <ProductList heading="New Arrivals" text="Be the first to shop our latest drops and fresh styles." Products={products} />
+      <Collections collections={homePageData?.collectionList! || []} />
 
-      {/* <ProductList heading="Latest Products" Products={products} /> */}
+      <Suspense fallback={<div className="flex flex-col flex-wrap items-center justify-center gap-5">
+        <div className='h-7 w-36 bg-gray-200 animate-pulse' />
+        <div className='h-5 w-96 bg-gray-200 animate-pulse' />
+        <div className="flex flex-wrap justify-center gap-5">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="h-[22rem] w-64 bg-gray-200 animate-pulse" />
+          ))}
+        </div>
+      </div>}>
+        <ProductListSection />
+      </Suspense>
+
       <section className='mt-12 '>
         <article className='w-full my-5'>
-          {homePageData.collections.slice(0, 2).map((i, idx) => (
+          {homePageData.collections.filter(i => i.isRow !== false).map((i, idx) => (
             <div
               key={idx}
               className="grid grid-cols-1 md:grid-cols-2 gapd-6 items-stretch msy-8"
@@ -96,12 +107,14 @@ export default async function Home() {
                 className={`relative w-full ${idx % 2 === 1 ? "md:order-2" : "md:order-1"
                   } aspect-[4/3] md:h-full`}
               >
-                <Image
-                  src={i.imgUrl}
-                  alt={i.heading || i.link.slice(13) + " Collection"}
-                  fill
-                  unoptimized
-                  className="object-cover"
+                <Banner
+                  imgUrl={i.imgUrl}
+                  mobImgUrl={i.mobImgUrl}
+                  size={i.size}
+                  video={i.video}
+                  layout={i.layout}
+                  shade={i.shade}
+                  imageContent={i.imageContent}
                 />
               </div>
               <div
@@ -110,7 +123,7 @@ export default async function Home() {
               >
                 <Suspense fallback={<Loader />}>
                   <CollectionProduct
-                    collectionTitle={i.link.slice(13)}
+                    collectionTitle={i.imageContent!.link!.slice(13)}
                     collectionId={i.collectionId}
                   />
                 </Suspense>
@@ -124,22 +137,20 @@ export default async function Home() {
         <FYProdcutList />
 
         <br />
-        {homePageData.collections.length > 2 && homePageData.collections.slice(2).map((i, idx) => (
+        {homePageData.collections.length > 0 && homePageData.collections.filter(i => i.isRow === false).map((i, idx) => (
           <Fragment key={idx}>
             <Banner
-              heading={i.heading}
-              text={i.text}
-              imgUrl={i.isVideo ? '' : i.imgUrl}
-              videoUrl={i.isVideo ? i.imgUrl : ''}
+              imgUrl={i.imgUrl}
+              mobImgUrl={i.mobImgUrl}
+              size={i.size}
+              video={i.video}
+              layout={i.layout}
               shade={i.shade}
-              textColor={i.textColor}
-              textPositionV={i.textPosition || 'end'}
-              link={i.link}
-              buttonText={i.buttonText}
+              imageContent={i.imageContent}
             />
 
             <Suspense fallback={<Loader />}>
-              <CollectionProduct collectionTitle={i.link.slice(13)} collectionId={i.collectionId} />
+              <CollectionProduct collectionTitle={i.imageContent!.link!.slice(13)} collectionId={i.collectionId} />
             </Suspense>
           </Fragment>
         ))}
@@ -167,9 +178,26 @@ async function CollectionProduct({ collectionTitle, collectionId }: { collection
   const products: ProductType[] | string = await getCollectionProducts(collectionId);
   if (typeof products === 'string') return products;
   return (
-    <SliderList heading={unSlugify(collectionTitle) + ' Collection'} Products={products} />
+    <SliderList Products={products} />
   )
 }
+
+async function ProductListSection() {
+  const products: ProductType[] | string = await getProducts();
+  if (typeof products === 'string') return products;
+  return (
+    <ProductList heading="New Arrivals" text="Be the first to shop our latest drops and fresh styles." Products={products} />
+  )
+}
+
+async function CollectionProsduct({ collectionTitle, collectionId }: { collectionTitle: string; collectionId: string }) {
+  const products: ProductType[] | string = await getCollectionProducts(collectionId);
+  if (typeof products === 'string') return products;
+  return (
+    <SliderList Products={products} />
+  )
+}
+
 
 // 172800
 

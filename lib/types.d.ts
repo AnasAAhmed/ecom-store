@@ -1,8 +1,9 @@
 type CollectionType = {
   _id: string;
   title: string;
-  products: number;
+  productCount: number;
   image: string;
+  mobImage?: string;
 };
 
 type ProductType = {
@@ -55,8 +56,76 @@ interface Result {
   type: string
   resultCode: string
 };
+
+type Align = "start" | "center" | "end";
+type textAlign = "left" | "center" | "right";
+type Size = "small" | "medium" | "large"|"extraLarge"|"full";
+type Shade = {
+  color?: string;
+  position?: string;
+};
+
+interface IVideoSettings {
+  isVideo: boolean;
+  url?: string;
+  poster?: string;
+}
+
+interface ILayoutSettings {
+  margin?: {
+    top?: string;
+    bottom?: string;
+    left?: string;
+    right?: string;
+  };
+  padding?: {
+    top?: string;
+    bottom?: string;
+    left?: string;
+    right?: string;
+  };
+  borderRadius?: string;
+  imagePosition?: 'top' | 'center' | 'bottom';
+  backgroundColor?: string;
+}
+
+interface IImageContent {
+  heading?: string;
+  text?: string;
+  font?: "monospace"|"sans-serif"|"serif";
+  textColor?: string;
+  buttonText?: string;
+  buttonType?: "link"|"button";
+  textAlign?: textAlign;
+  link?: string;
+  contentPositionV?: Align;
+  contentPositionH?: Align;
+}
+
+interface ICollectionBanner {
+  imgUrl: string;
+  mobImgUrl?: string;
+  collectionId: string;
+  size?: Size;
+  shade?: Shade;
+  isRow?: boolean;
+  video?: IVideoSettings;
+  imageContent?: IImageContent;
+  layout?: ILayoutSettings;
+}
+
+interface IHeroBanner {
+  imgUrl: string;
+  mobImgUrl?: string;
+  size?: Size;
+  shade?: Shade;
+  video?: IVideoSettings;
+  imageContent?: IImageContent;
+  layout?: ILayoutSettings;
+}
+
 interface HomePage {
-  seo: {
+  seo?: {
     title?: string;
     desc?: string;
     keywords?: [string];
@@ -64,35 +133,12 @@ interface HomePage {
     width?: number;
     height?: number;
     alt?: string;
-  },
-  hero: {
-    heading?: string;
-    text?: string;
-    imgUrl: string;
-    mobImgUrl: string;
-    shade?: string;
-    textColor?: string;
-    link: string;
-    textPosition?: 'end' | 'center' | 'start';
-    textPositionV?: 'end' | 'center' | 'start';
-    buttonText?: string;
-    isVideo: boolean;
-  },
-  collections: {
-    heading?: string;
-    text?: string;
-    imgUrl: string;
-    mobImgUrl: string
-    shade?: string;
-    textColor?: string;
-    link: string;
-    textPosition?: 'end' | 'center' | 'start';
-    textPositionV?: 'end' | 'center' | 'start';
-    buttonText?: string;
-    collectionId: string;
-    isVideo: boolean;
-  }[]
+  };
+  hero: IHeroBanner[];
+  collections: ICollectionBanner[];
+  collectionList: CollectionType[];
 }
+
 interface GridBannerProps {
   imageUrl: string;
   imageSize: number;

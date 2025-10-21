@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.json(
             null,
             {
-                status: 204,
+                status: 200,
                 statusText: 'Fetched FY product successfully but it is null because both categories and avgPriceRange are null',
             }
         );

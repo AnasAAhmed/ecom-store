@@ -3,17 +3,17 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectToDB } from "@/lib/mongoDB";
 import Collection from "@/lib/models/Collection";
 import Product from "@/lib/models/Product";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { decode } from "next-auth/jwt";
 import { corsHeaders } from "@/lib/cors";
-import { extractKeyFromUrl } from "@/lib/utils/features";
+import { extractKeyFromUrl, slugify } from "@/lib/utils/features";
 import { UTApi } from "uploadthing/server";
 
 export function OPTIONS() {
-    return new NextResponse(null, {
-        status: 204,
-        headers: corsHeaders,
-    });
+  return new NextResponse(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
 }
 
 export const GET = async (req: NextRequest, props: { params: Promise<{ collectionId: string }> }) => {
@@ -97,14 +97,19 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ collecti
       return NextResponse.json("Title and image are required", { status: 400, headers: corsHeaders });
     }
 
-    collection = await Collection.findByIdAndUpdate(
-      params.collectionId,
-      { title, description, image },
-      { new: true }
-    );
+    collection = await Collection.findById(params.collectionId);
+
+    //for revalidation;
+    const oldTitle = collection.title;
+
+    collection.title = title;
+    collection.image = image;
+    if (description) collection.description = description;
 
     await collection.save();
     revalidatePath('/');
+    revalidateTag(`collections/${slugify(oldTitle)}`)
+
     return NextResponse.json(collection, { status: 200, headers: corsHeaders });
   } catch (err) {
     console.log("[collectionId_POST]", err);
@@ -163,6 +168,7 @@ export const DELETE = async (req: NextRequest, props: { params: Promise<{ collec
       }
     }
     revalidatePath('/');
+    revalidateTag(`collections/${slugify(collection.title)}`)
     return NextResponse.json(
       `Collection is deleted ${deleteRes?.success ? 'With image' : ''}`,
       { status: 200, headers: corsHeaders });

@@ -6,11 +6,11 @@ import Collection from "@/lib/models/Collection";
 import { decode } from "next-auth/jwt";
 import { corsHeaders } from "@/lib/cors";
 import { estimateDimensions, estimateWeight, isHex24 } from "@/lib/utils/features";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import mongoose from "mongoose";
 
 export function OPTIONS() {
-  return  new NextResponse(null, {
+  return new NextResponse(null, {
     status: 204,
     headers: corsHeaders,
   });
@@ -86,15 +86,18 @@ export const POST = async (req: NextRequest) => {
     await newProduct.save();
 
     if (collections && Array.isArray(collections)) {
-      for (const collectionId of collections) {
-        const collection = await Collection.findById(collectionId);
-        if (collection) {
-          collection.products.push(newProduct._id);
-          await collection.save();
-        }
-      }
+      await Promise.all(
+        collections.map((collectionId: string) =>
+          Collection.findByIdAndUpdate(collectionId, {
+            $addToSet: { products: newProduct._id },
+            $inc: { productCount: 1 },
+          })
+        )
+      );
     }
     revalidatePath('/')
+    revalidateTag('search-default')
+
     return NextResponse.json(newProduct, { status: 200 });
   } catch (err) {
     console.log("[admin_products_POST] Error:", err);

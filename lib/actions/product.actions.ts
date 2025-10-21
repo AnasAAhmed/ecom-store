@@ -99,7 +99,7 @@ export async function getBestSellingProducts() {
     await connectToDB();
 
     const products = await Product.find()
-      .sort({ sold: -1, ratings: -1})
+      .sort({ sold: -1, ratings: -1 })
       .select("title numOfReviews stock ratings sold price expense media _id")
       .limit(6);
 
@@ -110,10 +110,10 @@ export async function getBestSellingProducts() {
 
   }
 };
-export async function getProductDetails(slug: string) {
+export async function getProductDetails(slug: string): Promise<ProductType | null> {
   try {
     await connectToDB();
-    const product = await Product.findOne({ slug }).select('-__v -createdAt -updatedAt');
+    const product = await Product.findOne({ slug }).select('-__v -createdAt -updatedAt -variantColors -variantSizes -searchableVariants');
     if (!product) {
       return null;
     };

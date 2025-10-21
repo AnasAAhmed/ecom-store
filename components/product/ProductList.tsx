@@ -1,8 +1,9 @@
 import FadeInOnView from "../FadeInView";
 import ProductCard from "./ProductCard";
 import SmartLink from "@/components/SmartLink";
+import ProductCardCsr from "./ProductCardCsr";
 
-const ProductList = async ({ Products, heading, text, isViewAll = true }: { text?: string; Products: ProductType[], heading?: string; isViewAll?: boolean }) => {
+const ProductList = async ({ isCsr = false, Products, heading, text, isViewAll = true }: { isCsr?: boolean; text?: string; Products: ProductType[], heading?: string; isViewAll?: boolean }) => {
 
   return (
     <div className="flex flex-col items-center py-8 px-3 sm:px-5">
@@ -16,8 +17,8 @@ const ProductList = async ({ Products, heading, text, isViewAll = true }: { text
         <p className="text-body-bold">No products found</p>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-10">
-          {Products.map((product: ProductType) => (
-            <ProductCard key={product._id} product={product} />
+          {Products.map((product: ProductType, i) => (
+            isCsr ? <ProductCardCsr index={i} key={product._id} product={product} /> : <ProductCard key={product._id} product={product} />
           ))}
         </div>
       )}

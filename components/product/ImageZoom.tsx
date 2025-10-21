@@ -1,20 +1,17 @@
-'use client'
+'use client';
 import Image from "next/image";
 import { useRef, useState } from "react";
 
 interface ImageZoomProps {
   alt: string;
-  allSrc: string[]
+  allSrc: string[];
 }
-
-
 
 const ImageZoom = ({ alt, allSrc }: ImageZoomProps) => {
   const [isZoomed, setIsZoomed] = useState(false);
   const [backgroundPosition, setBackgroundPosition] = useState('0% 0%');
   const imgRef = useRef<HTMLImageElement>(null);
   const [mainImage, setMainImage] = useState(allSrc[0]);
-
 
   const handleMouseEnter = () => setIsZoomed(true);
   const handleMouseLeave = () => setIsZoomed(false);
@@ -28,64 +25,68 @@ const ImageZoom = ({ alt, allSrc }: ImageZoomProps) => {
     }
   };
 
-  // const formattedSrc = src.replace(/\\/g, '/');
-
   return (
-    <div className="flex max-md:flex-col gap-2">
-      <Image
-        placeholder="blur"
-        blurDataURL="/fallback.avif"
-        src={mainImage}
-        alt={alt}
-        width={500}
-        height={500}
-        className="w-full rounded-lg sm:hidden md:h-[500px] h-[300px] object-cover" />
-      <div className="flex md:flex-col gap-2 max-md:order-2  overflow-auto">
+    <div className="flex max-md:flex-col gap-3 w-full">
+      <div className="flex md:flex-col gap-2 max-md:order-2 overflow-auto">
         {allSrc.map((image, index) => (
           <Image
             key={index}
             unoptimized
             loading="lazy"
             src={image}
-            height={200}
-            width={200}
+            height={100}
+            width={100}
             placeholder="blur"
             blurDataURL="/fallback.avif"
             alt={alt}
-            className={`w-20 h-20 rounded-lg object-cover cursor-pointer ${mainImage === image ? "border-2 border-black" : ""}`}
+            className={`w-20 h-20 rounded-lg object-cover cursor-pointer transition-all duration-200 ${mainImage === image ? "border-2 border-black" : "border border-transparent"
+              }`}
             onClick={() => setMainImage(image)}
           />
         ))}
       </div>
-      <div className="aspect-[1/1] w-96 md:w-[430px] lg:w-[500px] relative max-sm:hidden"
+
+      <div
+        className="
+          relative 
+          aspect-square 
+          w-[90vw]  
+          sm:w-[400px] 
+          md:w-[420px]
+          lg:w-[500px] 
+          rounded-lg 
+          overflow-hidden 
+          max-md:mx-auto
+        "
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onMouseMove={handleMouseMove}
       >
+        {/* Zoom Layer */}
         {isZoomed && (
           <div
-            className={`rounded-lg top-0 left-0 w-full h-full bg-no-repeat transition-transform duration-300`}
+            className="absolute inset-0 rounded-lg bg-no-repeat transition-transform duration-300"
             style={{
               backgroundImage: `url(${mainImage})`,
               backgroundPosition: backgroundPosition,
-              backgroundSize: '200%', // Adjust this value to control the zoom level
+              backgroundSize: "200%", // controls zoom level
             }}
           />
         )}
+
+        {/* Base Image */}
         <Image
           ref={imgRef}
           src={mainImage}
-          // width={1000}
-          // height={1000}
+          alt={alt}
           fill
           sizes="(max-width: 768px) 100vw, 500px"
           placeholder="blur"
           blurDataURL="/fallback.avif"
-          alt={alt}
-          className={`cursor-zoom-in  absolute rounded-lg top-0 left-0 s transition-opacity duration-300 ${isZoomed ? 'opacity-0' : 'opacity-100'}`}
+          className={`absolute top-0 left-0 w-full h-full object-cover cursor-zoom-in rounded-lg transition-opacity duration-300 ${isZoomed ? "opacity-0" : "opacity-100"
+            }`}
         />
       </div>
-
     </div>
   );
 };

@@ -29,12 +29,9 @@ const WishlistPage: FC = async () => {
   }
 
   return (
-    <div className="py-5 min-h-[90vh]">
-      <p className="px-7 sm:px-10 text-heading3-bold my-10">Your Wishlist</p>
-      <div className="flex flex-wrap justify-center gap-16">
-        <ProductList isViewAll={false} Products={wishlist.wishlist} />
-
-      </div>
+    <div className="py-5  mt-[4rem] md:mt-24 min-h-[90vh]">
+      <p className="px-7 sm:px-10 text-heading3-bold my-3">Your Wishlist</p>
+      <ProductList isViewAll={false} Products={wishlist.wishlist} />
     </div>
   );
 };

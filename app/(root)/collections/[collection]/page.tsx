@@ -8,6 +8,9 @@ import Sort from "@/components/Sort";
 import PaginationControls from "@/components/PaginationControls";
 import { getCachedCollectionDetails } from "@/lib/actions/cached";
 import Breadcrumb from "@/components/BreadCrumb";
+import { unstable_cache } from "next/cache";
+import Image from "next/image";
+import Banner from "@/components/ui/Banner";
 
 export const generateMetadata = async (props: { params: Promise<{ collection: string }> }) => {
   const params = await props.params;
@@ -79,11 +82,18 @@ const CollectionDetails = async (
   const size = (searchParams?.size as string) || '';
   const sortField = (searchParams?.field as string) || '';
   let page = Number(searchParams?.page) || 1;
-  const collectionDetails = await getCachedCollectionDetails(params.collection);
+  const getCollectionDetailsData = unstable_cache(
+    async () => {
+      return await getCachedCollectionDetails(params.collection)
+    },
+    [`collections/${params.collection}`],
+    { revalidate: 604800, tags: [`collections/${params.collection}`] } // 7 days
+  );
+  const collectionDetails = await getCollectionDetailsData();
   if (!collectionDetails) return notFound();
 
   return (
-    <>
+    <div className="mt-[4rem] sm:mt-12">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -136,36 +146,33 @@ const CollectionDetails = async (
           }),
         }}
       />
-      <div className="sm:px-3 min-h-[90vh] pys-12 sm:py-5  flex flex-col items-center gap-2">
-        {/* {collectionDetails.image && <Image
-          src={collectionDetails.image}
-          width={1300}
-          height={1000}
-          alt="collection"
-          className="w-full max-h-[500px] object-cover roudnded-xl"
-        />} */}
-        {/* <Banner
-          heading={collectionDetails.title+' Collection'}
-          text={collectionDetails.description}
-          imgUrl={collectionDetails.image}
-          shade=""
-          textColor="#ffff"
-          textPositionV="end"
-          textPosition="end"
-          link="#products"
-          buttonText="Explore"
-        /> */}
-        {/* <p className="text-heading3-bold text-grey-2 capitalize">{collectionDetails.title}</p>
-    <p className="text-body-normal text-grey-2 text-center max-w-[900px]">{collectionDetails.description}</p> */}
+      <Banner
+        imgUrl={collectionDetails.image}
+        shade={{ color: 'black', position: "top" }}
+        size="small"
+        smAspectRatio="aspect-video"
+        imageContent={{
+          // text: collectionDetails.description,
+          heading: collectionDetails.title + ' >',
+          contentPositionV: 'center',
+          textColor: 'lightgray',
+          font: 'monospace'
+        }}
+        layout={{
+          padding: { left: '1rem', right: '1rem' },
+          imagePosition: 'top'
+        }}
+      />
+      <div className="min-h-[90vh] flex flex-col itemss-center">
         <Breadcrumb />
         <div className="max-sm:ml-3">
-          <Sort />
+          <Sort isCollectionPage />
         </div>
         <Suspense fallback={<Loader />}>
           <CollectionProduct collectionId={collectionDetails._id} page={page} size={size} color={color} sort={sort} sortField={sortField} />
         </Suspense>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -1,6 +1,7 @@
 import Product from "@/lib/models/Product";
 import Review from "@/lib/models/Review";
 import { connectToDB } from "@/lib/mongoDB";
+import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -44,6 +45,7 @@ export async function POST(request: NextRequest) {
       product.ratings = ((product.ratings * (product.numOfReviews - 1)) + rating) / product.numOfReviews;
     }
 
+    revalidateTag(`product-reviews-${productId}`)
     await product.save({ validateBeforeSave: false });
     return NextResponse.json({ message: "Review submitted successfully" });
   } catch (error) {
@@ -77,6 +79,7 @@ export async function DELETE(request: NextRequest) {
       product.ratings = ((product.ratings * (product.numOfReviews)) - review.rating) / product.numOfReviews;
     }
 
+    revalidateTag(`product-reviews-${productId}`)
     await product.save();
     return NextResponse.json({
       success: true,

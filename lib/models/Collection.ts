@@ -11,10 +11,13 @@ const collectionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  products: [
+  mobImage: {
+    type: String,
+  },
+  productCount: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Product",
+      type: Number,
+      default: 0,
     }
   ],
   createdAt: {

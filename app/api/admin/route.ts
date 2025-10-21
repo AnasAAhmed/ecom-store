@@ -1,11 +1,9 @@
 import { corsHeaders } from "@/lib/cors";
-import Collection from "@/lib/models/Collection";
 import Customer from "@/lib/models/Customer";
-import HomePage from "@/lib/models/HomePage";
 import Order from "@/lib/models/Order";
 import Product from "@/lib/models/Product";
 import { connectToDB } from "@/lib/mongoDB";
-import { decode, encode } from "next-auth/jwt";
+import { decode } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 const getAdminData = async () => {
@@ -44,10 +42,10 @@ const getAdminData = async () => {
 
 
 export function OPTIONS() {
-    return new NextResponse(null, {
-        status: 204,
-        headers: corsHeaders,
-    });
+  return new NextResponse(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
 }
 
 export const GET = async (req: NextRequest) => {
@@ -63,7 +61,7 @@ export const GET = async (req: NextRequest) => {
     }
     const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
     // if (!decodedToken || decodedToken.role !== 'admin' || !decodedToken.isAdmin) {
-      if (!decodedToken ) {
+    if (!decodedToken) {
       return NextResponse.json("Access Denied for non-admin", { status: 401, headers: corsHeaders, statusText: 'Access Denied for non-admin' });
     }
     const now = Math.floor(Date.now() / 1000);
@@ -86,7 +84,7 @@ export const GET = async (req: NextRequest) => {
     return NextResponse.json({ countMetrics }, { status: 200, headers: corsHeaders })
   } catch (err) {
     console.log("[admin_GET]", err)
-    return NextResponse.json((err as Error).message, { status: 500, headers: corsHeaders,statusText:(err as Error).message,  })
+    return NextResponse.json((err as Error).message, { status: 500, headers: corsHeaders, statusText: (err as Error).message, })
   }
 }
 

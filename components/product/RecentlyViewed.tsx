@@ -1,13 +1,26 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import SliderList from './SliderList';
-import { getRecentlyViewed } from '@/lib/hooks/useRecentlyViewed';
+import { getRecentlyViewed, removeRecentlyViewed } from '@/lib/hooks/useRecentlyViewed';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import ProductCardCsr from './ProductCardCsr';
+import FadeInOnView from '../FadeInView';
+import SmartLink from '../SmartLink';
 
-const RecentlyViewed = ({ heading, text }: { heading?: string; text?: string }) => {
+const RecentlyViewed = ({ heading='Recently Viewed', text="Based on your viewing h istory" }: { heading?: string; text?: string }) => {
     const [loading2, setLoading2] = useState(true);
     const [products, setProducts] = useState<ProductType[] | []>([]);
+    const scrollRef = useRef<HTMLDivElement>(null);
 
+    const scroll = (direction: 'left' | 'right') => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollBy({
+                left: direction === 'left' ? -300 : 300,
+                behavior: 'smooth',
+            });
+        }
+    };
     useEffect(() => {
         const ss = async () => {
             setLoading2(true);
@@ -26,15 +39,57 @@ const RecentlyViewed = ({ heading, text }: { heading?: string; text?: string }) 
         ss();
     }, [])
 
-    if (loading2) return null;
+    const onRemove = (productId: string) => {
+        removeRecentlyViewed(productId);
+        setProducts(prev => prev.filter(p => p._id !== productId));
+    };
 
-    if (!products.length) return null;
-
+    if (loading2 || !products.length) return null;
     return (
-        <SliderList heading={heading || 'Recently Viewed'}
-            text={text || "Personalized picks based on your browsing"}
-            Products={products}
-        />
+        <div className="relative w-full mt-6 mb-12">
+            {heading &&
+                <h1 className="text-heading3-bold text-center mt-8 mb-4 sm:text-heading2-bold capitalize">{heading}</h1>
+            }
+            {text &&
+                <p className="max-sm:mx-2 sm:text-body-semibold text-gray-600 text-center mb-8 text-small-medium capitalize">{text}</p>
+            }
+            <button
+                aria-label="Scroll Left"
+                onClick={() => scroll('left')}
+                className="hidsd:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white p-2 shadow rounded-full hover:bg-gray-100"
+            >
+                <ChevronLeft />
+            </button>
+
+            <div
+                ref={scrollRef}
+                className="flex  gap-4 sm:gap-6 overflow-x-auto no-scrollbar px-4 sm:px-14 snap-x snap-mandatory scroll-smooth"
+            >
+                {products.map((product: ProductType, i) => (
+                    <ProductCardCsr onRemove={onRemove} index={i} key={product._id} product={product} />
+                ))}
+            </div>
+
+            <button
+                aria-label="Scroll Right"
+                onClick={() => scroll('right')}
+                className="hidsd:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white p-2 shadow rounded-full hover:bg-gray-100"
+            >
+                <ChevronRight />
+            </button>
+            {products.length > 4 && <div className="self-stretch mt-8 flex flex-row items-start justify-center py-[0rem] px-[1.25rem]">
+                <div className="w-[12.875rem] flex flex-col items-start justify-start ">
+                    <FadeInOnView delay={300} threshold={0.5} animation="animate-fadeIn">
+                        <SmartLink prefetch={false} title=" View All Products" href="/search" className="h-[1.875rem] mx-auto relative font-medium inline-block z-[1] text-heading4-bold">
+                            View All Products
+                        </SmartLink>
+                        <div className="self-stretch flex flex-row items-start justify-start py-[0rem] pr-[0.187rem] pl-[0.375rem]">
+                            <div className="h-[0.125rem] flex-1 relative box-border z-[1] border-t-[2px] border-solid border-black" />
+                        </div>
+                    </FadeInOnView>
+                </div>
+            </div>}
+        </div>
     )
 }
 

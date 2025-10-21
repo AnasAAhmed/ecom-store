@@ -55,7 +55,7 @@ const useCart = create(
           // add as new line item
           newCartItems = [
             ...currentItems,
-            { item, quantity: 45, color, size, variantId: variantId || undefined },
+            { item, quantity, color, size, variantId: variantId || undefined },
           ];
         }
 

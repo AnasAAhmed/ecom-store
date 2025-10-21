@@ -2,11 +2,10 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React, { useRef } from 'react'
 import SmartLink from '../SmartLink';
-import Image from 'next/image';
-import ProductCard from './ProductCard';
 import FadeInOnView from '../FadeInView';
+import ProductCardCsr from './ProductCardCsr';
 
-const SliderList = ({ Products, heading, text, isViewAll = true }: { text?: string; Products: ProductType[], heading?: string; isViewAll?: boolean }) => {
+const SliderList = ({ Products, heading, text, isViewAll = true }: { isFyp?: boolean; text?: string; Products: ProductType[], heading?: string; isViewAll?: boolean }) => {
 
     const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -38,9 +37,11 @@ const SliderList = ({ Products, heading, text, isViewAll = true }: { text?: stri
                 ref={scrollRef}
                 className="flex  gap-4 sm:gap-6 overflow-x-auto no-scrollbar px-4 sm:px-14 snap-x snap-mandatory scroll-smooth"
             >
-                {Products.map((product: ProductType) => (
-                    <ProductCard key={product._id} product={product} />
+
+                {Products.map((product: ProductType, i) => (
+                    <ProductCardCsr index={i} key={product._id} product={product} />
                 ))}
+
             </div>
 
             <button

@@ -20,7 +20,7 @@ const roboto = Roboto({
 
 export const metadata: Metadata =
 {
-  title: `Borcelle store`,
+  title: `Borcelle: Online Store for Men's and Women's Clothing`,
   description: "Shop high-quality products at Borcelle professinaol spa website in nextjs mongodb Tcs Courier api. By Anas Ahmed Gituhb:https://github.com/AnasAAhmed",
   keywords: ['Borcelle', 'Anas Ahmed', 'Ecommerce', "professional ecommerce site in nextjs", 'mongodb', 'SPA Ecommerce', 'TCS courier APIs'],
   robots: {
@@ -32,7 +32,7 @@ export const metadata: Metadata =
     }
   },
   openGraph: {
-    title: `Borcelle store`,
+    title: `Borcelle: Online Store for Men's and Women's Clothing`,
     description: "Shop high-quality products at Borcelle professinaol spa website in nextjs mongodb Tcs Courier api. By Anas Ahmed Gituhb:https://github.com/AnasAAhmed",
     url: `${process.env.ECOM_STORE_URL}`,
     images: [
@@ -84,7 +84,7 @@ export default async function RootLayout({
           <ToasterProvider />
           <UserFetcher />
           <Suspense fallback={''}>
-            <nav className="print:hidden py-2 px-4 hidden lg:flex justify-between text-sm sm:text-base font-medium text-gray-800 bg-gradient-to-r from-red-50 via-gray-100 to-blue-100 border-y border-gray-200">
+            {/* <nav className="print:hidden py-2 px-4 hidden lg:flex justify-between text-sm sm:text-base font-medium text-gray-800 bg-gradient-to-r from-red-50 via-gray-100 to-blue-100 border-y border-gray-200">
 
               <p className="text-red-600 font-bold px-4">🔥 50% Off Summer Sale</p>
 
@@ -116,15 +116,16 @@ export default async function RootLayout({
               <p className="text-blue-600 px-4 max-md:hidden">
                 📞 Help: <a title="Call us" href="tel:+845466789">+84 546-6789</a>
               </p>
-            </nav>
+            </nav> */}
             <Navbar />
             <ProgressBar />
           </Suspense>
-          <main className="mt-24 sm:mt-12">
+          <Suspense fallback={<Loader/>}>
+          <main>
             {children}
           </main>
+          </Suspense>
           <Suspense fallback={''}>
-            {/* <Suspense fallback={<Loader height={80} />}> */}
             <IsOnline />
           </Suspense>
           <Footer />

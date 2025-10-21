@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import GroupComponent13 from "./BlogListCard";
 import { Search } from "lucide-react";
+import { blogs } from "@/lib/utils/features";
 
 export type BlogPostListType = {
   className?: string;
@@ -13,33 +14,18 @@ const BlogPostList: NextPage<BlogPostListType> = ({ className = "" }) => {
     >
       <div className="flex-1 flex flex-col items-start justify-start pt-[1.375rem] px-[0rem] pb-[0rem] box-border max-w-full mq800:min-w-full">
         <div className="self-stretch flex flex-col items-start justify-start gap-[3.375rem] max-w-full z-[1] mq450:gap-[1.688rem]">
-          <GroupComponent13
-            previewImages="/blog2.png"
-            wood="Wood"
-            goingAllInWithMillennialD="Going all-in with millennial design"
-          />
-          <GroupComponent13
-            previewImages="/blog4.webp"
-            wood="Handmade"
-            goingAllInWithMillennialD="Exploring new ways of decorating"
-            propWidth="24.563rem"
-            propFlex="1"
-            propMinWidth="4.938rem"
-            propFlex1="1"
-            propMinWidth1="4.938rem"
-            propMinWidth2="5.688rem"
-          />
-          <GroupComponent13
-            previewImages="/blog5.webp"
-            wood="Wood"
-            goingAllInWithMillennialD="Handmade pieces that took time to make"
-            propWidth="unset"
-            propFlex="unset"
-            propMinWidth="unset"
-            propFlex1="unset"
-            propMinWidth1="unset"
-            propMinWidth2="2.938rem"
-          />
+          {blogs.map((i,_)=>(
+            <GroupComponent13
+            key={_}
+            previewImages={i.image}
+            title={i.title}
+            slug={i.slug}
+            author={i.author}
+            tags={i.tags}
+            stringData={i.stringDate}
+            />
+          ))}
+          
         </div>
       </div>
       <div className="w-[24.563rem] flex flex-col sm:items-start justify-start gap-[2.562rem] sm:min-w-[24.563rem] max-w-full text-[1.5rem] text-black mq450:gap-[1.25rem] mq800:min-w-full mq1150:flex-1">

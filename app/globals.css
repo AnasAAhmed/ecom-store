@@ -50,7 +50,7 @@ body,
     content: "";
     width: 40px;
     border-radius: 50%;
-    background: #5175b8;
+    background: #000000;
     animation: l3 0.5s infinite alternate;
   }
 

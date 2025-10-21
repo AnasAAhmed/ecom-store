@@ -70,7 +70,7 @@ const CancelOrder = ({ order }: OrderManageProps) => {
   const currentTime = new Date().getTime();
   const timeDifference = (currentTime - orderCreationTime) / (1000 * 60 * 60);
   return (
-    <div className="w-full mx-auto max-w-4xl px-4 sm:px-6 py-6 space-y-8 font-sans">
+    <div className="w-full sm:mt-24 mt-12 mx-auto max-w-4xl px-4 sm:px-6 py-6 space-y-8 font-sans">
 
       <button
         className="print:hidden flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
