@@ -117,7 +117,7 @@ const Cart = () => {
 
 
   return (
-    <div className="flex gap-20 mt-[4rem] sm:mt-16 py-16 px-10 max-lg:flex-col max-sm:px-3">
+    <div className="flex gap-20 mt-[4rem] min-h-[90vh] sm:mt-16 py-16 px-10 max-lg:flex-col max-sm:px-3">
       <div className="w-2/3 max-lg:w-full">
         <p className="text-heading3-bold">Shopping Cart</p>
         <hr className="my-6" />

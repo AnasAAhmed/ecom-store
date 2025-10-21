@@ -120,7 +120,7 @@ export default async function RootLayout({
             <Navbar />
             <ProgressBar />
           </Suspense>
-          <Suspense fallback={<Loader/>}>
+          <Suspense fallback={<Loader height={90}/>}>
           <main>
             {children}
           </main>

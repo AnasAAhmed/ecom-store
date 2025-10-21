@@ -15,13 +15,9 @@ import Loader from "@/components/ui/Loader";
 import FYProdcutList from "@/components/product/FYProdcutList";
 import RecentlyViewed from "@/components/product/RecentlyViewed";
 
-// export const dynamic = 'force-static';
-export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
-  // const homeData = await getCachedHomePageData();
-  const homeData = ffallBackHomeData;
-  console.log('generateMetadata func hits homepage');
+  const homeData = await getCachedHomePageData();
 
   if (!homeData?.seo) {
     return null;
@@ -55,16 +51,12 @@ export async function generateMetadata() {
   };
 }
 
+export const dynamic = 'force-static';
+
 export default async function Home() {
 
-  // const [homePage] = await Promise.all([
-  //   getCachedHomePageData()
-  // ]);
-  // const products: ProductType[] = []
-  // const collections: CollectionType[] = []
-  // const homePage: HomePage | null = null
-
-  const homePageData =  ffallBackHomeData;
+  const homeData = await getCachedHomePageData();
+  const homePageData = homeData ?? ffallBackHomeData;
 
   return (
     <Fragment>
@@ -186,14 +178,6 @@ async function ProductListSection() {
   if (typeof products === 'string') return products;
   return (
     <ProductList heading="New Arrivals" text="Be the first to shop our latest drops and fresh styles." Products={products} />
-  )
-}
-
-async function CollectionProsduct({ collectionTitle, collectionId }: { collectionTitle: string; collectionId: string }) {
-  const products: ProductType[] | string = await getCollectionProducts(collectionId);
-  if (typeof products === 'string') return products;
-  return (
-    <SliderList Products={products} />
   )
 }
 
