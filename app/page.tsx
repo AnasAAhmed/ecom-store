@@ -84,7 +84,7 @@ export default async function Home() {
           ))}
         </div>
       </div>}>
-        <ProductListSection />
+        {/* <ProductListSection /> */}
       </Suspense>
 
       <section className='mt-12 '>
@@ -112,12 +112,12 @@ export default async function Home() {
                 className={`w-full bg-slate-50 ${idx % 2 === 1 ? "md:order-1" : "md:order-2"
                   } flex flex-col justify-center sm:px-6`}
               >
-                <Suspense fallback={<Loader />}>
+                {/* <Suspense fallback={<Loader />}>
                   <CollectionProduct
                     collectionTitle={i.imageContent!.link!.slice(13)}
                     collectionId={i.collectionId}
                   />
-                </Suspense>
+                </Suspense> */}
               </div>
             </div>
           ))}
@@ -140,9 +140,9 @@ export default async function Home() {
               imageContent={i.imageContent}
             />
 
-            <Suspense fallback={<Loader />}>
+            {/* <Suspense fallback={<Loader />}>
               <CollectionProduct collectionTitle={i.imageContent!.link!.slice(13)} collectionId={i.collectionId} />
-            </Suspense>
+            </Suspense> */}
           </Fragment>
         ))}
         <br />

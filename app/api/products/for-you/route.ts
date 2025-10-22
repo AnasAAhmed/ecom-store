@@ -25,8 +25,11 @@ export async function GET(request: NextRequest) {
 
         const orConditions: any[] = [];
 
-        if (productIds?.length) {
-            query._id = { $nin: productIds.map(id => new mongoose.Types.ObjectId(id)) };
+        if (productIds && productIds.length > 0) {
+            const validIds = productIds.filter(id => mongoose.Types.ObjectId.isValid(id));
+            if (validIds.length > 0) {
+                query._id = { $nin: validIds.map(id => new mongoose.Types.ObjectId(id)) };
+            }
         }
         if (categoriesClicked) {
             const parsedCategories = JSON.parse(categoriesClicked);
@@ -62,9 +65,9 @@ export async function GET(request: NextRequest) {
         );
     } catch (err) {
 
-        console.error("Error fetching products:", err);
+        console.error("Error fetching ffyp products:", err);
         return NextResponse.json(
-            "Failed to fetch products: " + (err as Error).message,
+            "Failed to fetch fyp products: " + (err as Error).message,
             { status: 500, statusText: "Failed to fetch fyp products: " + (err as Error).message }
         );
     }

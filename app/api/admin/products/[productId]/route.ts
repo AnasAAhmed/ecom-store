@@ -2,7 +2,7 @@ import { corsHeaders } from "@/lib/cors";
 import Collection from "@/lib/models/Collection";
 import Product from "@/lib/models/Product";
 import { connectToDB } from "@/lib/mongoDB";
-import { estimateDimensions, estimateWeight, extractKeyFromUrl } from "@/lib/utils/features";
+import { estimateDimensions, estimateWeight, extractKeyFromUrl, slugify } from "@/lib/utils/features";
 import { decode } from "next-auth/jwt";
 import { revalidatePath, revalidateTag } from "next/cache";
 
@@ -80,19 +80,38 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ productI
       );
 
       await Promise.all([
-        ...removedCollections.map((collectionId: string) =>
-          Collection.findByIdAndUpdate(collectionId, {
-            $pull: { products: product._id },
-            $inc: { productCount: -1 },
-          })
-        ),
-        ...addedCollections.map((collectionId: string) =>
-          Collection.findByIdAndUpdate(collectionId, {
-            $addToSet: { products: product._id },
-            $inc: { productCount: 1 },
-          })
-        ),
+        // Handle removed collections
+        ...removedCollections.map(async (collectionId: string) => {
+          const updated = await Collection.findByIdAndUpdate(
+            collectionId,
+            {
+              $pull: { products: product._id },
+              $inc: { productCount: -1 },
+            },
+            { select: 'title' }
+          );
+
+          if (updated?.title) {
+            await revalidateTag(`collections/${slugify(updated.title)}`);
+          }
+        }),
+
+        ...addedCollections.map(async (collectionId: string) => {
+          const updated = await Collection.findByIdAndUpdate(
+            collectionId,
+            {
+              $addToSet: { products: product._id },
+              $inc: { productCount: 1 },
+            },
+            { select: 'title' }
+          );
+
+          if (updated?.title) {
+            await revalidateTag(`collections/${slugify(updated.title)}`);
+          }
+        }),
       ]);
+
     }
 
     const oldSlug = product.slug
@@ -112,10 +131,10 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ productI
 
     await product.save();
 
-    revalidatePath('/')
-    revalidatePath(`/products/${oldSlug}`);
-    revalidateTag(`/products/${oldSlug}`);
-    revalidateTag('search-default')
+    await revalidatePath('/')
+    await revalidatePath(`/products/${oldSlug}`);
+    await revalidateTag(`/products/${oldSlug}`);
+    await revalidateTag('search-default')
 
     return NextResponse.json(product, { status: 200, headers: corsHeaders });
   } catch (err) {
@@ -159,13 +178,21 @@ export const DELETE = async (req: NextRequest, props: { params: Promise<{ produc
       );
     }
     await Promise.all(
-      product.collections.map((collectionId: string) =>
-        Collection.findByIdAndUpdate(collectionId, {
-          $pull: { products: product._id },
-          $inc: { productCount: -1 },
-        })
-      )
-    );
+      product.collections.map(async (collectionId: string) => {
+        const updated = await Collection.findByIdAndUpdate(
+          collectionId,
+          {
+            $pull: { products: product._id },
+            $inc: { productCount: -1 },
+          },
+          { select: 'title' }
+        );
+
+        if (updated?.title) {
+          await revalidateTag(`collections/${slugify(updated.title)}`);
+        }
+      }
+      ));
 
     let deleteRes: {
       readonly success: boolean | null;
@@ -183,10 +210,10 @@ export const DELETE = async (req: NextRequest, props: { params: Promise<{ produc
         console.error("Delete failed:", err);
       }
     }
-    revalidatePath('/')
-    revalidatePath(`/products/${product.slug}`);
-    revalidateTag(`/products/${product.slug}`);
-    revalidateTag('search-default');
+    await revalidatePath('/')
+    await revalidatePath(`/products/${product.slug}`);
+    await revalidateTag(`/products/${product.slug}`);
+    await revalidateTag('search-default');
 
     return NextResponse.json(JSON.stringify(`Product deleted ${deleteRes!.success ? 'with images' : ""}`), {
       status: 200,

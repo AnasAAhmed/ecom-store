@@ -45,7 +45,7 @@ export const GET = async (req: NextRequest, props: { params: Promise<{ collectio
     }
     await connectToDB();
 
-    const collection = await Collection.findById(params.collectionId).populate({ path: "products", model: Product });
+    const collection = await Collection.findById(params.collectionId);
 
     if (!collection) {
       return NextResponse.json(
