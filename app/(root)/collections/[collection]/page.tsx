@@ -102,6 +102,7 @@ const CollectionDetails = async (
             "@type": "CollectionPage",
             name: collectionDetails.title,
             description: collectionDetails.description,
+            image: collectionDetails.image,
             // mainEntity: collectionDetails.products.map((product: ProductType) => ({
             //   "@type": "Product",
             //   name: product.title,
@@ -153,7 +154,7 @@ const CollectionDetails = async (
         smAspectRatio="aspect-video"
         imageContent={{
           // text: collectionDetails.description,
-          heading: collectionDetails.title + ' >',
+          heading: collectionDetails.title + ` (${collectionDetails.productCount})`,
           contentPositionV: 'center',
           textColor: 'lightgray',
           font: 'monospace'

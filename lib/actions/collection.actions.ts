@@ -76,7 +76,7 @@ export async function getCollections() {
   }
 };
 
-export async function getCollectionDetails(title: string) {
+export async function getCollectionDetails(title: string): Promise<CollectionType | null> {
   try {
     await connectToDB();
 

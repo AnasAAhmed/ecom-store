@@ -173,7 +173,7 @@ const Banner: React.FC<BannerProps> = ({
         className={`relative w-full ${smAspectRatio} aspect-[4/5.2]  ${heightClass[size]} overflow-hidden`}
         style={layoutStyleForContainer}
       >
-        {video && video.url ? (
+        {/* {video && video.url ? (
           <video
             className="absolute inset-0 w-full h-full object-cover"
             src={video.url!}
@@ -206,8 +206,49 @@ const Banner: React.FC<BannerProps> = ({
               blurDataURL="/fallback-banner.avif"
             />
           </>
-        )}
+        )} */}
+        <>
+          <Image
+            src={video?.poster || imgUrl || "/fallback-banner.avif"}
+            alt={heading || "Banner image"}
+            fill
+            sizes="100vw"
+            priority
+            className="absolute object-cover w-full h-full max-sm:hidden"
+            style={{
+              objectPosition: layout?.imagePosition || "center",
+              transition: "opacity 0.3s ease",
+            }}
+            placeholder="blur"
+            blurDataURL="/fallback-banner.avif"
+          />
+          <Image
+            src={video?.poster || mobImgUrl || imgUrl || "/fallback-banner.avif"}
+            alt={(heading || "Banner image") + "_mobile"}
+            fill
+            sizes="100vw"
+            priority
+            className="absolute w-full h-full object-cover sm:hidden"
+            style={{
+              objectPosition: layout?.imagePosition || "center",
+              transition: "opacity 0.3s ease",
+            }}
+            placeholder="blur"
+            blurDataURL="/fallback-banner.avif"
+          />
+        </>
 
+        {video?.isVideo && video?.url && (
+          <video
+            className="absolute inset-0 w-full h-full object-cover"
+            src={video.url}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="none"
+          />
+        )}
         {/* Overlay shade */}
         {shade && shade.color && (
           <div
@@ -231,17 +272,7 @@ const Banner: React.FC<BannerProps> = ({
           }}
         >
 
-          {heading && isHero ? (
-            <h1
-              style={{
-                fontFamily: font,
-                transitionDelay: `${100}ms`,
-                animationDelay: `${100}ms`,
-              }}
-              className={`animate-fadeInUp capitalize font-sans text-[40px] leading-[100%] sm:text-[60px] font-medium mb-3`}>
-              {heading}
-            </h1>
-          ) : (
+          {heading && (
             <FadeInOnView animation="animate-fadeInUp" delay={100}>
               <h1 style={{ fontFamily: font }} className={`capitalize font-sans text-[40px] leading-[100%] sm:text-[60px] font-medium mb-3`}>
                 {heading}
@@ -249,15 +280,7 @@ const Banner: React.FC<BannerProps> = ({
             </FadeInOnView>
           )}
 
-          {text && isHero ? (
-            <p style={{
-              fontFamily: font,
-              transitionDelay: `${300}ms`,
-              animationDelay: `${300}ms`,
-            }} className={`animate-fadeInUp capitalize font-sans text-[20px] md:max-w-[66rem] sm:text-[28px] font-medium mb-6 leading-[100%]`}>
-              {text}
-            </p>
-          ) : (
+          {text && (
             <FadeInOnView animation="animate-fadeInUp" delay={300}>
               <p style={{ fontFamily: font }} className={`capitalize font-sans text-[20px] md:max-w-[66rem] sm:text-[28px] font-medium mb-6 leading-[100%]`}>
                 {text}

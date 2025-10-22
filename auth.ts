@@ -46,16 +46,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (account?.provider === 'google') {
         try {
 
-          const ip = (headers() as unknown as UnsafeUnwrappedHeaders).get('x-forwarded-for') || '36.255.42.109';
-          const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
-          const geoData = await geoRes.json();
-          const userAgent = (headers() as unknown as UnsafeUnwrappedHeaders).get('user-agent') || '';
+          const ip = (await (headers())).get('x-forwarded-for') || '36.255.42.109';
+          const userAgent = (await (headers())).get('user-agent') || '';
           const parser = new UAParser(userAgent);
           const result = parser.getResult();
           let country = "oooo";
           let city = "pppp";
-
+          
           if (ip && ip !== '::1' && ip !== '127.0.0.1') {
+            const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
+            const geoData = await geoRes.json();
             country = geoData.country || 'Unknown';
             city = geoData.city || 'Unknown';
           } else {

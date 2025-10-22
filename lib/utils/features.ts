@@ -288,29 +288,33 @@ export const ffallBackHomeData: HomePage = {
     {
       _id: '68bed35bfa5c5728ba60fce5',
       title: 'men',
+      description: '',
       image: 'https://e1s0bwzoxc.ufs.sh/f/EHhleKT2TuF3NxiKUydBaGn39DLU2XfZ14uxwjW6vKcOMrJm',
       mobImage: 'https://www.zilbil.store/cdn/shop/files/IMG_8289.jpg?v=1758114170&width=1400',
-      productCount:2
+      productCount: 2
     },
     {
       _id: '68bd93848dea7304cc2f46ea',
       title: 'women',
+      description: '',
       image: 'https://e1s0bwzoxc.ufs.sh/f/EHhleKT2TuF3o5WgC0432T78lGrHy0ZJjCnB6EXKNYPOQwp5',
-      productCount:0
+      productCount: 0
     },
     {
       _id: '682203b1b50a422585dca64d',
       title: 'summer',
+      description: '',
       image: 'https://e1s0bwzoxc.ufs.sh/f/EHhleKT2TuF3trF9xmgI0bLU8TkNwialQVmrnPSDsHp9o72j',
-      productCount:2
+      productCount: 2
     },
     {
       _id: '6810d2c78ea9e382250af8be',
       title: 'footwear',
+      description: '',
       image: 'https://res.cloudinary.com/dvnef4cyd/image/upload/v1745932983/imaginify/yhxgvnyiomxd9u5zxmw6.jpg',
-      productCount:2
+      productCount: 2
     },
-    
+
   ]
 }
 

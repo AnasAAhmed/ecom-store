@@ -28,15 +28,15 @@ const recipients = [
 export async function POST(req: Request) {
 
   const ip = (await headers()).get('x-forwarded-for') || '36.255.42.109';
-  const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
-  const geoData = await geoRes.json();
   const userAgent = (await headers()).get('user-agent') || '';
   const parser = new UAParser(userAgent);
   const result = parser.getResult();
   let country = "oooo";
   let city = "pppp";
-
+  
   if (ip && ip !== '::1' && ip !== '127.0.0.1') {
+    const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
+    const geoData = await geoRes.json();
     country = geoData.country || 'Unknown';
     city = geoData.city || 'Unknown';
   } else {

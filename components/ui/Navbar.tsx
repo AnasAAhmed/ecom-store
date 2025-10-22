@@ -108,7 +108,7 @@ const Navbar = () => {
             priority
             width={120}
             height={64}
-            className={`${pp ? 'group-hover:invert-0 invert' : 'invert-0'} brightness-0 `}
+            className={`${(!scrolled&&pp)? 'group-hover:invert-0 invert' : 'invert-0'} brightness-0 `}
           />
         </SmartLink>
 
@@ -130,7 +130,7 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <Currency className="none" />
+          <Currency className="max-sm:hidden" />
           <button title="mobile hamburger menu" aria-label="mobile hamburger menu" id="Mob-menu" onClick={() => setOpen2(!open2)}>
             <Search />
           </button>

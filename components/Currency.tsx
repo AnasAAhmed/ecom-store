@@ -16,20 +16,22 @@ const Currency = ({ className, ip = '36.255.42.109' }: { className: string; ip?:
   useEffect(() => {
     const fetchCountry = async () => {
 
-      // if (process.env.NODE_ENV === 'production') {
-        // try {
-        //   const geoRes = await fetch(`http://ip-api.com/json/`);
-        //   const geoData = await geoRes.json();
-        //   setGeoCountry(geoData.country);
-        //   setGeoCountryCode(geoData.countryCode);
-        //   console.log(geoData.country, geoData.city);
-        // } catch (error) {
-        //   console.error('Failed to fetch geo data', error);
-        // }
-      // }
+      if (process.env.NODE_ENV === 'production') {
+        try {
+          const geoRes = await fetch(`/api/ip`);
+          const geoData = await geoRes.json();
+          console.log(geoData);
+          
+          setGeoCountry(geoData.country);
+          setGeoCountryCode(geoData.countryCode);
+          console.log(geoData.country, geoData.city);
+        } catch (error) {
+          console.error('Failed to fetch geo data', error);
+        }
+      }
 
       // Fallback if country is still empty
-      const finalCountry = country || geoCountry;
+      const finalCountry = geoCountry || country;
 
       if (isHydrated && finalCountry) {
         setCountry(finalCountry);
@@ -41,7 +43,7 @@ const Currency = ({ className, ip = '36.255.42.109' }: { className: string; ip?:
     };
 
     fetchCountry();
-  }, [geoCountry, country,setCountry, setCurrency, isHydrated]);
+  }, [geoCountry, country, setCountry, setCurrency, isHydrated]);
 
 
   const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -62,12 +64,12 @@ const Currency = ({ className, ip = '36.255.42.109' }: { className: string; ip?:
   const isCustomCountry = geoCountry && !allCountries.includes(geoCountry);
   return (
     <>
-      <button title='Change Currency & Region' onClick={openModal} className='flex items-center text-small-medium gap-2'>
-        {/* <img title={countryToFlagMap[country] + " flg"} src={`https://flagcdn.com/96x72/${countryToFlagMap[country] || geoCountryCode?.toLowerCase() || 'ps'}.png` || 'https://flagcdn.com/96x72/pk.png'} alt={countryToFlagMap[country] + " Flag"} width={24} height={18} /> */}
+      <button title='Change Currency & Region' onClick={openModal} className={`${className} flex items-center text-small-medium gap-2`}>
+        <img title={countryToFlagMap[country] + " flg"} src={`https://flagsapi.com/${countryToFlagMap[country]?.toUpperCase() || geoCountryCode?.toUpperCase() || 'PS'}/flat/64.png` || 'https://flagcdn.com/96x72/pk.png'} alt={countryToFlagMap[country] + " Flag"} width={24} height={18} />
         {currency} {currencyToSymbolMap[currency]}
       </button>
       <Modal isOpen={modalOpen} onClose={closeModal} overLay={true}>
-        <div className={`${className} bg-white p-8 sm:p-12 flex flex-col gap-6 ring-2 rounded-xl border border-gray-200 max-w-md mx-auto`}>
+        <div className={`bg-white p-8 sm:p-12 flex flex-col gap-6 ring-2 rounded-xl border border-gray-200 max-w-md mx-auto`}>
           <h2 className="text-lg font-semibold text-gray-800">🛠️ Region Settings</h2>
           <div className="flex flex-col gap-2">
             <label htmlFor='currency' className="text-sm text-gray-600">Select your currency</label>
