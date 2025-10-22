@@ -55,9 +55,9 @@ export async function GET(request: NextRequest) {
             {
                 status: 200,
                 statusText: 'Fetched FY product successfully',
-                // headers: {
-                //     "Cache-Control": "private, max-age=120, stale-while-revalidate=59",
-                // },
+                headers: {
+                    "Cache-Control": "private, max-age=60, stale-while-revalidate=59",
+                },
             }
         );
     } catch (err) {

@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
         // const userAgent = (await (headers())).get('user-agent') || '';
         // const parser = new UAParser(userAgent);
         // const result = parser.getResult();
-        
+
         let country = "";
         let city = "";
         let countryCode = "";
@@ -37,6 +37,11 @@ export async function GET(req: NextRequest) {
             country,
             city,
             countryCode,
+        }, {
+            status: 200,
+            headers: {
+                "Cache-Control": "private, max-age=120, stale-while-revalidate=59",
+            },
         });
     } catch (err) {
         return NextResponse.json((err as Error).message, { status: 500, statusText: (err as Error).message });
