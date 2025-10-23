@@ -118,7 +118,7 @@ export const CurrencyBtn = ({ className = '' }: { className?: string; }) => {
       title='Change Currency & Region'
       className={`${className} flex items-center text-small-medium gap-2`}>
       <img
-        title={countryToFlagMap[country].toUpperCase() + " flg"}
+        title={countryToFlagMap[country]?.toUpperCase() + " flg"}
         src={`https://flagsapi.com/${countryCode?.toUpperCase() || countryToFlagMap[country]?.toUpperCase() || 'PS'}/flat/64.png`}
          alt={countryToFlagMap[country] + " Flag"} width={24} height={18} />
       {currency} {currencyToSymbolMap[currency]}
