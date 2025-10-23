@@ -173,70 +173,34 @@ const Banner: React.FC<BannerProps> = ({
         className={`relative w-full ${smAspectRatio} aspect-[4/5.2]  ${heightClass[size]} overflow-hidden`}
         style={layoutStyleForContainer}
       >
-        {/* {video && video.url ? (
-          <video
-            className="absolute inset-0 w-full h-full object-cover"
-            src={video.url!}
-            autoPlay
-            loop
-            muted
-            playsInline
-            poster={video.poster || "/fallback-banner.avif"}
-          />
-        ) : (
-          <>
-            <Image
-              src={imgUrl || "/fallback-banner.avif"}
-              alt={heading || "Banner image"}
-              fill
-              sizes="100vw"
-              className="absolute object-cover w-full h-full max-sm:hidden"
-              style={{ objectPosition: layout && layout!.imagePosition! || 'center' }}
-              placeholder="blur"
-              blurDataURL="/fallback-banner.avif"
-            />
-            <Image
-              src={mobImgUrl || imgUrl || "/fallback-banner.avif"}
-              alt={(heading || "Banner image") + "_mobile"}
-              fill
-              sizes="100vw"
-              style={{ objectPosition: layout && layout!.imagePosition! || 'center' }}
-              className="absolute w-full h-full object-cover sm:hidden"
-              placeholder="blur"
-              blurDataURL="/fallback-banner.avif"
-            />
-          </>
-        )} */}
-        <>
-          <Image
-            src={video?.poster || imgUrl || "/fallback-banner.avif"}
-            alt={heading || "Banner image"}
-            fill
-            sizes="100vw"
-            priority
-            className="absolute object-cover w-full h-full max-sm:hidden"
-            style={{
-              objectPosition: layout?.imagePosition || "center",
-              transition: "opacity 0.3s ease",
-            }}
-            placeholder="blur"
-            blurDataURL="/fallback-banner.avif"
-          />
-          <Image
-            src={video?.poster || mobImgUrl || imgUrl || "/fallback-banner.avif"}
-            alt={(heading || "Banner image") + "_mobile"}
-            fill
-            sizes="100vw"
-            priority
-            className="absolute w-full h-full object-cover sm:hidden"
-            style={{
-              objectPosition: layout?.imagePosition || "center",
-              transition: "opacity 0.3s ease",
-            }}
-            placeholder="blur"
-            blurDataURL="/fallback-banner.avif"
-          />
-        </>
+        <Image
+          src={video?.poster || imgUrl || "/fallback-banner.avif"}
+          alt={heading || "Banner image"}
+          fill
+          sizes="100vw"
+          priority
+          className="absolute object-cover w-full h-full max-sm:hidden"
+          style={{
+            objectPosition: layout?.imagePosition || "center",
+            transition: "opacity 0.3s ease",
+          }}
+          placeholder="blur"
+          blurDataURL="/fallback-banner.avif"
+        />
+        <Image
+          src={video?.poster || mobImgUrl || imgUrl || "/fallback-banner.avif"}
+          alt={(heading || "Banner image") + "_mobile"}
+          fill
+          sizes="100vw"
+          priority
+          className="absolute w-full h-full object-cover sm:hidden"
+          style={{
+            objectPosition: layout?.imagePosition || "center",
+            transition: "opacity 0.3s ease",
+          }}
+          placeholder="blur"
+          blurDataURL="/fallback-banner.avif"
+        />
 
         {video?.isVideo && video?.url && (
           <video

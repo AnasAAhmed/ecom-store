@@ -3,7 +3,6 @@ import { FormEvent, useState } from "react";
 import { Edit, Loader2, X } from 'lucide-react';
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import Modal from "../ui/Modal";
 import { useSession } from "next-auth/react";
 import FocusLock from "react-focus-lock";
 import { useFocusWithin } from "@react-aria/interactions";
@@ -94,7 +93,7 @@ const ReviewForm = ({ isEditing, productId, oldRating, oldComment }: ReviewFormP
                     </button>
                 )}
             </div>
-            {/* {modalOpen && ( */}
+            {modalOpen && (
             <div
                 className={`fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50`}
                 onClick={() => closeModal()}
@@ -153,6 +152,7 @@ const ReviewForm = ({ isEditing, productId, oldRating, oldComment }: ReviewFormP
                     </div>
                 </FocusLock>
             </div>
+            )}
         </div>
     );
 };
