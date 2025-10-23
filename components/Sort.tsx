@@ -31,8 +31,8 @@ const Sort = ({ isCollectionPage = false }: { isCollectionPage?: boolean }) => {
     const [loading, setLoading] = useState(true);
 
     const queryParam = params.get('query') || '';
-    const sortParam = params.get('sort') || '';
-    const sortFieldParam = params.get('sortField') || '';
+    const sortParam = params.get('order') || '';
+    const sortFieldParam = params.get('field') || '';
     const categoryParam = params.get('category') || '';
     const sizeParam = params.get('size') || '';
     const colorParam = params.get('color') || '';
@@ -85,7 +85,7 @@ const Sort = ({ isCollectionPage = false }: { isCollectionPage?: boolean }) => {
         if (persistCategory && value) updateCategories(value);
 
         const newUrl = `?${searchParams.toString()}`;
-        router.push(newUrl, { scroll: true });
+        router.push(newUrl, { scroll: !isCollectionPage });
     };
 
     const handleSearch = (e: FormEvent<HTMLFormElement>) => {
@@ -103,12 +103,12 @@ const Sort = ({ isCollectionPage = false }: { isCollectionPage?: boolean }) => {
             searchParams.delete('field');
             searchParams.delete('order');
             const newUrl = `?${searchParams.toString()}`;
-            router.push(newUrl, { scroll: true });
+            router.push(newUrl, { scroll: !isCollectionPage });
         } else {
             searchParams.set('field', field.toString());
             searchParams.set('order', order.toString());
             const newUrl = `?${searchParams.toString()}`;
-            router.push(newUrl, { scroll: true });
+            router.push(newUrl, { scroll: !isCollectionPage });
         }
     };
 
@@ -147,7 +147,7 @@ const Sort = ({ isCollectionPage = false }: { isCollectionPage?: boolean }) => {
                     {/* Sort */}
                     <select
                         className="h-10 px-3 bg-gray-100 rounded-lg"
-                        value={sort}
+                        value={[sortField,sort].join('|')}
                         onChange={handleSortChange}
                     >
                         <option value="">Sort</option>
@@ -171,7 +171,7 @@ const Sort = ({ isCollectionPage = false }: { isCollectionPage?: boolean }) => {
                                 {s}
                             </option>
                         ))}
-                        {loading && <option value="" className='text-[9px] sm:text-[12px]'>Loading More...</option>}
+                        {loading && <option value="Loading More" className='text-[9px] sm:text-[12px]'>More</option>}
 
                     </select>
 
@@ -187,7 +187,7 @@ const Sort = ({ isCollectionPage = false }: { isCollectionPage?: boolean }) => {
                                 {c}
                             </option>
                         ))}
-                        {loading && <option value="" className='text-[9px] sm:text-[12px]'>Loading More...</option>}
+                        {loading && <option value="Loading More" className='text-[9px] sm:text-[12px]'>More</option>}
 
                     </select>
 
@@ -206,7 +206,7 @@ const Sort = ({ isCollectionPage = false }: { isCollectionPage?: boolean }) => {
                                     {cat}
                                 </option>
                             ))}
-                            {loading && <option value="" className='text-[9px] sm:text-[12px]'>Loading More...</option>}
+                            {loading && <option value="Loading More" className='text-[9px] sm:text-[12px]'>More</option>}
 
                         </select>
                     )}

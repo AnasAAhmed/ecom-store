@@ -20,12 +20,12 @@ export async function GET(req: NextRequest) {
             const geoData = await geoRes.json();
             country = geoData.country || 'Unknown';
             city = geoData.city || 'Unknown';
-            countryCode = geoData.countryCode || "hell";
+            countryCode = geoData.countryCode || "PS";
 
         } else {
-            country = "Localhost";
-            city = "Localhost";
-            countryCode = "hell";
+            country = "Pakistan";
+            city = "Karachi";
+            countryCode = "Pk";
             console.log("Skipping geo lookup for local IP:", ip);
         }
 
@@ -39,9 +39,9 @@ export async function GET(req: NextRequest) {
             countryCode,
         }, {
             status: 200,
-            headers: {
-                "Cache-Control": "private, max-age=120, stale-while-revalidate=59",
-            },
+            // headers: {
+            //     "Cache-Control": "private, max-age=120, stale-while-revalidate=59",
+            // },
         });
     } catch (err) {
         return NextResponse.json((err as Error).message, { status: 500, statusText: (err as Error).message });

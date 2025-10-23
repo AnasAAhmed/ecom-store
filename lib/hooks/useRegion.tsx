@@ -27,9 +27,9 @@ export const useRegion = create<RegionStore>()(
   persist(
     (set, get) => ({
       country: '',
-      currency: 'USD', // default
+      currency: 'USD',
       countryCode: 'PS', // default to Palestine
-      exchangeRate: 1, // default rate for USD
+      exchangeRate: 1, 
       lastFetched: null,
       isHydrated: false,
       source: null,

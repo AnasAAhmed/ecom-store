@@ -1,7 +1,7 @@
 "use client";
 
 import useCart from "@/lib/hooks/useCart";
-import { Menu, Search, ShoppingCart } from "lucide-react";
+import { ChevronRight, Menu, Search, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import SmartLink from "@/components/SmartLink";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -83,6 +83,7 @@ const Navbar = () => {
   ];
 
   const pp = pathname === '/';
+  const isSearchPage = pathname === '/search';
 
   return (
     <nav className={`${scrolled ?
@@ -98,7 +99,7 @@ const Navbar = () => {
     >
 
       <div className="flex justify-between items-center p-2">
-        <button className="lg:hidden cursor-pointer" title="mobile hamburger menu" aria-label="mobile hamburger menu" id="Mob-menu" onClick={toggleModal} onBlur={() => setTimeout(() => setIsOpen(false), 70)}>
+        <button className="lg:hidden cursor-pointer" title="mobile hamburger menu" aria-label="mobile hamburger menu" id="Mob-menu" onClick={toggleModal} >
           <Menu size={'1.7rem'} />
         </button>
         <SmartLink title="home" aria-label="go to home" href="/">
@@ -130,7 +131,7 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <CurrencyBtn />
+          <CurrencyBtn className="max-sm:hidden" />
           <button title="mobile hamburger menu" aria-label="mobile hamburger menu" id="Mob-menu" onClick={() => setOpen2(!open2)}>
             <Search />
           </button>
@@ -166,7 +167,7 @@ const Navbar = () => {
         )}
       </div>
 
-      {open2 && <div className="px-4 pt-2 flex sm:hsidden pb-2">
+      {open2 && !isSearchPage && <div className="px-4 pt-2 flex sm:hsidden pb-2">
         <form onSubmit={(e) => handleSearch(e)} className="flex sm:shidden w-full items-center border rounded-lg px-4 py-1">
           <input
             list="pp"
@@ -189,25 +190,87 @@ const Navbar = () => {
           <button title="Confirm Search" type="submit"><Search className="cursor-pointer h-4 w-4 hover:text-blue-500" /></button>
         </form>
       </div>}
-      {/* Mobile Modal */}
-      {isOpen && <div className="absolute flex lg:hidden left-6 max-sm:top-10 items-center justify-center bg-opacity-50 z-50">
-        <ul className="flex flex-col p-4 gap-3 w-full bg-white animate-menu rounded-lg border">
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
 
+      {/* Off-Canvas Drawer */}
+      <div
+        className={`fixed top-0 left-0 h-full w-72 bg-white z-50 transform lg:hidden transition-transform duration-300
+    ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 border-b">
+          <SmartLink title="home" aria-label="go to home" href="/">
+            <Image
+              src="/logo.png"
+              alt=" borcelle logo"
+              priority
+              width={120}
+              height={64}
+              className={`${(!scrolled && pp) ? 'group-hover:invert-0 invert' : 'invert-0'} brightness-0 `}
+            />
+          </SmartLink>
+          <button
+            onClick={() => setIsOpen(false)}
+            aria-label="Close Menu"
+            className="text-xl"
+          >
+            ✕
+          </button>
+        </div>
+
+        <ul className="flex flex-col gap-1 py-2 px-3 overflow-y-auto h-[calc(100%-60px)]">
+
+          {/* Top Navigation Links */}
+          <span className="px-2 py-2 text-sm font-semibold text-gray-500 uppercase">
+            Navigation
+          </span>
           {links.map((name, idx) => (
             <SmartLink
               key={idx}
               href={name}
               aria-label={name}
               title={"Go to " + linksText[idx]}
-              target={name.startsWith('https') ? '_blank' : ''}
-              className="border-b px-8 text-center"
+              target={name.startsWith("https") ? "_blank" : ""}
+              className="py-[3px] px-3 rounded hover:bg-gray-100 transition"
             >
               {linksText[idx]}
-
             </SmartLink>
           ))}
+
+          {/* Collections (Collapsible) */}
+          <details className="mt-2">
+            <summary className="flex items-center gap-2 cursor-pointer hover:underline py-2 px-3 bg-gray-100 rounded font-medium">
+              Collections <ChevronRight size={'1rem'}/>
+            </summary>
+            <div className="flex flex-col mt-2 ml-2">
+              {cols.map((i, idx) => (
+                <SmartLink
+                  key={idx}
+                  href={i.link}
+                  title={"Go to " + i.title}
+                  aria-label={i.link}
+                  target={i.link.startsWith("https") ? "_blank" : undefined}
+                  className={`py-[3px] px-3 text-sm rounded hover:bg-gray-100 ${pathname === i.link && "text-blue-500 font-medium"
+                    }`}
+                >
+                  {i.title}
+                </SmartLink>
+              ))}
+            </div>
+          </details>
+
+          {/* Currency Button */}
+          <div className="pt-4 px-2">
+            <CurrencyBtn className="w-full text-center" />
+          </div>
         </ul>
-      </div>}
+      </div>
+
     </nav>
   );
 };

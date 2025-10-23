@@ -33,7 +33,7 @@ const ProductCardCsr = ({ product, updateSignedInUser, onRemove, index = 1 }: Pr
   return (
     <FadeInOnView
       key={index}
-      delay={index * 100}
+      delay={index * 50}
       threshold={0.2}
       className={`relative image-width min-w-[9rem] sm:min-w-[16rem] roundsed-t-lg overflow-hidden  ${isSoldOut ? "opacity-70" : ""
         }`}

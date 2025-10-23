@@ -14,6 +14,7 @@ const Currency = () => {
     setCurrency,
     setCountry,
     setCountryCode,
+    setSource,
     resetToGeo,
     fetchGeo,
     isHydrated,
@@ -34,6 +35,7 @@ const Currency = () => {
   const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCountry = e.target.value;
     setCountry(selectedCountry);
+    setSource('manual');
     const mappedCurrency = countryToCurrencyMap[selectedCountry];
     const mappedCode = countryToFlagMap[selectedCountry];
     if (mappedCurrency) setCurrency(mappedCurrency);
@@ -105,13 +107,20 @@ const Currency = () => {
 };
 
 
-export const CurrencyBtn = () => {
+export const CurrencyBtn = ({ className = '' }: { className?: string; }) => {
   const { currency, country, countryCode, isHydrated } = useRegion();
   const { open } = useModalStore();
   if (!isHydrated) return null;
+
   return (
-    <button onClick={() => open('region-currency')} title='Change Currency & Region' className={`flex items-center text-small-medium gap-2`}>
-      <img title={countryToFlagMap[country] + " flg"} src={`https://flagsapi.com/${countryCode?.toUpperCase() || countryToFlagMap[country]?.toUpperCase() || 'PS'}/flat/64.png` || 'https://flagcdn.com/96x72/pk.png'} alt={countryToFlagMap[country] + " Flag"} width={24} height={18} />
+    <button
+      onClick={() => open('region-currency')}
+      title='Change Currency & Region'
+      className={`${className} flex items-center text-small-medium gap-2`}>
+      <img
+        title={countryToFlagMap[country].toUpperCase() + " flg"}
+        src={`https://flagsapi.com/${countryCode?.toUpperCase() || countryToFlagMap[country]?.toUpperCase() || 'PS'}/flat/64.png`}
+         alt={countryToFlagMap[country] + " Flag"} width={24} height={18} />
       {currency} {currencyToSymbolMap[currency]}
     </button>
   )
