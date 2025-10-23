@@ -1,5 +1,6 @@
 'use client'
-import useCart, { useRegion } from '@/lib/hooks/useCart';
+import useCart from '@/lib/hooks/useCart';
+import { useRegion } from '@/lib/hooks/useRegion';
 import { addProductToRecentlyViewed } from '@/lib/hooks/useRecentlyViewed';
 import { updateCategories, updatePriceRange, updateRecentlyViewed } from '@/lib/hooks/useUserPrefrence';
 import { currencyToSymbolMap } from '@/lib/utils/features.csr';

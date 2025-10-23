@@ -3,7 +3,8 @@
 import { ArrowLeftIcon, LoaderIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import useCart, { useRegion } from '@/lib/hooks/useCart';
+import { useRegion } from '@/lib/hooks/useRegion';
+import useCart from '@/lib/hooks/useCart';
 import SmartLink from "@/components/SmartLink";
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';

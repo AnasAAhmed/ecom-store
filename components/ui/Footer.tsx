@@ -1,6 +1,6 @@
 import Image from "next/image";
 import SmartLink from "@/components/SmartLink";
-import Currency from "../Currency";
+import Currency, { CurrencyBtn } from "../Currency";
 
 const Footer = () => {
   return (
@@ -65,9 +65,7 @@ const Footer = () => {
           </form>
           <div className="mt-6 space-y-2 text-sm text-gray-700">
             <p><strong>Payment Options:</strong> COD / Online</p>
-            <div className="sm:hidden">
-              {/* <Currency className="sm:hidden" /> */}
-            </div>
+            <CurrencyBtn/>
             <p><SmartLink href="/contact" className="hover:text-black">Returns</SmartLink></p>
             <p><SmartLink href="/contact" className="hover:text-black">Privacy Policies</SmartLink></p>
             <p><SmartLink href="/contact" className="hover:text-black">Help</SmartLink></p>

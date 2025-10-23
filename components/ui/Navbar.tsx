@@ -6,9 +6,9 @@ import Image from "next/image";
 import SmartLink from "@/components/SmartLink";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
-import Currency from "../Currency";
+import { CurrencyBtn } from "../Currency";
 import { useProgressStore } from "@/lib/hooks/useProgressBar";
-import User from "./User";
+import { UserBtn } from "./User";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -96,7 +96,7 @@ const Navbar = () => {
         "hover:bg-white group hover:text-black " :
         'bg-white'}`}
     >
-      
+
       <div className="flex justify-between items-center p-2">
         <button className="lg:hidden cursor-pointer" title="mobile hamburger menu" aria-label="mobile hamburger menu" id="Mob-menu" onClick={toggleModal} onBlur={() => setTimeout(() => setIsOpen(false), 70)}>
           <Menu size={'1.7rem'} />
@@ -108,7 +108,7 @@ const Navbar = () => {
             priority
             width={120}
             height={64}
-            className={`${(!scrolled&&pp)? 'group-hover:invert-0 invert' : 'invert-0'} brightness-0 `}
+            className={`${(!scrolled && pp) ? 'group-hover:invert-0 invert' : 'invert-0'} brightness-0 `}
           />
         </SmartLink>
 
@@ -130,7 +130,7 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <Currency className="max-sm:hidden" />
+          <CurrencyBtn />
           <button title="mobile hamburger menu" aria-label="mobile hamburger menu" id="Mob-menu" onClick={() => setOpen2(!open2)}>
             <Search />
           </button>
@@ -143,7 +143,7 @@ const Navbar = () => {
             <ShoppingCart />
             <span className="absolute top-3 px-1 text-[10px] bg-black text-white rounded-full border">{cart.cartItems.length}</span>
           </SmartLink>
-          <User />
+          <UserBtn />
 
 
         </div>
@@ -206,10 +206,6 @@ const Navbar = () => {
 
             </SmartLink>
           ))}
-          <SmartLink title="Go to cart" prefetch={false} aria-label={'go to cart'} href="/cart" className="flex items-center gap-2 border rounded-lg px-2 py-1 hover:bg-black hover:text-white" >
-            <ShoppingCart />
-            <span>({cart.cartItems.length})</span>
-          </SmartLink>
         </ul>
       </div>}
     </nav>

@@ -1,56 +1,54 @@
-// components/Modal.js
-import React, { useEffect } from 'react';
-import FocusLock from 'react-focus-lock';
-import { useFocusWithin } from '@react-aria/interactions';
+// components/Modal.tsx
+"use client";
+import React, { useEffect } from "react";
+import FocusLock from "react-focus-lock";
+import { useFocusWithin } from "@react-aria/interactions";
+import { useModalStore } from "@/lib/hooks/useModal";
 
-type ModalProps={
-    isOpen:boolean;
-    onClose:any;
-    children:any;
-    overLay?:boolean;
-    // children:Readonly<{
-    //     children: React.ReactNode;
-    //   }>
-}
+type ModalProps = {
+  modalKey: string;
+  children: React.ReactNode;
+  overlay?: boolean;
+};
 
-const Modal = ({ isOpen, onClose, children,overLay}:ModalProps) => {
+const Modal = ({ modalKey, children, overlay = false }: ModalProps) => {
+  const { isOpen, close } = useModalStore();
+  const open = isOpen(modalKey);
+
   const { focusWithinProps } = useFocusWithin({
     onBlurWithin: () => {
-      // Ensure the focus remains within the modal
-      if (isOpen) {
-        const modalElement = document.getElementById('modal');
-        if (modalElement) {
-          modalElement.focus();
-        }
+      if (open) {
+        const modalElement = document.getElementById("modal");
+        modalElement?.focus();
       }
-
-    }
+    },
   });
 
   useEffect(() => {
-    const handleKeyDown = (event:React.KeyboardEvent<HTMLDivElement>) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") close(modalKey);
     };
 
-    if (isOpen) {
-      document.addEventListener('keydown', handleKeyDown as ()=>void);
-    } else {
-      document.removeEventListener('keydown', handleKeyDown as ()=>void);
-    }
+    if (open) document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [open, close, modalKey]);
 
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown as ()=>void);
-    };
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
+  if (!open) return null;
 
   return (
-    <div className={`fixed inset-0 flex items-center justify-center ${overLay&&"bg-gray-800"} bg-opacity-50 z-50`}onClick={onClose}>
-      <FocusLock className='w-full'>
-        <div className='w-full' id="modal" tabIndex={-1} {...focusWithinProps} onClick={e=>e.stopPropagation()}>
+    <div
+      className={`fixed inset-0 flex items-center justify-center ${overlay && "bg-gray-800"
+        } bg-opacity-50 z-50`}
+      onClick={() => close(modalKey)}
+    >
+      <FocusLock className="w-full">
+        <div
+          className="w-full"
+          id="modal"
+          tabIndex={-1}
+          {...focusWithinProps}
+          onClick={(e) => e.stopPropagation()}
+        >
           {children}
         </div>
       </FocusLock>

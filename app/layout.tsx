@@ -5,13 +5,13 @@ import Navbar from "@/components/ui/Navbar";
 import ToasterProvider from "@/lib/providers/ToasterProvider";
 import Footer from "@/components/ui/Footer";
 import { Suspense } from "react";
-import Loader from "@/components/ui/Loader";
 import UserFetcher from "@/components/UserFetch";
 import { Roboto } from 'next/font/google'
 import { SessionProvider } from "next-auth/react";
 import ProgressBar from "@/components/ProgressBar";
 import IsOnline from "@/components/IsOnline";
-import SmartLink from "@/components/SmartLink";
+import Currency from "@/components/Currency";
+import User from "@/components/ui/User";
 
 const roboto = Roboto({
   weight: ['500'],
@@ -81,54 +81,36 @@ export default async function RootLayout({
     <html lang="en">
       <body className={roboto.className}>
         <SessionProvider>
+
+          {/* Toaster */}
           <ToasterProvider />
+
+          {/* Fetches user details wishlist & sign-in history if logged in*/}
           <UserFetcher />
+
+          {/* navbar and progress in suspense hook becuase they both use useSearchParams */}
           <Suspense fallback={''}>
-            {/* <nav className="print:hidden py-2 px-4 hidden lg:flex justify-between text-sm sm:text-base font-medium text-gray-800 bg-gradient-to-r from-red-50 via-gray-100 to-blue-100 border-y border-gray-200">
-
-              <p className="text-red-600 font-bold px-4">🔥 50% Off Summer Sale</p>
-
-              <div className="flex gap-6 items-center">
-                {['men', 'women', 'kids', 'footwear', 'accessories'].map((item) => (
-                  <SmartLink
-                    title={`${item} collection`}
-                    key={item}
-                    prefetch={false}
-                    aria-label={item}
-                    href={`/collections/${item}`}
-                    className="hover:text-black text-gray-700 transition-colors duration-200 border-b-2 border-transparent hover:border-black"
-                  >
-                    {item.charAt(0).toUpperCase() + item.slice(1)}
-                  </SmartLink>
-                ))}
-                {["/", "/search", "/contact", "/blog", "/wishlist", "/orders", "https://ecom-admin-panel-xcw7-gh8p.vercel.app/"].map((item, idx) => (
-                  <a
-                    title={`${item} page at Borcelle`}
-                    key={item}
-                    aria-label={item}
-                    href={item}
-                    className="hover:text-black sr-only text-gray-600 transition-colors duration-200 border-b-2 border-transparent hover:border-black"
-                  >
-                    {["Home", "Shop", "Contact", "Blog", "Wishlist", "Orders", "CMS"][idx]}
-                  </a>
-                ))}
-              </div>
-              <p className="text-blue-600 px-4 max-md:hidden">
-                📞 Help: <a title="Call us" href="tel:+845466789">+84 546-6789</a>
-              </p>
-            </nav> */}
             <Navbar />
             <ProgressBar />
           </Suspense>
-          <Suspense fallback={<Loader height={90}/>}>
-          <main>
-            {children}
-          </main>
-          </Suspense>
+
+          {/* All Pages */}
+            <main>
+              {children}
+            </main>
+
+          {/* Modals */}
+          <Currency />
+          <User />
+
+          {/* Wifi Connection indicator */}
           <Suspense fallback={''}>
             <IsOnline />
           </Suspense>
+
+          {/* Footer */}
           <Footer />
+
         </SessionProvider>
       </body>
     </html>

@@ -44,7 +44,7 @@ const Sort = ({ isCollectionPage = false }: { isCollectionPage?: boolean }) => {
         setCategory(categoryParam)
         setSize(sizeParam)
         setColor(colorParam)
-    }, [queryParam,categoryParam,colorParam,sizeParam,sortFieldParam,sortParam]);
+    }, [queryParam, categoryParam, colorParam, sizeParam, sortFieldParam, sortParam]);
 
     useEffect(() => {
         const fetchSortData = async () => {
@@ -95,7 +95,22 @@ const Sort = ({ isCollectionPage = false }: { isCollectionPage?: boolean }) => {
         if (page) params.delete("page");
         router.push(`/search?query=${query}`);
     };
-
+    const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        start();
+        const searchParams = new URLSearchParams(window.location.search);
+        const [field, order] = e.target.value.split("|");
+        if (!field || !order) {
+            searchParams.delete('field');
+            searchParams.delete('order');
+            const newUrl = `?${searchParams.toString()}`;
+            router.push(newUrl, { scroll: true });
+        } else {
+            searchParams.set('field', field.toString());
+            searchParams.set('order', order.toString());
+            const newUrl = `?${searchParams.toString()}`;
+            router.push(newUrl, { scroll: true });
+        }
+    };
 
     return (
         <>
@@ -133,9 +148,7 @@ const Sort = ({ isCollectionPage = false }: { isCollectionPage?: boolean }) => {
                     <select
                         className="h-10 px-3 bg-gray-100 rounded-lg"
                         value={sort}
-                        onChange={(e) =>
-                            handleSelectChange('field', e.target.value.split('|')[0])
-                        }
+                        onChange={handleSortChange}
                     >
                         <option value="">Sort</option>
                         <option value="price|asc">Price (Low to High)</option>
