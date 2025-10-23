@@ -2,7 +2,7 @@ import { signIn } from '@/auth'
 import * as React from "react"
 import LoginForm from '@/components/auth/login-form'
 import AuthLink from '@/components/AuthLink'
-import { ForgetPassForm } from '@/components/auth/Forget-passwordForm'
+import { ForgetPassModalBtn } from '@/components/auth/Forget-passwordForm'
 import Loader from '@/components/ui/Loader'
 import { Loader2 } from 'lucide-react'
 import { SubmitButton } from '@/components/auth/SubmitBtn'
@@ -33,7 +33,7 @@ export default async function LoginPage() {
 
         </div>
       </div>
-      <ForgetPassForm btnText='Forget Password?' />
+      <ForgetPassModalBtn btnText='Forget Password?' />
       <React.Suspense fallback={<Loader2 />}>
         <AuthLink url='sign-up' title='No account yet? Go to sign-up page'>
           No account yet? <span className="underline text-body-medium">Sign up</span>

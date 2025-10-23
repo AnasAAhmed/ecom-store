@@ -1,5 +1,5 @@
 import { auth } from '@/auth'
-import { ForgetPassForm } from '@/components/auth/Forget-passwordForm'
+import { ForgetPassModalBtn } from '@/components/auth/Forget-passwordForm'
 import ResetForm from '@/components/auth/reset-pass-form'
 import Loader from '@/components/ui/Loader'
 import { Session } from 'next-auth'
@@ -30,7 +30,7 @@ export default async function ResetPassPage(props: { searchParams: Promise<{ tok
                 </div>
             </div>
             <div className="flex items-center gap-1 mt-4 text-sm text-zinc-400">
-                Expired Token? <div className="font-semibold underline"><ForgetPassForm btnText='Resend' /></div>
+                Expired Token? <div className="font-semibold underline"><ForgetPassModalBtn btnText='Resend' /></div>
             </div>
         </div>
     )

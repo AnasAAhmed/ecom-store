@@ -12,6 +12,7 @@ import ProgressBar from "@/components/ProgressBar";
 import IsOnline from "@/components/IsOnline";
 import Currency from "@/components/Currency";
 import User from "@/components/ui/User";
+import { ForgetPassForm } from "@/components/auth/Forget-passwordForm";
 
 const roboto = Roboto({
   weight: ['500'],
@@ -102,6 +103,7 @@ export default async function RootLayout({
           {/* Modals */}
           <Currency />
           <User />
+          <ForgetPassForm/>
 
           {/* Wifi Connection indicator */}
           <Suspense fallback={''}>
