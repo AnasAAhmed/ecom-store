@@ -18,7 +18,8 @@ export async function getOrders(customerEmail: string, page: number) {
     const orders = await Order.find({
       customerEmail
     })
-    .populate({ path: "products.product", model: Product ,options: { limit: 2 },select:'-_id title price media' })
+    .populate({ path: "products.product", model: Product ,opti
+      ons: { limit: 2 },select:'-_id title price media' })
     .select('-customerPhone -customerEmail -shippingAddress -statusHistory -sessionId')
     .sort({ createdAt: 'desc' })
     .limit(limit)

@@ -120,6 +120,7 @@ const Navbar = () => {
                 title={"Go to " + linksText[idx]}
                 key={idx}
                 href={path}
+                prefetch={(path === '/blogs' || path === '/contact')}
                 target={path.startsWith('https') ? '_blank' : ''}
                 aria-label={path}
                 className={`hover:text-blue-500 ${pathname === path && "underline stext-blue-500"}`}
@@ -234,6 +235,7 @@ const Navbar = () => {
               key={idx}
               href={name}
               aria-label={name}
+              prefetch={(name === '/blogs' || name === '/contact')}
               title={"Go to " + linksText[idx]}
               target={name.startsWith("https") ? "_blank" : ""}
               className="py-[3px] px-3 rounded hover:bg-gray-100 transition"
@@ -245,7 +247,7 @@ const Navbar = () => {
           {/* Collections (Collapsible) */}
           <details className="mt-2">
             <summary className="flex items-center gap-2 cursor-pointer hover:underline py-2 px-3 bg-gray-100 rounded font-medium">
-              Collections <ChevronRight size={'1rem'}/>
+              Collections <ChevronRight size={'1rem'} />
             </summary>
             <div className="flex flex-col mt-2 ml-2">
               {cols.map((i, idx) => (

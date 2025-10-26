@@ -37,7 +37,10 @@ export const DELETE = async (req: NextRequest, props: { params: Promise<{ id: St
         await connectToDB()
 
         await HomePage.findByIdAndDelete(params.id);
-        revalidatePath('/')
+        revalidatePath('/');
+        fetch(`${process.env.ECOM_STORE_URL}/`, { method: 'HEAD' })
+            .catch(() => { });
+
 
         return NextResponse.json({ message: 'Successfully deleted home page data' }, { status: 200, headers: corsHeaders })
     } catch (err) {

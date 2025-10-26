@@ -65,6 +65,27 @@ body,
       transform: translate(calc(var(--s, 1)*30px))
     }
   }
+.shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    #e0e0e0 0%,
+    #928989 50%,
+    #e0e0e0 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.3s infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: -100% 0;
+  }
+  to {
+    background-position: 100% 0;
+  }
+}
 
 .modal-overlay {
   position: fixed;

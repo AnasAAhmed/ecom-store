@@ -19,7 +19,7 @@ export const GET = async (req: NextRequest) => {
             return NextResponse.json(undefined, {
                 status: 401,
                 headers: corsHeaders,
-                statusText:"Token is missing"
+                statusText: "Token is missing"
             });
         }
         const decodedToken = await decode({ token, salt: process.env.ADMIN_SALT!, secret: process.env.AUTH_SECRET! })
@@ -135,8 +135,11 @@ export const POST = async (req: NextRequest) => {
         } else {
             result = await HomePage.create({ seo, hero, collections, collectionList })
         }
-        revalidatePath('/')
-        return NextResponse.json(result, { status: 200, headers: corsHeaders,statusText:'lund kha ' })
+        revalidatePath('/');
+        fetch(`${process.env.ECOM_STORE_URL}/`, { method: 'HEAD' })
+            .catch(() => { });
+
+        return NextResponse.json(result, { status: 200, headers: corsHeaders, statusText: 'lund kha ' })
     } catch (err) {
         console.log("[home-page_POST&PUT]", err)
         return NextResponse.json({ message: (err as Error).message }, { status: 500, headers: corsHeaders })
