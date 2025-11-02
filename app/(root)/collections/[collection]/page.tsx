@@ -11,6 +11,7 @@ import Breadcrumb from "@/components/BreadCrumb";
 import { unstable_cache } from "next/cache";
 import Image from "next/image";
 import Banner from "@/components/ui/Banner";
+import FilterBadges from "@/components/ui/FiltersUi";
 
 export const generateMetadata = async (props: { params: Promise<{ collection: string }> }) => {
   const params = await props.params;
@@ -166,8 +167,9 @@ const CollectionDetails = async (
       />
       <div className="min-h-[90vh] flex flex-col itemss-center">
         <Breadcrumb />
-        <div className="max-sm:ml-3">
+        <div className="max-sm:ml-3 px-3 sm:px-10">
           <Sort isCollectionPage />
+          <FilterBadges isCollection/>
         </div>
         <Suspense fallback={<Loader />}>
           <CollectionProduct collectionId={collectionDetails._id} page={page} size={size} color={color} sort={sort} sortField={sortField} />

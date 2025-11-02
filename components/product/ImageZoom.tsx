@@ -9,6 +9,7 @@ interface ImageZoomProps {
 
 const ImageZoom = ({ alt, allSrc }: ImageZoomProps) => {
   const [isZoomed, setIsZoomed] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [backgroundPosition, setBackgroundPosition] = useState('0% 0%');
   const imgRef = useRef<HTMLImageElement>(null);
   const [mainImage, setMainImage] = useState(allSrc[0]);
@@ -73,6 +74,7 @@ const ImageZoom = ({ alt, allSrc }: ImageZoomProps) => {
             }}
           />
         )}
+        {isLoading && <div className="shimmer" />}
 
         {/* Base Image */}
         <Image
@@ -81,8 +83,9 @@ const ImageZoom = ({ alt, allSrc }: ImageZoomProps) => {
           alt={alt}
           fill
           sizes="(max-width: 768px) 100vw, 500px"
-          placeholder="blur"
-          blurDataURL="/fallback.avif"
+          onLoad={() => setIsLoading(false)}
+          // placeholder="blur"
+          // blurDataURL="/fallback.avif"
           className={`absolute top-0 left-0 w-full h-full object-cover cursor-zoom-in rounded-lg transition-opacity duration-300 ${isZoomed ? "opacity-0" : "opacity-100"
             }`}
         />

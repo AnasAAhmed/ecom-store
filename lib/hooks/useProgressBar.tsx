@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 type ProgressState = {
   progress: number;
@@ -6,46 +6,49 @@ type ProgressState = {
   start: () => void;
   complete: () => void;
   reset: () => void;
+  setProgress: (value: number) => void;
 };
 
-export const useProgressStore = create<ProgressState>((set, get) => {
-  let incrementTimer: NodeJS.Timeout | null = null;
-  let showTimeout: NodeJS.Timeout | null = null;
+let intervalId: NodeJS.Timeout | null = null;
 
-  return {
-    progress: 0,
-    loading: false,
+export const useProgressStore = create<ProgressState>((set) => ({
+  progress: 0,
+  loading: false,
 
-    start: () => {
-      showTimeout = setTimeout(() => {
-        set({ loading: true, progress: 20 });
+  start: () => {
+    // Clear any existing intervals
+    if (intervalId) clearInterval(intervalId);
 
-        incrementTimer = setInterval(() => {
-          set((state) => {
-            if (state.progress < 80) {
-              return { progress: state.progress + Math.random() * 12 }; // random smooth increment
-            }
-            return state;
-          });
-        }, 200);
-      }, 100);
-    },
+    set({ loading: true, progress: 0 });
 
-    complete: () => {
-      if (showTimeout) clearTimeout(showTimeout);
-      if (incrementTimer) clearInterval(incrementTimer);
+    // Smoothly increase progress up to 85%
+    intervalId = setInterval(() => {
+      set((state) => {
+        const next = Math.min(state.progress + Math.random() * 5, 85); // slow smooth increment
+        return { progress: next };
+      });
+    }, 100); // every 0.2s
+  },
 
-      set({loading: false ,progress: 100 });
+  complete: () => {
+    if (intervalId) clearInterval(intervalId);
 
-      setTimeout(() => {
-        set({ progress: 0 });
-      }, 300);
-    },
+    // Jump to 100% quickly
+    set({ progress: 100 });
 
-    reset: () => {
-      if (showTimeout) clearTimeout(showTimeout);
-      if (incrementTimer) clearInterval(incrementTimer);
-      set({ loading: false, progress: 0 });
-    },
-  };
-});
+    // Hide after a short delay
+    setTimeout(() => {
+      set({ loading: false});
+    }, 200);
+    setTimeout(() => {
+      set({ progress: 0});
+    }, 400);
+  },
+
+  reset: () => {
+    if (intervalId) clearInterval(intervalId);
+    set({ loading: false, progress: 0 });
+  },
+
+  setProgress: (value: number) => set({ progress: value }),
+}));

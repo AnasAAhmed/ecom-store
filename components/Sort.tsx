@@ -139,7 +139,7 @@ const Sort = ({ isCollectionPage = false }: { isCollectionPage?: boolean }) => {
                 </form>
             </div>}
             <details open={true} className="px-2 sm:px-4">
-                <summary className="flex gap-1 w-24 items-center mb-3 cursor-pointer">
+                <summary className="flex hover:underline gap-1 w-24 items-center mb-3 cursor-pointer">
                     Filters <Filter size={'1rem'} />
                 </summary>
 

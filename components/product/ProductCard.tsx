@@ -33,7 +33,7 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
       className={`animate-fadeInUp relative image-width min-w-[9rem] sm:min-w-[16rem] 
       roundsed-t-lg overflow-hidden  ${isSoldOut ? "opacity-70" : ""}`}>
       <div className="relative aspect-[4/4.2] group overflow-hidden">
-
+        <div className="shimmer" />
         {/* <div> */}
         <Image
           src={image1}

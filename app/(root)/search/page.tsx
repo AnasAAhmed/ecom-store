@@ -5,6 +5,7 @@ import Sort from '@/components/Sort';
 import Link from 'next/link';
 import { unstable_cache } from 'next/cache';
 import ProductList from '@/components/product/ProductList';
+import FilterBadges from '@/components/ui/FiltersUi';
 
 
 export async function generateMetadata(props: { searchParams: Promise<{ query: string }> }) {
@@ -79,17 +80,7 @@ const SearchPage = async (props: { searchParams: Promise<any> }) => {
     <div className='sm:px-10  mt-[2.5rem] md:mt-16 px-3 py-12 '>
       <Sort />
       <div className='min-h-[80vh]'>
-      {(query || sort || sortField || category || color || size) &&
-        <p className='text-small-medium md:text-body-medium lg:text-heading3-bold mb-3'>
-          Search results for {query} 
-          <Link
-            className='underline text-small-medium text-blue-500'
-            title='Clear filters'
-            href={'/search'}>
-            Clear &times;
-          </Link>
-        </p>
-      }
+      <FilterBadges/>
         <ProductList isCsr isViewAll={false} Products={data.products} />
       </div>
       <PaginationControls currentPage={page} totalPages={data.totalPages} />
