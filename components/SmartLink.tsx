@@ -32,7 +32,7 @@ export default function SmartLink({ disabled = false, target, title = '', childr
         }
 
         const [basePath] = href.split(/[?#]/);
-toast.error(basePath+pathname)
+        
         if (basePath !== pathname) {
             start();
         }
