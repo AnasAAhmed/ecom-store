@@ -1,10 +1,8 @@
 'use client'
 
-import { useFormStatus } from 'react-dom'
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Eye, EyeOff, Loader } from 'lucide-react'
-import { ForgetPassForm } from './Forget-passwordForm'
 import { z } from 'zod'
 import toast from 'react-hot-toast'
 import { getSession, useSession } from 'next-auth/react'

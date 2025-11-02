@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { LinkProps } from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ReactNode, useState } from 'react';
+import toast from 'react-hot-toast';
 
 type SmartLinkProps = LinkProps & {
     children: ReactNode;
@@ -31,7 +32,7 @@ export default function SmartLink({ disabled = false, target, title = '', childr
         }
 
         const [basePath] = href.split(/[?#]/);
-
+toast.error(basePath+pathname)
         if (basePath !== pathname) {
             start();
         }

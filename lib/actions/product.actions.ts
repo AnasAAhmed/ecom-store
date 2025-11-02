@@ -55,8 +55,10 @@ export async function getSearchProducts(query: string, sort: string, sortField: 
     const totalProducts = await Product.countDocuments(filters);
     if (!totalProducts) {
       return JSON.parse(JSON.stringify({
-        totalProducts
-      }))
+      products: [],
+      totalPages:0,
+      totalProducts,
+    }))
     }
     const totalPages = Math.ceil(totalProducts / limit);
 

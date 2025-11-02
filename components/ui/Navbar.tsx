@@ -9,10 +9,12 @@ import { FormEvent, useEffect, useState } from "react";
 import { CurrencyBtn } from "../Currency";
 import { useProgressStore } from "@/lib/hooks/useProgressBar";
 import { UserBtn } from "./User";
+import { useSession } from "next-auth/react";
 
 const Navbar = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { data: session } = useSession();
   const params = new URLSearchParams(searchParams.toString());
   const router = useRouter();
   const cart = useCart();
@@ -66,7 +68,16 @@ const Navbar = () => {
   }, [lastScrollY]);
   const toggleModal = () => setIsOpen(!isOpen);
 
-  const links = ["/", "/search", "/blog", "/contact", "/wishlist", "/orders", "https://ecom-admin-panel-xcw7-gh8p.vercel.app/", "https://my-projects-metrics.vercel.app/ecom-store/lighthouse.html"];
+  const links = [
+    "/",
+    "/search",
+    "/blog",
+    "/contact",
+    session?.user ? "/wishlist" : "/login?redirect_url=/wishlist",
+    session?.user ? "/orders" : "/login?redirect_url=/orders",
+    "https://ecom-admin-panel-xcw7-gh8p.vercel.app/",
+    "https://my-projects-metrics.vercel.app/ecom-store/lighthouse.html"
+  ];
   const linksText = ["Home", "Shop", "Blogs", "Contact", "Wishlist", "Orders", 'CMS', 'Metrics'];
   const cols = [
     { title: 'Men', link: '/collections/men' },

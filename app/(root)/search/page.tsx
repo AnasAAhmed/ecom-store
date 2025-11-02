@@ -81,7 +81,7 @@ const SearchPage = async (props: { searchParams: Promise<any> }) => {
       <div className='min-h-[80vh]'>
       {(query || sort || sortField || category || color || size) &&
         <p className='text-small-medium md:text-body-medium lg:text-heading3-bold mb-3'>
-          Search results for {query}
+          Search results for {query} 
           <Link
             className='underline text-small-medium text-blue-500'
             title='Clear filters'
